@@ -9,6 +9,9 @@
 # Sensitive exports
 *.csv
 
+# Database dumps
+*.sql.gz
+
 # Project-private docs and artifacts
 AGENT/
 
