@@ -36,7 +36,12 @@ async def get_pool() -> asyncpg.Pool:
 async def close_pool() -> None:
     global _pool
     if _pool is not None:
-        await _pool.close()
+        try:
+            await _pool.close()
+        except RuntimeError as exc:
+            # Tests can leave a pool bound to a closed event loop between sessions.
+            if "Event loop is closed" not in str(exc):
+                raise
         _pool = None
 
 

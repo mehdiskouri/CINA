@@ -13,6 +13,9 @@ class Section:
     order: int
     created_at: datetime | None = None
 
+    def __hash__(self) -> int:
+        return hash((self.document_id, self.section_type, self.order, self.content))
+
 
 @dataclass(slots=True)
 class Document:
@@ -24,6 +27,9 @@ class Document:
     publication_date: date | None = None
     raw_metadata: dict[str, object] = field(default_factory=dict)
     sections: list[Section] = field(default_factory=list)
+
+    def __hash__(self) -> int:
+        return hash((self.source, self.source_id))
 
 
 @dataclass(slots=True)
@@ -40,3 +46,6 @@ class Chunk:
     embedding_model: str = "text-embedding-3-large"
     embedding_dim: int = 512
     metadata: dict[str, object] = field(default_factory=dict)
+
+    def __hash__(self) -> int:
+        return hash((self.content_hash, self.embedding_model))
