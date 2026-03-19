@@ -54,9 +54,7 @@ async def run_migrations() -> int:
             sql = file.read_text(encoding="utf-8")
             async with conn.transaction():
                 await conn.execute(sql)
-                await conn.execute(
-                    "INSERT INTO schema_migrations(version) VALUES($1)", version
-                )
+                await conn.execute("INSERT INTO schema_migrations(version) VALUES($1)", version)
             applied_count += 1
             typer.echo(f"Applied migration: {version}")
     finally:

@@ -1,22 +1,52 @@
-name: CI
+name: CI/CD
 
-on:
-  push:
-    branches:
-      - main
-      - feat/**
-  pull_request:
-    branches: [main]
-  workflow_dispatch:
+env:
+  PYTHON_VERSION: "3.13"
+  CINA_CONFIG_PATH: cina.yaml
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 permissions:
   contents: read
 
-jobs:
-  checks:
-    name: Lint, Typecheck, Test
-    runs-on: ubuntu-latest
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
 
+concurrency:
+  group: cina-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Ruff lint
+        run: make lint
+
+      - name: Ruff format check
+        run: python -m ruff format --check .
+
+      - name: Mypy
+        run: make typecheck
+
+  migration-smoke:
+    if: always()
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck]
     services:
       postgres:
         image: pgvector/pgvector:pg16
@@ -24,50 +54,217 @@ jobs:
           POSTGRES_DB: cina
           POSTGRES_USER: cina
           POSTGRES_PASSWORD: cina_dev
-        ports:
-          - 5432:5432
+        ports: ["5432:5432"]
         options: >-
           --health-cmd "pg_isready -U cina -d cina"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    env:
+      DATABASE_URL: postgresql://cina:cina_dev@localhost:5432/cina
+      REDIS_URL: redis://localhost:6379/0
+    steps:
+      - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Apply migrations
+        run: make migrate
+
+      - name: Verify core tables
+        run: |
+          python - << 'PY'
+          import asyncio, asyncpg, os
+          async def main() -> None:
+              conn = await asyncpg.connect(os.environ["DATABASE_URL"])
+              try:
+                  rows = await conn.fetch(
+                      "SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename"
+                  )
+                  tables = {r["tablename"] for r in rows}
+                  required = {
+                      "ingestion_jobs",
+                      "documents",
+                      "sections",
+                      "chunks",
+                      "prompt_versions",
+                      "query_logs",
+                      "cost_events",
+                      "schema_migrations",
+                  }
+                  missing = sorted(required - tables)
+                  if missing:
+                      raise RuntimeError(f"Missing tables: {missing}")
+              finally:
+                  await conn.close()
+          asyncio.run(main())
+          PY
+
+  unit-tests:
+    if: always()
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run unit tests if present
+        run: |
+          if find tests/unit -type f -name '*.py' | grep -q .; then
+            make test
+          else
+            echo "No unit tests found in tests/unit yet"
+          fi
+
+  integration-tests:
+    if: always()
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck]
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_DB: cina
+          POSTGRES_USER: cina
+          POSTGRES_PASSWORD: cina_dev
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U cina -d cina"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
       redis:
         image: redis:7-alpine
-        ports:
-          - 6379:6379
+        ports: ["6379:6379"]
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     env:
       DATABASE_URL: postgresql://cina:cina_dev@localhost:5432/cina
       REDIS_URL: redis://localhost:6379/0
-      CINA_CONFIG_PATH: cina.yaml
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
-          cache: "pip"
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
 
       - name: Install dependencies
-        run: python -m pip install --upgrade pip && pip install -e ".[dev]"
-
-      - name: Ruff lint
-        run: make lint
-
-      - name: Mypy typecheck
-        run: make typecheck
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
 
       - name: Apply migrations
         run: make migrate
 
-      - name: Unit tests
-        run: make test
+      - name: Run integration tests if present
+        run: |
+          if find tests/integration -type f -name '*.py' | grep -q .; then
+            make test-integration
+          else
+            echo "No integration tests found in tests/integration yet"
+          fi
+
+  validate-infra:
+    if: always()
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate docker compose
+        run: docker compose -f docker-compose.yml config > /tmp/docker-compose.resolved.yml
+
+      - name: Validate Prometheus config
+        run: docker run --rm --entrypoint promtool -v "$PWD/infra/prometheus.yml:/etc/prometheus/prometheus.yml:ro" prom/prometheus:latest check config /etc/prometheus/prometheus.yml
+
+      - name: Validate Grafana provisioning files
+        run: |
+          python - << 'PY'
+          import pathlib, yaml
+          paths = [
+              pathlib.Path('infra/grafana/provisioning/datasources/datasource.yml'),
+              pathlib.Path('infra/grafana/provisioning/dashboards/dashboards.yml'),
+          ]
+          for path in paths:
+              yaml.safe_load(path.read_text(encoding='utf-8'))
+          print('Grafana provisioning YAML is valid')
+          PY
+
+  build-artifacts:
+    if: always()
+    runs-on: ubuntu-latest
+    needs: [migration-smoke, unit-tests, integration-tests, validate-infra]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install build tooling
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build package artifacts
+        run: python -m build
+
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cina-dist-${{ github.sha }}
+          path: dist/
+
+  checks:
+    if: always()
+    runs-on: ubuntu-latest
+    needs:
+      - lint-and-typecheck
+      - migration-smoke
+      - unit-tests
+      - integration-tests
+      - validate-infra
+      - build-artifacts
+    steps:
+      - name: Fail if any required job failed
+        run: |
+          declare -A results
+          results[lint-and-typecheck]="${{ needs.lint-and-typecheck.result }}"
+          results[migration-smoke]="${{ needs.migration-smoke.result }}"
+          results[unit-tests]="${{ needs.unit-tests.result }}"
+          results[integration-tests]="${{ needs.integration-tests.result }}"
+          results[validate-infra]="${{ needs.validate-infra.result }}"
+          results[build-artifacts]="${{ needs.build-artifacts.result }}"
+
+          for job in "${!results[@]}"; do
+            echo "$job => ${results[$job]}"
+            if [[ "${results[$job]}" != "success" ]]; then
+              echo "Required job '$job' did not succeed"
+              exit 1
+            fi
+          done
+
+      - name: CI/CD gate passed
+        run: echo "All required jobs succeeded"

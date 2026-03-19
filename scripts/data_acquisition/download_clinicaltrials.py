@@ -56,10 +56,7 @@ def run(limit: int, out_dir: Path, page_size: int, topic_query: str | None) -> N
                 break
 
             for study in studies:
-                identification = (
-                    study.get("protocolSection", {})
-                    .get("identificationModule", {})
-                )
+                identification = study.get("protocolSection", {}).get("identificationModule", {})
                 nct_id = identification.get("nctId")
                 if not nct_id:
                     continue
@@ -84,7 +81,9 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Download ClinicalTrials.gov JSON records")
     parser.add_argument("--limit", type=int, default=1000)
     parser.add_argument("--page-size", type=int, default=100)
-    parser.add_argument("--topic-query", type=str, default="heart OR cancer OR infection OR diabetes")
+    parser.add_argument(
+        "--topic-query", type=str, default="heart OR cancer OR infection OR diabetes"
+    )
     parser.add_argument("--out", type=Path, default=Path("data/clinicaltrials"))
     return parser.parse_args()
 

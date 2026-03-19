@@ -88,4 +88,9 @@ def parse_args() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = parse_args()
-    run(limit=args.limit, out_dir=args.out, page_size=args.page_size, sleep_seconds=args.sleep_seconds)
+    run(
+        limit=args.limit,
+        out_dir=args.out,
+        page_size=args.page_size,
+        sleep_seconds=args.sleep_seconds,
+    )
