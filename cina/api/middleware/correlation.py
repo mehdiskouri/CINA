@@ -5,9 +5,7 @@ from uuid import uuid4
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 
-from cina.observability.logging import get_logger
-from cina.observability.logging import correlation_id_var
-
+from cina.observability.logging import correlation_id_var, get_logger
 
 logger = get_logger("cina.api")
 

@@ -55,7 +55,7 @@ line-length = 100
 target-version = "py313"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "B", "UP", "ASYNC"]
+select = ["E", "F", "I", "B", "UP", "ASYNC", "C4", "SIM", "RUF"]
 ignore = ["E501"]
 
 [tool.ruff.format]
@@ -66,10 +66,16 @@ indent-style = "space"
 python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unreachable = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
+disallow_any_generics = true
+disallow_subclassing_any = true
 check_untyped_defs = true
 no_implicit_optional = true
+no_implicit_reexport = true
 strict_equality = true
 pretty = true
 exclude = ["^tests/"]
