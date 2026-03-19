@@ -69,7 +69,9 @@ async def run_ingestion(
             sentence_boundary_alignment=cfg.ingestion.chunk.sentence_alignment,
         )
     )
-    queue = RedisStreamQueue(redis_url=os.getenv(cfg.database.redis.url_env, "redis://localhost:6379/0"))
+    queue = RedisStreamQueue(
+        redis_url=os.getenv(cfg.database.redis.url_env, "redis://localhost:6379/0")
+    )
     provider = OpenAIEmbeddingProvider(api_key=os.getenv("OPENAI_API_KEY"))
 
     job_id = await _create_ingestion_job(pool, source)
@@ -84,6 +86,7 @@ async def run_ingestion(
     async for raw in connector.fetch_document_list(
         FetchConfig(limit=limit, source_path=path, glob_pattern="*")
     ):
+
         async def _process(raw_document: RawDocument = raw) -> tuple[int, str | None]:
             async with semaphore:
                 return await _process_single_document(

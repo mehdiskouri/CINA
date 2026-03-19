@@ -55,15 +55,15 @@ class FDAConnector:
 
 
 def _first_text(root: etree._Element, xpath: str) -> str | None:
-	result = root.xpath(xpath)
-	if not result:
-		return None
-	value = result[0]
-	if isinstance(value, etree._Element):
-		text = " ".join(value.itertext()).strip()
-		return text or None
-	text = str(value).strip()
-	return text or None
+    result = root.xpath(xpath)
+    if not result:
+        return None
+    value = result[0]
+    if isinstance(value, etree._Element):
+        text = " ".join(value.itertext()).strip()
+        return text or None
+    text = str(value).strip()
+    return text or None
 
 
 def _extract_structured_sections(root: etree._Element, document_id: UUID) -> list[Section]:
@@ -73,7 +73,9 @@ def _extract_structured_sections(root: etree._Element, document_id: UUID) -> lis
         heading = _first_text(component, "./*[local-name()='code']/@displayName") or _first_text(
             component, "./*[local-name()='title']"
         )
-        text_blocks = [" ".join(t.itertext()).strip() for t in component.xpath(".//*[local-name()='text']")]
+        text_blocks = [
+            " ".join(t.itertext()).strip() for t in component.xpath(".//*[local-name()='text']")
+        ]
         content = "\n\n".join(t for t in text_blocks if t)
         if not content:
             continue

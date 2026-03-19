@@ -69,7 +69,9 @@ def _run_ingestion(
         SpinnerColumn(),
         TextColumn("{task.description}"),
         BarColumn(),
-        TextColumn("docs={task.fields[docs]} chunks={task.fields[chunks]} embedded={task.fields[embedded]} errors={task.fields[errors]}"),
+        TextColumn(
+            "docs={task.fields[docs]} chunks={task.fields[chunks]} embedded={task.fields[embedded]} errors={task.fields[errors]}"
+        ),
         TimeElapsedColumn(),
         console=console,
     ) as progress:

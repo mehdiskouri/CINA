@@ -21,7 +21,9 @@ class ChunkingEngine:
             chunks.extend(self._chunk_section(document, section, embedding_model=embedding_model))
         return chunks
 
-    def _chunk_section(self, document: Document, section: Section, embedding_model: str) -> list[Chunk]:
+    def _chunk_section(
+        self, document: Document, section: Section, embedding_model: str
+    ) -> list[Chunk]:
         tokens = self._count_tokens(section.content)
         if tokens <= self.config.max_chunk_tokens:
             return [self._build_chunk(document, section, section.content, 0, 0, embedding_model)]
@@ -66,7 +68,9 @@ class ChunkingEngine:
                     buffer = []
                     buffer_tokens = 0
                 for token_window_index, text in enumerate(
-                    self._token_windows(sentence, self.config.max_chunk_tokens, self.config.overlap_tokens)
+                    self._token_windows(
+                        sentence, self.config.max_chunk_tokens, self.config.overlap_tokens
+                    )
                 ):
                     chunks.append(
                         self._build_chunk(
@@ -86,7 +90,9 @@ class ChunkingEngine:
                 overlap_sentences = self._overlap_sentences(buffer)
                 overlap = self._estimate_overlap_tokens(overlap_sentences)
                 chunks.append(
-                    self._build_chunk(document, section, text, chunk_index, overlap, embedding_model)
+                    self._build_chunk(
+                        document, section, text, chunk_index, overlap, embedding_model
+                    )
                 )
                 chunk_index += 1
                 buffer = overlap_sentences
@@ -97,7 +103,9 @@ class ChunkingEngine:
 
         if buffer:
             text = " ".join(buffer).strip()
-            chunks.append(self._build_chunk(document, section, text, chunk_index, 0, embedding_model))
+            chunks.append(
+                self._build_chunk(document, section, text, chunk_index, 0, embedding_model)
+            )
 
         return chunks
 

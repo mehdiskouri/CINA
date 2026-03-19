@@ -118,7 +118,9 @@ def _load_pubmed_documents(data_dir: Path, limit: int) -> list[tuple[object, str
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Benchmark structure-aware vs naive chunking")
-    parser.add_argument("--data-dir", default="data/pubmed", help="Directory containing PubMed XML files")
+    parser.add_argument(
+        "--data-dir", default="data/pubmed", help="Directory containing PubMed XML files"
+    )
     parser.add_argument("--limit", type=int, default=200, help="Number of documents to evaluate")
     args = parser.parse_args()
 
@@ -141,7 +143,9 @@ def main() -> None:
     for doc, full_text in corpus:
         structure_chunks = [
             chunk.content
-            for chunk in structure_engine.chunk_document(doc, embedding_model="text-embedding-3-large")
+            for chunk in structure_engine.chunk_document(
+                doc, embedding_model="text-embedding-3-large"
+            )
         ]
         naive_chunks = [
             chunk.content

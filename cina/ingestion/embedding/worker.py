@@ -10,41 +10,41 @@ from cina.ingestion.queue.protocol import QueueProtocol
 
 @dataclass(slots=True)
 class EmbeddingTask:
-	chunk_id: str
-	content: str
-	content_hash: str
-	embedding_model: str
-	embedding_dim: int
-	retries: int = 0
-	receipt: str | None = None
+    chunk_id: str
+    content: str
+    content_hash: str
+    embedding_model: str
+    embedding_dim: int
+    retries: int = 0
+    receipt: str | None = None
 
 
 class UpdateEmbeddingsFn(Protocol):
-	def __call__(
-		self,
-		chunk_ids: list[str],
-		embeddings: list[list[float]],
-		*,
-		embedding_model: str,
-		embedding_dim: int,
-	) -> Awaitable[None]: ...
+    def __call__(
+        self,
+        chunk_ids: list[str],
+        embeddings: list[list[float]],
+        *,
+        embedding_model: str,
+        embedding_dim: int,
+    ) -> Awaitable[None]: ...
 
 
 def _to_int(value: object, default: int = 0) -> int:
-	if value is None:
-		return default
-	if isinstance(value, bool):
-		return int(value)
-	if isinstance(value, int):
-		return value
-	if isinstance(value, float):
-		return int(value)
-	if isinstance(value, str):
-		try:
-			return int(value)
-		except ValueError:
-			return default
-	return default
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return int(value)
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float):
+        return int(value)
+    if isinstance(value, str):
+        try:
+            return int(value)
+        except ValueError:
+            return default
+    return default
 
 
 async def run_embedding_worker_once(

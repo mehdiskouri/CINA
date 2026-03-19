@@ -18,7 +18,9 @@ from cina.ingestion.connectors.pubmed import PubMedConnector
         ("file-5", "PMC12349", "PubMed E", "conclusion"),
     ],
 )
-def test_pubmed_connector_parse_cases(source_id: str, pmcid: str, title: str, section_type: str) -> None:
+def test_pubmed_connector_parse_cases(
+    source_id: str, pmcid: str, title: str, section_type: str
+) -> None:
     xml = f"""
     <article>
       <front>

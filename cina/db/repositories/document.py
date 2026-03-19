@@ -72,7 +72,9 @@ class DocumentRepository:
                 )
             return len(sections)
 
-    async def get_document_by_source_id(self, source: str, source_id: str) -> dict[str, object] | None:
+    async def get_document_by_source_id(
+        self, source: str, source_id: str
+    ) -> dict[str, object] | None:
         async with self.pool.acquire() as conn:
             row = await conn.fetchrow(
                 "SELECT id, source, source_id, title FROM documents WHERE source = $1::source_type AND source_id = $2",

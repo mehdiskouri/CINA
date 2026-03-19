@@ -84,7 +84,9 @@ async def _db_available(dsn: str) -> bool:
 
 
 @pytest.mark.asyncio
-async def test_ingestion_e2e_pubmed_50_docs(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+async def test_ingestion_e2e_pubmed_50_docs(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
     dsn = os.getenv("DATABASE_URL", DEFAULT_DSN)
     if not await _db_available(dsn):
         pytest.skip("Postgres is not reachable for integration test")
@@ -108,7 +110,9 @@ async def test_ingestion_e2e_pubmed_50_docs(monkeypatch: pytest.MonkeyPatch, tmp
     await run_migrations()
 
     conn = await asyncpg.connect(dsn)
-    await conn.execute("TRUNCATE chunks, sections, documents, ingestion_jobs RESTART IDENTITY CASCADE")
+    await conn.execute(
+        "TRUNCATE chunks, sections, documents, ingestion_jobs RESTART IDENTITY CASCADE"
+    )
     await conn.close()
 
     result_1 = await run_ingestion(

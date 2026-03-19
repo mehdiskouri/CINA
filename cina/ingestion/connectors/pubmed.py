@@ -55,22 +55,22 @@ class PubMedConnector:
 
 
 def _first_text(root: etree._Element, xpath: str) -> str | None:
-	node = root.find(xpath)
-	if node is None:
-		return None
-	text = " ".join(node.itertext()).strip()
-	return text or None
+    node = root.find(xpath)
+    if node is None:
+        return None
+    text = " ".join(node.itertext()).strip()
+    return text or None
 
 
 def _extract_authors(root: etree._Element) -> list[str]:
-	authors: list[str] = []
-	for contrib in root.findall(".//contrib[@contrib-type='author']"):
-		given = _first_text(contrib, ".//given-names") or ""
-		surname = _first_text(contrib, ".//surname") or ""
-		name = " ".join(part for part in [given, surname] if part).strip()
-		if name:
-			authors.append(name)
-	return authors
+    authors: list[str] = []
+    for contrib in root.findall(".//contrib[@contrib-type='author']"):
+        given = _first_text(contrib, ".//given-names") or ""
+        surname = _first_text(contrib, ".//surname") or ""
+        name = " ".join(part for part in [given, surname] if part).strip()
+        if name:
+            authors.append(name)
+    return authors
 
 
 def _extract_pub_date(root: etree._Element) -> date | None:

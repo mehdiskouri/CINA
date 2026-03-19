@@ -26,8 +26,14 @@ from cina.ingestion.chunking.sentences import split_sentences
             "Dose b.i.d. for 7 days. Reassess after course.",
             ["Dose b.i.d. for 7 days.", "Reassess after course."],
         ),
-        ("Taken t.i.d. with meals. No adverse events.", ["Taken t.i.d. with meals.", "No adverse events."]),
-        ("Use q.i.d. as needed. Follow-up tomorrow.", ["Use q.i.d. as needed.", "Follow-up tomorrow."]),
+        (
+            "Taken t.i.d. with meals. No adverse events.",
+            ["Taken t.i.d. with meals.", "No adverse events."],
+        ),
+        (
+            "Use q.i.d. as needed. Follow-up tomorrow.",
+            ["Use q.i.d. as needed.", "Follow-up tomorrow."],
+        ),
         (
             "Comparison vs. placebo showed effect. Results replicated.",
             ["Comparison vs. placebo showed effect.", "Results replicated."],
@@ -40,8 +46,14 @@ from cina.ingestion.chunking.sentences import split_sentences
             "See Fig. 2 for details. Conclusion follows.",
             ["See Fig. 2 for details.", "Conclusion follows."],
         ),
-        ("Mr. Doe was discharged. Ms. Roe remained.", ["Mr. Doe was discharged.", "Ms. Roe remained."]),
-        ("Mrs. Lee improved overnight. Plan unchanged.", ["Mrs. Lee improved overnight.", "Plan unchanged."]),
+        (
+            "Mr. Doe was discharged. Ms. Roe remained.",
+            ["Mr. Doe was discharged.", "Ms. Roe remained."],
+        ),
+        (
+            "Mrs. Lee improved overnight. Plan unchanged.",
+            ["Mrs. Lee improved overnight.", "Plan unchanged."],
+        ),
         ("No punctuation at end", ["No punctuation at end"]),
         ("Multiple   spaces   inside. Next line.", ["Multiple spaces inside.", "Next line."]),
         ("Trailing punctuation!!!", ["Trailing punctuation!!!"]),
