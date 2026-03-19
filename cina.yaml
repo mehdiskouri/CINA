@@ -1,0 +1,88 @@
+ingestion:
+  chunk:
+    max_tokens: 512
+    overlap_tokens: 64
+    tokenizer: cl100k_base
+    respect_sections: true
+    sentence_alignment: true
+  embedding:
+    provider: openai
+    model: text-embedding-3-large
+    dimensions: 512
+    batch_size: 64
+    max_retries: 3
+    rate_limit_tpm: 1000000
+  queue:
+    backend: redis
+    concurrency: 8
+  sources:
+    pubmed:
+      enabled: true
+      data_dir: /data/pubmed
+    fda:
+      enabled: true
+      data_dir: /data/fda
+    clinicaltrials:
+      enabled: true
+      api_base: https://clinicaltrials.gov/api/v2
+
+serving:
+  search:
+    vector_top_k: 50
+    bm25_top_k: 50
+    rrf_k: 60
+    ef_search: 100
+  rerank:
+    model: cross-encoder/ms-marco-MiniLM-L-6-v2
+    candidates: 20
+    top_n: 10
+    device: auto
+  context:
+    max_chunks: 15
+    generation_buffer_tokens: 2048
+  stream:
+    keepalive_interval_seconds: 15
+
+orchestration:
+  providers:
+    primary:
+      name: anthropic
+      model: claude-sonnet-4-20250514
+      api_key_env: ANTHROPIC_API_KEY
+      timeout_connect: 5.0
+      timeout_read: 60.0
+    fallback:
+      name: openai
+      model: gpt-4o
+      api_key_env: OPENAI_API_KEY
+      timeout_connect: 5.0
+      timeout_read: 60.0
+  fallback:
+    ttft_threshold_seconds: 5.0
+    circuit_breaker_failures: 3
+    circuit_breaker_cooldown: 60
+  cache:
+    enabled: true
+    num_hyperplanes: 16
+    similarity_threshold: 0.95
+    ttl_seconds: 86400
+  rate_limit:
+    requests_per_minute: 100
+    tokens_per_hour: 100000
+  prompt:
+    default_version: v1.0
+
+database:
+  postgres:
+    dsn_env: DATABASE_URL
+    pool_min: 5
+    pool_max: 20
+  redis:
+    url_env: REDIS_URL
+    pool_max: 20
+
+observability:
+  log_level: INFO
+  log_format: json
+  metrics_port: 9090
+  prometheus_path: /metrics

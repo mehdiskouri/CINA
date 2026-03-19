@@ -1,0 +1,42 @@
+from dataclasses import dataclass, field
+from datetime import date, datetime
+from uuid import UUID
+
+
+@dataclass(slots=True)
+class Section:
+    id: UUID
+    document_id: UUID
+    section_type: str
+    heading: str | None
+    content: str
+    order: int
+    created_at: datetime | None = None
+
+
+@dataclass(slots=True)
+class Document:
+    id: UUID
+    source: str
+    source_id: str
+    title: str
+    authors: list[str] = field(default_factory=list)
+    publication_date: date | None = None
+    raw_metadata: dict[str, object] = field(default_factory=dict)
+    sections: list[Section] = field(default_factory=list)
+
+
+@dataclass(slots=True)
+class Chunk:
+    id: UUID
+    section_id: UUID
+    document_id: UUID
+    content: str
+    content_hash: str
+    token_count: int
+    chunk_index: int
+    overlap_tokens: int = 0
+    embedding: list[float] | None = None
+    embedding_model: str = "text-embedding-3-large"
+    embedding_dim: int = 512
+    metadata: dict[str, object] = field(default_factory=dict)
