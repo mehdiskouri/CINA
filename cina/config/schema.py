@@ -31,7 +31,9 @@ class SourceToggleModel(BaseModel):
 
 
 class SourcesConfigModel(BaseModel):
-    pubmed: SourceToggleModel = Field(default_factory=lambda: SourceToggleModel(data_dir="/data/pubmed"))
+    pubmed: SourceToggleModel = Field(
+        default_factory=lambda: SourceToggleModel(data_dir="/data/pubmed")
+    )
     fda: SourceToggleModel = Field(default_factory=lambda: SourceToggleModel(data_dir="/data/fda"))
     clinicaltrials: SourceToggleModel = Field(
         default_factory=lambda: SourceToggleModel(api_base="https://clinicaltrials.gov/api/v2")

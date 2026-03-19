@@ -1,24 +1,25 @@
 .PHONY: lint format typecheck test test-integration serve ingest docker-up docker-down migrate
 
-PYTHON := /workspace/CINA/.venv/bin/python
-RUFF := /workspace/CINA/.venv/bin/ruff
-MYPY := /workspace/CINA/.venv/bin/mypy
-PYTEST := /workspace/CINA/.venv/bin/pytest
+PYTHON := python
+
+ifneq ($(wildcard .venv/bin/python),)
+PYTHON := .venv/bin/python
+endif
 
 lint:
-	$(RUFF) check .
+	$(PYTHON) -m ruff check .
 
 format:
-	$(RUFF) format .
+	$(PYTHON) -m ruff format .
 
 typecheck:
-	$(MYPY) cina
+	$(PYTHON) -m mypy cina
 
 test:
-	$(PYTEST) -q tests/unit
+	$(PYTHON) -m pytest -q tests/unit
 
 test-integration:
-	$(PYTEST) -q tests/integration
+	$(PYTHON) -m pytest -q tests/integration
 
 serve:
 	$(PYTHON) -m cina serve

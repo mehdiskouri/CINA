@@ -29,9 +29,7 @@ cina_rerank_latency_seconds = Histogram(
     "cina_rerank_latency_seconds", "Cross-encoder rerank latency"
 )
 cina_context_tokens_used = Histogram("cina_context_tokens_used", "Context tokens used")
-cina_context_chunks_included = Histogram(
-    "cina_context_chunks_included", "Context chunks included"
-)
+cina_context_chunks_included = Histogram("cina_context_chunks_included", "Context chunks included")
 
 # Orchestration
 cina_cache_requests_total = Counter(
@@ -43,15 +41,11 @@ cina_provider_request_total = Counter(
 cina_provider_latency_seconds = Histogram(
     "cina_provider_latency_seconds", "Provider latency", ["provider"]
 )
-cina_provider_fallback_total = Counter(
-    "cina_provider_fallback_total", "Fallback events"
-)
+cina_provider_fallback_total = Counter("cina_provider_fallback_total", "Fallback events")
 cina_rate_limit_exceeded_total = Counter(
     "cina_rate_limit_exceeded_total", "Rate limit exceeded", ["tenant"]
 )
-cina_cost_usd_total = Counter(
-    "cina_cost_usd_total", "Accumulated USD cost", ["provider", "tenant"]
-)
+cina_cost_usd_total = Counter("cina_cost_usd_total", "Accumulated USD cost", ["provider", "tenant"])
 
 
 METRIC_NAMES = [

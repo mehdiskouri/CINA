@@ -32,6 +32,9 @@ htmlcov/
 
 # Data
 data/
+!data/
+data/*
+!data/README.md
 
 # Docker
 *.log
