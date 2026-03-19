@@ -56,8 +56,54 @@ async def db_healthcheck() -> dict[str, Any]:
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-    await create_pool()
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    pool = await create_pool()
+
+    # Initialise serving components and attach to app state
+    cfg = load_config()
+    scfg = cfg.serving
+    pcfg = cfg.orchestration.providers.primary
+
+    from cina.orchestration.providers.anthropic import AnthropicProvider
+    from cina.serving.pipeline import ServingPipeline
+    from cina.serving.rerank.cross_encoder import CrossEncoderReranker
+    from cina.serving.search.embed import QueryEmbedder
+
+    embedder = QueryEmbedder()
+
+    reranker: CrossEncoderReranker | None = None
+    try:
+        reranker = CrossEncoderReranker(
+            scfg.rerank.model,
+            device=scfg.rerank.device,
+            top_n=scfg.rerank.top_n,
+        )
+        reranker.warmup()
+    except Exception:
+        import structlog
+
+        structlog.get_logger("cina.lifespan").warning(
+            "cross_encoder_warmup_failed_serving_without_reranker"
+        )
+
+    provider = AnthropicProvider(
+        model=pcfg.model,
+        api_key_env=pcfg.api_key_env,
+        timeout_connect=pcfg.timeout_connect,
+        timeout_read=pcfg.timeout_read,
+    )
+
+    pipeline = ServingPipeline(
+        pool,
+        reranker=reranker,
+        embedder=embedder,
+        provider=provider,
+    )
+
+    app.state.serving_pipeline = pipeline
+    app.state.reranker = reranker
+    app.state.provider = provider
+
     try:
         yield
     finally:

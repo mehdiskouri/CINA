@@ -25,7 +25,7 @@ class RedisStreamQueue:
 
     async def _ensure_group(self, stream_name: str) -> None:
         try:
-            await self.redis.xgroup_create(stream_name, self.group, id="$", mkstream=True)
+            await self.redis.xgroup_create(stream_name, self.group, id="0", mkstream=True)
         except ResponseError as exc:
             if "BUSYGROUP" not in str(exc):
                 raise
