@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 import os
+import time
 from collections.abc import AsyncIterator
 
 import httpx
@@ -10,6 +12,11 @@ import httpx
 from cina.models.provider import CompletionConfig, Message, StreamChunk
 from cina.observability.logging import get_logger
 from cina.observability.metrics import cina_provider_latency_seconds, cina_provider_request_total
+from cina.orchestration.providers.protocol import (
+    ProviderRateLimitError,
+    ProviderServerError,
+    ProviderTimeoutError,
+)
 
 log = get_logger("cina.orchestration.providers.anthropic")
 
@@ -35,6 +42,7 @@ class AnthropicProvider:
         timeout_connect: float = 5.0,
         timeout_read: float = 60.0,
     ) -> None:
+        self.name = "anthropic"
         self.model = model
         api_key = os.environ.get(api_key_env, "")
         if not api_key:
@@ -75,14 +83,21 @@ class AnthropicProvider:
             "content-type": "application/json",
         }
 
-        import time
-
         start = time.perf_counter()
         status = "success"
 
         async with httpx.AsyncClient(timeout=self._timeout) as client:
             try:
                 async with client.stream("POST", _API_BASE, json=payload, headers=headers) as resp:
+                    if resp.status_code == 429:
+                        status = "error"
+                        raise ProviderRateLimitError("Anthropic rate limit", provider=self.name)
+                    if 500 <= resp.status_code < 600:
+                        status = "error"
+                        raise ProviderServerError(
+                            f"Anthropic server error {resp.status_code}",
+                            provider=self.name,
+                        )
                     if resp.status_code != 200:
                         body = await resp.aread()
                         status = "error"
@@ -91,8 +106,9 @@ class AnthropicProvider:
                             status_code=resp.status_code,
                             body=body.decode()[:500],
                         )
-                        raise RuntimeError(
-                            f"Anthropic API error {resp.status_code}: {body.decode()[:200]}"
+                        raise ProviderServerError(
+                            f"Anthropic API error {resp.status_code}: {body.decode()[:200]}",
+                            provider=self.name,
                         )
 
                     async for line in resp.aiter_lines():
@@ -101,8 +117,6 @@ class AnthropicProvider:
                         data = line[6:]
                         if data.strip() == "[DONE]":
                             break
-
-                        import json
 
                         try:
                             event = json.loads(data)
@@ -117,14 +131,18 @@ class AnthropicProvider:
                                 yield StreamChunk(text=text)
                         elif event_type == "message_stop":
                             break
+            except httpx.TimeoutException as exc:
+                status = "error"
+                log.error("anthropic_timeout", error=str(exc))
+                raise ProviderTimeoutError(str(exc), provider=self.name) from exc
             except httpx.HTTPError as exc:
                 status = "error"
                 log.error("anthropic_http_error", error=str(exc))
-                raise
+                raise ProviderServerError(str(exc), provider=self.name) from exc
             finally:
                 elapsed = time.perf_counter() - start
-                cina_provider_latency_seconds.labels(provider="anthropic").observe(elapsed)
-                cina_provider_request_total.labels(provider="anthropic", status=status).inc()
+                cina_provider_latency_seconds.labels(provider=self.name).observe(elapsed)
+                cina_provider_request_total.labels(provider=self.name, status=status).inc()
 
     async def health_check(self) -> bool:
         """Quick connectivity check — send a minimal request."""

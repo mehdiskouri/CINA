@@ -3,6 +3,8 @@
 .env.*
 !.env.example
 .env.keys.local
+.env.local.keys
+env.keys.local
 *.pem
 *.key
 

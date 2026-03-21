@@ -7,6 +7,7 @@ import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import date
+from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock, patch
 from uuid import uuid4
 
@@ -171,6 +172,11 @@ async def test_query_e2e_sse_event_sequence() -> None:
     app.state.serving_pipeline = pipeline
     app.state.reranker = mock_reranker
     app.state.provider = mock_provider
+    apikey_repo = MagicMock()
+    apikey_repo.validate_token = AsyncMock(
+        return_value=SimpleNamespace(tenant_id="test-tenant", name="test-key")
+    )
+    app.state.apikey_repo = apikey_repo
 
     try:
         transport = ASGITransport(app=app)
@@ -178,7 +184,10 @@ async def test_query_e2e_sse_event_sequence() -> None:
             resp = await client.post(
                 "/v1/query",
                 json={"query": "What are the effects of metformin?"},
-                headers={"Content-Type": "application/json"},
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer test-token",
+                },
             )
             assert resp.status_code == 200
             assert resp.headers["content-type"].startswith("text/event-stream")

@@ -1,0 +1,34 @@
+{
+  "title": "CINA Orchestration Health",
+  "uid": "cina-orchestration-health",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": ["cina", "orchestration"],
+  "time": {"from": "now-6h", "to": "now"},
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Provider Requests by Status",
+      "datasource": "Prometheus",
+      "targets": [{"expr": "sum by (provider,status) (rate(cina_provider_request_total[5m])) or on() vector(0)", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Fallback Events",
+      "datasource": "Prometheus",
+      "targets": [{"expr": "rate(cina_provider_fallback_total[5m]) or on() vector(0)", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Cache Hit/Miss Rate",
+      "datasource": "Prometheus",
+      "targets": [{"expr": "sum by (result) (rate(cina_cache_requests_total[5m])) or on() vector(0)", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8}
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass(slots=True)
@@ -16,3 +16,4 @@ class StreamChunk:
 class CompletionConfig:
     max_tokens: int = 1024
     temperature: float = 0.3
+    metadata: dict[str, object] = field(default_factory=dict)

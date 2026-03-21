@@ -1,0 +1,26 @@
+{
+  "title": "CINA Query Performance",
+  "uid": "cina-query-performance",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": ["cina", "query"],
+  "time": {"from": "now-6h", "to": "now"},
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Query Rate",
+      "datasource": "Prometheus",
+      "targets": [{"expr": "sum(rate(cina_query_total[5m])) or on() vector(0)", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Total Query Latency p95",
+      "datasource": "Prometheus",
+      "targets": [{"expr": "histogram_quantile(0.95, sum by (le) (rate(cina_query_latency_seconds_bucket{stage=\"total\"}[5m]))) or on() vector(0)", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+    }
+  ]
+}

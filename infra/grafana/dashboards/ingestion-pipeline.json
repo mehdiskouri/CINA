@@ -1,0 +1,26 @@
+{
+  "title": "CINA Ingestion Pipeline",
+  "uid": "cina-ingestion-pipeline",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": ["cina", "ingestion"],
+  "time": {"from": "now-6h", "to": "now"},
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Documents Processed / min",
+      "datasource": "Prometheus",
+      "targets": [{"expr": "sum(rate(cina_ingestion_documents_processed_total[1m])) or on() vector(0)", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Embedding Latency p95",
+      "datasource": "Prometheus",
+      "targets": [{"expr": "histogram_quantile(0.95, sum by (le) (rate(cina_ingestion_embedding_latency_seconds_bucket[5m]))) or on() vector(0)", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+    }
+  ]
+}

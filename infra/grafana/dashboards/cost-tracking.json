@@ -1,0 +1,26 @@
+{
+  "title": "CINA Cost Tracking",
+  "uid": "cina-cost-tracking",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": ["cina", "cost"],
+  "time": {"from": "now-6h", "to": "now"},
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Cost USD / min by Provider",
+      "datasource": "Prometheus",
+      "targets": [{"expr": "sum by (provider) (rate(cina_cost_usd_total[1m])) or on() vector(0)", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Rate Limit Exceeded",
+      "datasource": "Prometheus",
+      "targets": [{"expr": "sum by (tenant) (rate(cina_rate_limit_exceeded_total[5m])) or on() vector(0)", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+    }
+  ]
+}
