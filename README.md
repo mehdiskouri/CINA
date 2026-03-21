@@ -11,11 +11,11 @@ pip install -e ".[dev]"
 
 ### Environment
 
-Copy `.env.example` to `.env.keys.local` and fill in your API keys:
+Copy `.env.example` to `env.keys.local` (or `.env.keys.local`) and fill in your API keys:
 
 ```bash
-cp .env.example .env.keys.local
-# Edit .env.keys.local with your OPENAI_API_KEY and ANTHROPIC_API_KEY
+cp .env.example env.keys.local
+# Edit env.keys.local with your OPENAI_API_KEY and ANTHROPIC_API_KEY
 ```
 
 Set database and Redis URLs:
@@ -23,7 +23,7 @@ Set database and Redis URLs:
 ```bash
 export DATABASE_URL="postgresql://cina:cina_dev@localhost:5432/cina"
 export REDIS_URL="redis://localhost:6379/0"
-source .env.keys.local
+source env.keys.local
 ```
 
 ## Database
@@ -60,7 +60,10 @@ Test a query:
 ```bash
 curl -N -X POST http://localhost:8000/v1/query \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <cina_sk_...>" \
   -d '{"query": "What are the latest treatments for metastatic breast cancer?"}'
+
+For local development without API keys, set `CINA_AUTH_DISABLED=1`.
 ```
 
 See [docs/PIPELINE_RUN_REPORT.md](docs/PIPELINE_RUN_REPORT.md) for full pipeline documentation and benchmark results.
