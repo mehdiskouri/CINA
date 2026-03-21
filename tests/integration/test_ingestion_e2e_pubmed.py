@@ -95,7 +95,7 @@ async def test_ingestion_e2e_pubmed_50_docs(
     clear_config_cache()
     await close_pool()
 
-    monkeypatch.setattr("cina.ingestion.pipeline.RedisStreamQueue", FakeQueue)
+    monkeypatch.setattr("cina.ingestion.pipeline.build_queue_backend", lambda: FakeQueue())
     monkeypatch.setattr("cina.ingestion.pipeline.OpenAIEmbeddingProvider", FakeEmbeddingProvider)
 
     data_dir = tmp_path / "pubmed"

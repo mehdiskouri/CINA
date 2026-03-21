@@ -50,6 +50,8 @@ docker-data/
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
+infra/terraform/terraform.tfvars
+infra/terraform/tfplan
 
 # IDE/editor
 .vscode/

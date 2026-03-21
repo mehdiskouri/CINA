@@ -114,6 +114,7 @@ async def test_process_single_document_happy_path() -> None:
         chunk_repo=chunk_repo,  # type: ignore[arg-type]
         chunker=FakeChunker(),  # type: ignore[arg-type]
         queue=queue,  # type: ignore[arg-type]
+        queue_name="cina:queue:ingestion",
         ingestion_id=uuid4(),
         embedding_model="text-embedding-3-small",
         embedding_dim=512,

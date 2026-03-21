@@ -1,0 +1,17 @@
+aws_region           = "us-east-1"
+name_prefix          = "cina"
+db_name              = "cina"
+db_username          = "cina"
+db_password          = "REPLACE_ME"
+document_bucket_name = "cina-documents-REPLACE_ME"
+
+anthropic_api_key = "REPLACE_ME"
+openai_api_key    = "REPLACE_ME"
+
+query_image_tag     = "latest"
+ingestion_image_tag = "latest"
+
+tags = {
+  project     = "cina"
+  environment = "phase4"
+}

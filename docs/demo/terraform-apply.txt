@@ -1,0 +1,208 @@
+[0m[1mmodule.iam.data.aws_iam_policy_document.ecs_tasks_assume_role: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.ingestion: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.query: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_region.current: Reading...[0m[0m
+[0m[1mmodule.vpc.aws_vpc.this: Refreshing state... [id=vpc-081eaeab19994752a][0m
+[0m[1mmodule.ecs.aws_ecs_cluster.this: Refreshing state... [id=arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster][0m
+[0m[1mmodule.sqs.aws_sqs_queue.dlq: Refreshing state... [id=https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion-dlq][0m
+[0m[1mmodule.vpc.aws_eip.nat: Refreshing state... [id=eipalloc-0cbf0b021f8f7e6d9][0m
+[0m[1mmodule.ecs.data.aws_region.current: Read complete after 0s [id=us-east-1][0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.ecs_tasks_assume_role: Read complete after 0s [id=1077804475][0m
+[0m[1mmodule.iam.aws_iam_role.execution: Refreshing state... [id=cina-ecs-execution-role][0m
+[0m[1mmodule.iam.aws_iam_role.task: Refreshing state... [id=cina-ecs-task-role][0m
+[0m[1mmodule.sqs.aws_sqs_queue.main: Refreshing state... [id=https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion][0m
+[0m[1mmodule.iam.aws_iam_role_policy_attachment.execution_managed: Refreshing state... [id=cina-ecs-execution-role-20260321202341291200000001][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.ingestion: Read complete after 0s [id=cina-ingestion][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.query: Read complete after 0s [id=cina-query][0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.task_policy: Reading...[0m[0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.task_policy: Read complete after 0s [id=3355836156][0m
+[0m[1mmodule.iam.aws_iam_policy.task: Refreshing state... [id=arn:aws:iam::241459378888:policy/cina-ecs-task-policy][0m
+[0m[1mmodule.iam.aws_iam_role_policy_attachment.task_custom: Refreshing state... [id=cina-ecs-task-role-20260321203109689800000002][0m
+[0m[1mmodule.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-00bee9a544b5e926f][0m
+[0m[1mmodule.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-05a2428b33741d72c][0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Refreshing state... [id=igw-0e69883b3726d954c][0m
+[0m[1mmodule.vpc.aws_subnet.private[0]: Refreshing state... [id=subnet-0f3a35e7ec77b6e84][0m
+[0m[1mmodule.vpc.aws_subnet.private[1]: Refreshing state... [id=subnet-0df3bdf49000f74e7][0m
+[0m[1mmodule.vpc.aws_security_group.alb: Refreshing state... [id=sg-0278680ddcf2a6f70][0m
+[0m[1mmodule.ecs.aws_lb_target_group.query: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1][0m
+[0m[1mmodule.vpc.aws_route_table.public: Refreshing state... [id=rtb-0101aa3d60a014863][0m
+[0m[1mmodule.vpc.aws_nat_gateway.this: Refreshing state... [id=nat-0d0f695556f1c0c81][0m
+[0m[1mmodule.elasticache.aws_elasticache_subnet_group.this: Refreshing state... [id=cina-redis-subnet-group][0m
+[0m[1mmodule.rds.aws_db_subnet_group.this: Refreshing state... [id=cina-db-subnet-group][0m
+[0m[1mmodule.vpc.aws_security_group.ecs: Refreshing state... [id=sg-03d224a105a6c8110][0m
+[0m[1mmodule.vpc.aws_route_table.private: Refreshing state... [id=rtb-0db1b6787de5144f1][0m
+[0m[1mmodule.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0fb73de6b242f44f5][0m
+[0m[1mmodule.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0c05ba6c9cf10f3f6][0m
+[0m[1mmodule.vpc.aws_security_group.redis: Refreshing state... [id=sg-08477ba772995f75b][0m
+[0m[1mmodule.vpc.aws_security_group.rds: Refreshing state... [id=sg-08b8eb109f115c303][0m
+[0m[1mmodule.vpc.aws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-001785ac39ec63dfb][0m
+[0m[1mmodule.vpc.aws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-03ed7ef4b5ab096cd][0m
+[0m[1mmodule.rds.aws_db_instance.this: Refreshing state... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY][0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Refreshing state... [id=cina-redis][0m
+[0m[1mmodule.ecs.aws_ecs_task_definition.ingestion: Refreshing state... [id=cina-ingestion][0m
+[0m[1mmodule.ecs.aws_ecs_task_definition.query: Refreshing state... [id=cina-query][0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Refreshing state... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.ecs.aws_ecs_service.query[0m will be created
+[0m  [32m+[0m[0m resource "aws_ecs_service" "query" {
+      [32m+[0m[0m availability_zone_rebalancing      = "DISABLED"
+      [32m+[0m[0m cluster                            = "arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster"
+      [32m+[0m[0m deployment_maximum_percent         = 200
+      [32m+[0m[0m deployment_minimum_healthy_percent = 100
+      [32m+[0m[0m desired_count                      = 2
+      [32m+[0m[0m enable_ecs_managed_tags            = false
+      [32m+[0m[0m enable_execute_command             = false
+      [32m+[0m[0m iam_role                           = (known after apply)
+      [32m+[0m[0m id                                 = (known after apply)
+      [32m+[0m[0m launch_type                        = "FARGATE"
+      [32m+[0m[0m name                               = "cina-query"
+      [32m+[0m[0m platform_version                   = (known after apply)
+      [32m+[0m[0m scheduling_strategy                = "REPLICA"
+      [32m+[0m[0m tags_all                           = (known after apply)
+      [32m+[0m[0m task_definition                    = "arn:aws:ecs:us-east-1:241459378888:task-definition/cina-query:1"
+      [32m+[0m[0m triggers                           = (known after apply)
+      [32m+[0m[0m wait_for_steady_state              = false
+
+      [32m+[0m[0m load_balancer {
+          [32m+[0m[0m container_name   = "query"
+          [32m+[0m[0m container_port   = 8000
+          [32m+[0m[0m target_group_arn = "arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1"
+            [90m# (1 unchanged attribute hidden)[0m[0m
+        }
+
+      [32m+[0m[0m network_configuration {
+          [32m+[0m[0m assign_public_ip = false
+          [32m+[0m[0m security_groups  = [
+              [32m+[0m[0m "sg-03d224a105a6c8110",
+            ]
+          [32m+[0m[0m subnets          = [
+              [32m+[0m[0m "subnet-0df3bdf49000f74e7",
+              [32m+[0m[0m "subnet-0f3a35e7ec77b6e84",
+            ]
+        }
+    }
+
+[1m  # module.ecs.aws_lb.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb" "this" {
+      [32m+[0m[0m arn                                                          = (known after apply)
+      [32m+[0m[0m arn_suffix                                                   = (known after apply)
+      [32m+[0m[0m client_keep_alive                                            = 3600
+      [32m+[0m[0m desync_mitigation_mode                                       = "defensive"
+      [32m+[0m[0m dns_name                                                     = (known after apply)
+      [32m+[0m[0m drop_invalid_header_fields                                   = false
+      [32m+[0m[0m enable_deletion_protection                                   = false
+      [32m+[0m[0m enable_http2                                                 = true
+      [32m+[0m[0m enable_tls_version_and_cipher_suite_headers                  = false
+      [32m+[0m[0m enable_waf_fail_open                                         = false
+      [32m+[0m[0m enable_xff_client_port                                       = false
+      [32m+[0m[0m enable_zonal_shift                                           = false
+      [32m+[0m[0m enforce_security_group_inbound_rules_on_private_link_traffic = (known after apply)
+      [32m+[0m[0m id                                                           = (known after apply)
+      [32m+[0m[0m idle_timeout                                                 = 60
+      [32m+[0m[0m internal                                                     = (known after apply)
+      [32m+[0m[0m ip_address_type                                              = (known after apply)
+      [32m+[0m[0m load_balancer_type                                           = "application"
+      [32m+[0m[0m name                                                         = "cina-alb"
+      [32m+[0m[0m name_prefix                                                  = (known after apply)
+      [32m+[0m[0m preserve_host_header                                         = false
+      [32m+[0m[0m security_groups                                              = [
+          [32m+[0m[0m "sg-0278680ddcf2a6f70",
+        ]
+      [32m+[0m[0m subnets                                                      = [
+          [32m+[0m[0m "subnet-00bee9a544b5e926f",
+          [32m+[0m[0m "subnet-05a2428b33741d72c",
+        ]
+      [32m+[0m[0m tags                                                         = {
+          [32m+[0m[0m "Name"        = "cina-alb"
+          [32m+[0m[0m "environment" = "phase4"
+          [32m+[0m[0m "project"     = "cina"
+        }
+      [32m+[0m[0m tags_all                                                     = {
+          [32m+[0m[0m "Name"        = "cina-alb"
+          [32m+[0m[0m "environment" = "phase4"
+          [32m+[0m[0m "project"     = "cina"
+        }
+      [32m+[0m[0m vpc_id                                                       = (known after apply)
+      [32m+[0m[0m xff_header_processing_mode                                   = "append"
+      [32m+[0m[0m zone_id                                                      = (known after apply)
+    }
+
+[1m  # module.ecs.aws_lb_listener.http[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb_listener" "http" {
+      [32m+[0m[0m arn                                                                   = (known after apply)
+      [32m+[0m[0m id                                                                    = (known after apply)
+      [32m+[0m[0m load_balancer_arn                                                     = (known after apply)
+      [32m+[0m[0m port                                                                  = 80
+      [32m+[0m[0m protocol                                                              = "HTTP"
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_header_name               = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_issuer_header_name        = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_leaf_header_name          = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_subject_header_name       = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_validity_header_name      = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_tls_cipher_suite_header_name              = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_tls_version_header_name                   = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_credentials_header_value   = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_headers_header_value       = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_methods_header_value       = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_origin_header_value        = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_expose_headers_header_value      = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_max_age_header_value             = (known after apply)
+      [32m+[0m[0m routing_http_response_content_security_policy_header_value            = (known after apply)
+      [32m+[0m[0m routing_http_response_server_enabled                                  = (known after apply)
+      [32m+[0m[0m routing_http_response_strict_transport_security_header_value          = (known after apply)
+      [32m+[0m[0m routing_http_response_x_content_type_options_header_value             = (known after apply)
+      [32m+[0m[0m routing_http_response_x_frame_options_header_value                    = (known after apply)
+      [32m+[0m[0m ssl_policy                                                            = (known after apply)
+      [32m+[0m[0m tags_all                                                              = (known after apply)
+      [32m+[0m[0m tcp_idle_timeout_seconds                                              = (known after apply)
+
+      [32m+[0m[0m default_action {
+          [32m+[0m[0m order            = (known after apply)
+          [32m+[0m[0m target_group_arn = "arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1"
+          [32m+[0m[0m type             = "forward"
+        }
+    }
+
+[1mPlan:[0m 3 to add, 0 to change, 0 to destroy.
+[0m
+Changes to Outputs:
+  [32m+[0m[0m alb_dns_name                 = (known after apply)
+[0m[1mmodule.ecs.aws_lb.this: Creating...[0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [40s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [50s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [1m0s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [1m10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [1m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [1m30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [1m40s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [1m50s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [2m0s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [2m10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still creating... [2m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Creation complete after 2m24s [id=arn:aws:elasticloadbalancing:us-east-1:241459378888:loadbalancer/app/cina-alb/3d7987c1f645863e][0m
+[0m[1mmodule.ecs.aws_lb_listener.http: Creating...[0m[0m
+[0m[1mmodule.ecs.aws_lb_listener.http: Creation complete after 1s [id=arn:aws:elasticloadbalancing:us-east-1:241459378888:listener/app/cina-alb/3d7987c1f645863e/cbb8f4b9a5201ecb][0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Creating...[0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Creation complete after 2s [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query][0m
+[0m[1m[32m
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+[0m[0m[1m[32m
+Outputs:
+
+[0malb_dns_name = "cina-alb-1509715791.us-east-1.elb.amazonaws.com"
+ingestion_ecr_repository_url = "241459378888.dkr.ecr.us-east-1.amazonaws.com/cina-ingestion"
+query_ecr_repository_url = "241459378888.dkr.ecr.us-east-1.amazonaws.com/cina-query"
+rds_endpoint = "cina-postgres.c6lm42kcsos3.us-east-1.rds.amazonaws.com"
+redis_endpoint = "cina-redis.oscuox.0001.use1.cache.amazonaws.com"
+sqs_dlq_url = "https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion-dlq"
+sqs_queue_url = "https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion"

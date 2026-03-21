@@ -1,4 +1,4 @@
-.PHONY: lint format typecheck test test-integration serve ingest docker-up docker-down migrate
+.PHONY: lint format typecheck test test-integration serve ingest docker-up docker-down migrate tf-init tf-fmt tf-validate tf-plan
 
 PYTHON := python
 
@@ -35,3 +35,15 @@ docker-down:
 
 migrate:
 	$(PYTHON) -m cina db migrate
+
+tf-init:
+	cd infra/terraform && terraform init
+
+tf-fmt:
+	cd infra/terraform && terraform fmt -recursive
+
+tf-validate:
+	cd infra/terraform && terraform validate
+
+tf-plan:
+	cd infra/terraform && terraform plan

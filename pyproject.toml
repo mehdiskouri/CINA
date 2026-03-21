@@ -29,6 +29,7 @@ dependencies = [
   "rich>=13.8.0",
   "pyyaml>=6.0.0",
   "bcrypt>=4.2.0",
+  "aioboto3>=13.0.0",
 ]
 
 [project.optional-dependencies]
@@ -93,6 +94,8 @@ module = [
   "yaml.*",
   "pydantic_settings.*",
   "structlog.*",
+  "aioboto3",
+  "aioboto3.*",
 ]
 ignore_missing_imports = true
 

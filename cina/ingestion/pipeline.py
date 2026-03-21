@@ -21,7 +21,8 @@ from cina.ingestion.connectors import CONNECTOR_BY_SOURCE
 from cina.ingestion.connectors.protocol import FetchConfig, RawDocument, SourceConnector
 from cina.ingestion.embedding.openai import OpenAIEmbeddingProvider
 from cina.ingestion.embedding.worker import run_embedding_worker_once
-from cina.ingestion.queue.redis_stream import RedisStreamQueue
+from cina.ingestion.queue import build_queue_backend
+from cina.ingestion.queue.protocol import QueueProtocol
 from cina.models.document import Document
 
 
@@ -69,10 +70,9 @@ async def run_ingestion(
             sentence_boundary_alignment=cfg.ingestion.chunk.sentence_alignment,
         )
     )
-    queue = RedisStreamQueue(
-        redis_url=os.getenv(cfg.database.redis.url_env, "redis://localhost:6379/0")
-    )
+    queue = build_queue_backend()
     provider = OpenAIEmbeddingProvider(api_key=os.getenv("OPENAI_API_KEY"))
+    queue_name = cfg.ingestion.queue.name
 
     job_id = await _create_ingestion_job(pool, source)
 
@@ -96,6 +96,7 @@ async def run_ingestion(
                     chunk_repo=chunk_repo,
                     chunker=chunker,
                     queue=queue,
+                    queue_name=queue_name,
                     ingestion_id=job_id,
                     embedding_model=cfg.ingestion.embedding.model,
                     embedding_dim=cfg.ingestion.embedding.dimensions,
@@ -122,7 +123,6 @@ async def run_ingestion(
                 )
             )
 
-    queue_name = "cina:queue:ingestion"
     while True:
         processed = await run_embedding_worker_once(
             queue,
@@ -182,7 +182,8 @@ async def _process_single_document(
     document_repo: DocumentRepository,
     chunk_repo: ChunkRepository,
     chunker: ChunkingEngine,
-    queue: RedisStreamQueue,
+    queue: QueueProtocol,
+    queue_name: str,
     ingestion_id: UUID,
     embedding_model: str,
     embedding_dim: int,
@@ -198,7 +199,6 @@ async def _process_single_document(
         chunks = chunker.chunk_document(document, embedding_model=embedding_model)
         inserted = await chunk_repo.bulk_upsert(chunks)
 
-        queue_name = "cina:queue:ingestion"
         pending_embeddings = await chunk_repo.get_unembedded_by_hashes(
             embedding_model=embedding_model,
             content_hashes=[chunk.content_hash for chunk in chunks],
@@ -282,3 +282,26 @@ async def _finalize_ingestion_job(
             chunks_created,
             json.dumps(errors),
         )
+
+
+async def run_embedding_worker_service(
+    *, batch_size: int = 64, poll_interval_seconds: float = 1.0
+) -> None:
+    cfg = load_config()
+    queue = build_queue_backend()
+    queue_name = cfg.ingestion.queue.name
+    provider = OpenAIEmbeddingProvider(api_key=os.getenv("OPENAI_API_KEY"))
+    pool = await get_pool()
+    chunk_repo = ChunkRepository(pool)
+
+    while True:
+        await run_embedding_worker_once(
+            queue,
+            queue_name,
+            provider,
+            chunk_repo.update_embeddings,
+            batch_size=batch_size,
+            max_retries=cfg.ingestion.embedding.max_retries,
+            idle_polls=2,
+        )
+        await asyncio.sleep(max(0.1, poll_interval_seconds))
