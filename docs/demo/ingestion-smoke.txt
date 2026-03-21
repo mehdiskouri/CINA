@@ -1,0 +1,11 @@
+SQS enqueue response:
+{
+  "MD5OfMessageBody": "608789b958f69a7e3283b3943b01b617",
+  "MessageId": "c646904a-fd0f-46f7-963e-9606670a4243"
+}
+
+Queue depth before enqueue:
+{"ApproximateNumberOfMessages":"0","ApproximateNumberOfMessagesNotVisible":"0"}
+
+Queue depth 20s after enqueue (worker consumed):
+{"ApproximateNumberOfMessages":"0","ApproximateNumberOfMessagesNotVisible":"0"}

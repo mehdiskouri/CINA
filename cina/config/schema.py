@@ -22,6 +22,11 @@ class EmbeddingConfigModel(BaseModel):
 class QueueConfigModel(BaseModel):
     backend: str = "redis"
     concurrency: int = 8
+    name: str = "cina:queue:ingestion"
+    sqs_url_env: str = "SQS_QUEUE_URL"
+    sqs_dlq_url_env: str = "SQS_DLQ_URL"
+    sqs_region_env: str = "AWS_REGION"
+    sqs_endpoint_url_env: str = "AWS_SQS_ENDPOINT_URL"
 
 
 class SourceToggleModel(BaseModel):

@@ -1,0 +1,1591 @@
+[0m[1mmodule.iam.data.aws_iam_policy_document.ecs_tasks_assume_role: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.ingestion: Reading...[0m[0m
+[0m[1mmodule.vpc.aws_vpc.this: Refreshing state... [id=vpc-081eaeab19994752a][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.query: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_region.current: Reading...[0m[0m
+[0m[1mmodule.ecs.aws_ecs_cluster.this: Refreshing state... [id=arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster][0m
+[0m[1mmodule.sqs.aws_sqs_queue.dlq: Refreshing state... [id=https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion-dlq][0m
+[0m[1mmodule.vpc.aws_eip.nat: Refreshing state... [id=eipalloc-0cbf0b021f8f7e6d9][0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.ecs_tasks_assume_role: Read complete after 0s [id=1077804475][0m
+[0m[1mmodule.ecs.data.aws_region.current: Read complete after 0s [id=us-east-1][0m
+[0m[1mmodule.iam.aws_iam_role.task: Refreshing state... [id=cina-ecs-task-role][0m
+[0m[1mmodule.iam.aws_iam_role.execution: Refreshing state... [id=cina-ecs-execution-role][0m
+[0m[1mmodule.sqs.aws_sqs_queue.main: Refreshing state... [id=https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.ingestion: Read complete after 1s [id=cina-ingestion][0m
+[0m[1mmodule.iam.aws_iam_role_policy_attachment.execution_managed: Refreshing state... [id=cina-ecs-execution-role-20260321202341291200000001][0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.task_policy: Reading...[0m[0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.task_policy: Read complete after 0s [id=3355836156][0m
+[0m[1mmodule.iam.aws_iam_policy.task: Refreshing state... [id=arn:aws:iam::241459378888:policy/cina-ecs-task-policy][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.query: Read complete after 1s [id=cina-query][0m
+[0m[1mmodule.iam.aws_iam_role_policy_attachment.task_custom: Refreshing state... [id=cina-ecs-task-role-20260321203109689800000002][0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Refreshing state... [id=igw-0e69883b3726d954c][0m
+[0m[1mmodule.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-05a2428b33741d72c][0m
+[0m[1mmodule.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-00bee9a544b5e926f][0m
+[0m[1mmodule.vpc.aws_subnet.private[1]: Refreshing state... [id=subnet-0df3bdf49000f74e7][0m
+[0m[1mmodule.vpc.aws_subnet.private[0]: Refreshing state... [id=subnet-0f3a35e7ec77b6e84][0m
+[0m[1mmodule.vpc.aws_security_group.alb: Refreshing state... [id=sg-0278680ddcf2a6f70][0m
+[0m[1mmodule.ecs.aws_lb_target_group.query: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1][0m
+[0m[1mmodule.vpc.aws_route_table.public: Refreshing state... [id=rtb-0101aa3d60a014863][0m
+[0m[1mmodule.vpc.aws_security_group.ecs: Refreshing state... [id=sg-03d224a105a6c8110][0m
+[0m[1mmodule.vpc.aws_nat_gateway.this: Refreshing state... [id=nat-0d0f695556f1c0c81][0m
+[0m[1mmodule.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0c05ba6c9cf10f3f6][0m
+[0m[1mmodule.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0fb73de6b242f44f5][0m
+[0m[1mmodule.ecs.aws_lb.this: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:241459378888:loadbalancer/app/cina-alb/3d7987c1f645863e][0m
+[0m[1mmodule.rds.aws_db_subnet_group.this: Refreshing state... [id=cina-db-subnet-group][0m
+[0m[1mmodule.elasticache.aws_elasticache_subnet_group.this: Refreshing state... [id=cina-redis-subnet-group][0m
+[0m[1mmodule.vpc.aws_route_table.private: Refreshing state... [id=rtb-0db1b6787de5144f1][0m
+[0m[1mmodule.vpc.aws_security_group.redis: Refreshing state... [id=sg-08477ba772995f75b][0m
+[0m[1mmodule.vpc.aws_security_group.rds: Refreshing state... [id=sg-08b8eb109f115c303][0m
+[0m[1mmodule.vpc.aws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-001785ac39ec63dfb][0m
+[0m[1mmodule.vpc.aws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-03ed7ef4b5ab096cd][0m
+[0m[1mmodule.ecs.aws_lb_listener.http: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:241459378888:listener/app/cina-alb/3d7987c1f645863e/cbb8f4b9a5201ecb][0m
+[0m[1mmodule.rds.aws_db_instance.this: Refreshing state... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY][0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Refreshing state... [id=cina-redis][0m
+[0m[1mmodule.ecs.aws_ecs_task_definition.query: Refreshing state... [id=cina-query][0m
+[0m[1mmodule.ecs.aws_ecs_task_definition.ingestion: Refreshing state... [id=cina-ingestion][0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Refreshing state... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query][0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Refreshing state... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [31m-[0m destroy[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.ecs.aws_ecs_cluster.this[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_ecs_cluster" "this" {
+      [31m-[0m[0m arn      = "arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster" [90m-> null[0m[0m
+      [31m-[0m[0m id       = "arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster" [90m-> null[0m[0m
+      [31m-[0m[0m name     = "cina-cluster" [90m-> null[0m[0m
+      [31m-[0m[0m tags     = {
+          [31m-[0m[0m "Name"        = "cina-cluster"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all = {
+          [31m-[0m[0m "Name"        = "cina-cluster"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+
+      [31m-[0m[0m setting {
+          [31m-[0m[0m name  = "containerInsights" [90m-> null[0m[0m
+          [31m-[0m[0m value = "disabled" [90m-> null[0m[0m
+        }
+    }
+
+[1m  # module.ecs.aws_ecs_service.ingestion[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_ecs_service" "ingestion" {
+      [31m-[0m[0m availability_zone_rebalancing      = "DISABLED" [90m-> null[0m[0m
+      [31m-[0m[0m cluster                            = "arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster" [90m-> null[0m[0m
+      [31m-[0m[0m deployment_maximum_percent         = 200 [90m-> null[0m[0m
+      [31m-[0m[0m deployment_minimum_healthy_percent = 100 [90m-> null[0m[0m
+      [31m-[0m[0m desired_count                      = 1 [90m-> null[0m[0m
+      [31m-[0m[0m enable_ecs_managed_tags            = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_execute_command             = false [90m-> null[0m[0m
+      [31m-[0m[0m health_check_grace_period_seconds  = 0 [90m-> null[0m[0m
+      [31m-[0m[0m iam_role                           = "/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS" [90m-> null[0m[0m
+      [31m-[0m[0m id                                 = "arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion" [90m-> null[0m[0m
+      [31m-[0m[0m launch_type                        = "FARGATE" [90m-> null[0m[0m
+      [31m-[0m[0m name                               = "cina-ingestion" [90m-> null[0m[0m
+      [31m-[0m[0m platform_version                   = "LATEST" [90m-> null[0m[0m
+      [31m-[0m[0m propagate_tags                     = "NONE" [90m-> null[0m[0m
+      [31m-[0m[0m scheduling_strategy                = "REPLICA" [90m-> null[0m[0m
+      [31m-[0m[0m tags                               = {} [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                           = {} [90m-> null[0m[0m
+      [31m-[0m[0m task_definition                    = "arn:aws:ecs:us-east-1:241459378888:task-definition/cina-ingestion:1" [90m-> null[0m[0m
+      [31m-[0m[0m triggers                           = {} [90m-> null[0m[0m
+      [31m-[0m[0m wait_for_steady_state              = false [90m-> null[0m[0m
+
+      [31m-[0m[0m deployment_circuit_breaker {
+          [31m-[0m[0m enable   = false [90m-> null[0m[0m
+          [31m-[0m[0m rollback = false [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m deployment_controller {
+          [31m-[0m[0m type = "ECS" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m network_configuration {
+          [31m-[0m[0m assign_public_ip = false [90m-> null[0m[0m
+          [31m-[0m[0m security_groups  = [
+              [31m-[0m[0m "sg-03d224a105a6c8110",
+            ] [90m-> null[0m[0m
+          [31m-[0m[0m subnets          = [
+              [31m-[0m[0m "subnet-0df3bdf49000f74e7",
+              [31m-[0m[0m "subnet-0f3a35e7ec77b6e84",
+            ] [90m-> null[0m[0m
+        }
+    }
+
+[1m  # module.ecs.aws_ecs_service.query[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_ecs_service" "query" {
+      [31m-[0m[0m availability_zone_rebalancing      = "DISABLED" [90m-> null[0m[0m
+      [31m-[0m[0m cluster                            = "arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster" [90m-> null[0m[0m
+      [31m-[0m[0m deployment_maximum_percent         = 200 [90m-> null[0m[0m
+      [31m-[0m[0m deployment_minimum_healthy_percent = 100 [90m-> null[0m[0m
+      [31m-[0m[0m desired_count                      = 2 [90m-> null[0m[0m
+      [31m-[0m[0m enable_ecs_managed_tags            = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_execute_command             = false [90m-> null[0m[0m
+      [31m-[0m[0m health_check_grace_period_seconds  = 0 [90m-> null[0m[0m
+      [31m-[0m[0m iam_role                           = "/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS" [90m-> null[0m[0m
+      [31m-[0m[0m id                                 = "arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query" [90m-> null[0m[0m
+      [31m-[0m[0m launch_type                        = "FARGATE" [90m-> null[0m[0m
+      [31m-[0m[0m name                               = "cina-query" [90m-> null[0m[0m
+      [31m-[0m[0m platform_version                   = "LATEST" [90m-> null[0m[0m
+      [31m-[0m[0m propagate_tags                     = "NONE" [90m-> null[0m[0m
+      [31m-[0m[0m scheduling_strategy                = "REPLICA" [90m-> null[0m[0m
+      [31m-[0m[0m tags                               = {} [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                           = {} [90m-> null[0m[0m
+      [31m-[0m[0m task_definition                    = "arn:aws:ecs:us-east-1:241459378888:task-definition/cina-query:1" [90m-> null[0m[0m
+      [31m-[0m[0m triggers                           = {} [90m-> null[0m[0m
+      [31m-[0m[0m wait_for_steady_state              = false [90m-> null[0m[0m
+
+      [31m-[0m[0m deployment_circuit_breaker {
+          [31m-[0m[0m enable   = false [90m-> null[0m[0m
+          [31m-[0m[0m rollback = false [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m deployment_controller {
+          [31m-[0m[0m type = "ECS" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m load_balancer {
+          [31m-[0m[0m container_name   = "query" [90m-> null[0m[0m
+          [31m-[0m[0m container_port   = 8000 [90m-> null[0m[0m
+          [31m-[0m[0m target_group_arn = "arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1" [90m-> null[0m[0m
+            [90m# (1 unchanged attribute hidden)[0m[0m
+        }
+
+      [31m-[0m[0m network_configuration {
+          [31m-[0m[0m assign_public_ip = false [90m-> null[0m[0m
+          [31m-[0m[0m security_groups  = [
+              [31m-[0m[0m "sg-03d224a105a6c8110",
+            ] [90m-> null[0m[0m
+          [31m-[0m[0m subnets          = [
+              [31m-[0m[0m "subnet-0df3bdf49000f74e7",
+              [31m-[0m[0m "subnet-0f3a35e7ec77b6e84",
+            ] [90m-> null[0m[0m
+        }
+    }
+
+[1m  # module.ecs.aws_ecs_task_definition.ingestion[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_ecs_task_definition" "ingestion" {
+      [31m-[0m[0m arn                      = "arn:aws:ecs:us-east-1:241459378888:task-definition/cina-ingestion:1" [90m-> null[0m[0m
+      [31m-[0m[0m arn_without_revision     = "arn:aws:ecs:us-east-1:241459378888:task-definition/cina-ingestion" [90m-> null[0m[0m
+      [31m-[0m[0m container_definitions    = (sensitive value) [90m-> null[0m[0m
+      [31m-[0m[0m cpu                      = "256" [90m-> null[0m[0m
+      [31m-[0m[0m enable_fault_injection   = false [90m-> null[0m[0m
+      [31m-[0m[0m execution_role_arn       = "arn:aws:iam::241459378888:role/cina-ecs-execution-role" [90m-> null[0m[0m
+      [31m-[0m[0m family                   = "cina-ingestion" [90m-> null[0m[0m
+      [31m-[0m[0m id                       = "cina-ingestion" [90m-> null[0m[0m
+      [31m-[0m[0m memory                   = "512" [90m-> null[0m[0m
+      [31m-[0m[0m network_mode             = "awsvpc" [90m-> null[0m[0m
+      [31m-[0m[0m requires_compatibilities = [
+          [31m-[0m[0m "FARGATE",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m revision                 = 1 [90m-> null[0m[0m
+      [31m-[0m[0m skip_destroy             = false [90m-> null[0m[0m
+      [31m-[0m[0m tags                     = {} [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                 = {} [90m-> null[0m[0m
+      [31m-[0m[0m task_role_arn            = "arn:aws:iam::241459378888:role/cina-ecs-task-role" [90m-> null[0m[0m
+      [31m-[0m[0m track_latest             = false [90m-> null[0m[0m
+        [90m# (2 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs.aws_ecs_task_definition.query[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_ecs_task_definition" "query" {
+      [31m-[0m[0m arn                      = "arn:aws:ecs:us-east-1:241459378888:task-definition/cina-query:1" [90m-> null[0m[0m
+      [31m-[0m[0m arn_without_revision     = "arn:aws:ecs:us-east-1:241459378888:task-definition/cina-query" [90m-> null[0m[0m
+      [31m-[0m[0m container_definitions    = (sensitive value) [90m-> null[0m[0m
+      [31m-[0m[0m cpu                      = "512" [90m-> null[0m[0m
+      [31m-[0m[0m enable_fault_injection   = false [90m-> null[0m[0m
+      [31m-[0m[0m execution_role_arn       = "arn:aws:iam::241459378888:role/cina-ecs-execution-role" [90m-> null[0m[0m
+      [31m-[0m[0m family                   = "cina-query" [90m-> null[0m[0m
+      [31m-[0m[0m id                       = "cina-query" [90m-> null[0m[0m
+      [31m-[0m[0m memory                   = "1024" [90m-> null[0m[0m
+      [31m-[0m[0m network_mode             = "awsvpc" [90m-> null[0m[0m
+      [31m-[0m[0m requires_compatibilities = [
+          [31m-[0m[0m "FARGATE",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m revision                 = 1 [90m-> null[0m[0m
+      [31m-[0m[0m skip_destroy             = false [90m-> null[0m[0m
+      [31m-[0m[0m tags                     = {} [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                 = {} [90m-> null[0m[0m
+      [31m-[0m[0m task_role_arn            = "arn:aws:iam::241459378888:role/cina-ecs-task-role" [90m-> null[0m[0m
+      [31m-[0m[0m track_latest             = false [90m-> null[0m[0m
+        [90m# (2 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs.aws_lb.this[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_lb" "this" {
+      [31m-[0m[0m arn                                                          = "arn:aws:elasticloadbalancing:us-east-1:241459378888:loadbalancer/app/cina-alb/3d7987c1f645863e" [90m-> null[0m[0m
+      [31m-[0m[0m arn_suffix                                                   = "app/cina-alb/3d7987c1f645863e" [90m-> null[0m[0m
+      [31m-[0m[0m client_keep_alive                                            = 3600 [90m-> null[0m[0m
+      [31m-[0m[0m desync_mitigation_mode                                       = "defensive" [90m-> null[0m[0m
+      [31m-[0m[0m dns_name                                                     = "cina-alb-1509715791.us-east-1.elb.amazonaws.com" [90m-> null[0m[0m
+      [31m-[0m[0m drop_invalid_header_fields                                   = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_cross_zone_load_balancing                             = true [90m-> null[0m[0m
+      [31m-[0m[0m enable_deletion_protection                                   = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_http2                                                 = true [90m-> null[0m[0m
+      [31m-[0m[0m enable_tls_version_and_cipher_suite_headers                  = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_waf_fail_open                                         = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_xff_client_port                                       = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_zonal_shift                                           = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                                           = "arn:aws:elasticloadbalancing:us-east-1:241459378888:loadbalancer/app/cina-alb/3d7987c1f645863e" [90m-> null[0m[0m
+      [31m-[0m[0m idle_timeout                                                 = 60 [90m-> null[0m[0m
+      [31m-[0m[0m internal                                                     = false [90m-> null[0m[0m
+      [31m-[0m[0m ip_address_type                                              = "ipv4" [90m-> null[0m[0m
+      [31m-[0m[0m load_balancer_type                                           = "application" [90m-> null[0m[0m
+      [31m-[0m[0m name                                                         = "cina-alb" [90m-> null[0m[0m
+      [31m-[0m[0m preserve_host_header                                         = false [90m-> null[0m[0m
+      [31m-[0m[0m security_groups                                              = [
+          [31m-[0m[0m "sg-0278680ddcf2a6f70",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m subnets                                                      = [
+          [31m-[0m[0m "subnet-00bee9a544b5e926f",
+          [31m-[0m[0m "subnet-05a2428b33741d72c",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m tags                                                         = {
+          [31m-[0m[0m "Name"        = "cina-alb"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                                                     = {
+          [31m-[0m[0m "Name"        = "cina-alb"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                                                       = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+      [31m-[0m[0m xff_header_processing_mode                                   = "append" [90m-> null[0m[0m
+      [31m-[0m[0m zone_id                                                      = "Z35SXDOTRQ7X7K" [90m-> null[0m[0m
+        [90m# (3 unchanged attributes hidden)[0m[0m
+
+      [31m-[0m[0m access_logs {
+          [31m-[0m[0m enabled = false [90m-> null[0m[0m
+            [90m# (2 unchanged attributes hidden)[0m[0m
+        }
+
+      [31m-[0m[0m connection_logs {
+          [31m-[0m[0m enabled = false [90m-> null[0m[0m
+            [90m# (2 unchanged attributes hidden)[0m[0m
+        }
+
+      [31m-[0m[0m subnet_mapping {
+          [31m-[0m[0m subnet_id            = "subnet-00bee9a544b5e926f" [90m-> null[0m[0m
+            [90m# (4 unchanged attributes hidden)[0m[0m
+        }
+      [31m-[0m[0m subnet_mapping {
+          [31m-[0m[0m subnet_id            = "subnet-05a2428b33741d72c" [90m-> null[0m[0m
+            [90m# (4 unchanged attributes hidden)[0m[0m
+        }
+    }
+
+[1m  # module.ecs.aws_lb_listener.http[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_lb_listener" "http" {
+      [31m-[0m[0m arn                                                                 = "arn:aws:elasticloadbalancing:us-east-1:241459378888:listener/app/cina-alb/3d7987c1f645863e/cbb8f4b9a5201ecb" [90m-> null[0m[0m
+      [31m-[0m[0m id                                                                  = "arn:aws:elasticloadbalancing:us-east-1:241459378888:listener/app/cina-alb/3d7987c1f645863e/cbb8f4b9a5201ecb" [90m-> null[0m[0m
+      [31m-[0m[0m load_balancer_arn                                                   = "arn:aws:elasticloadbalancing:us-east-1:241459378888:loadbalancer/app/cina-alb/3d7987c1f645863e" [90m-> null[0m[0m
+      [31m-[0m[0m port                                                                = 80 [90m-> null[0m[0m
+      [31m-[0m[0m protocol                                                            = "HTTP" [90m-> null[0m[0m
+      [31m-[0m[0m routing_http_response_server_enabled                                = true [90m-> null[0m[0m
+      [31m-[0m[0m tags                                                                = {} [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                                                            = {} [90m-> null[0m[0m
+        [90m# (11 unchanged attributes hidden)[0m[0m
+
+      [31m-[0m[0m default_action {
+          [31m-[0m[0m order            = 1 [90m-> null[0m[0m
+          [31m-[0m[0m target_group_arn = "arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1" [90m-> null[0m[0m
+          [31m-[0m[0m type             = "forward" [90m-> null[0m[0m
+        }
+    }
+
+[1m  # module.ecs.aws_lb_target_group.query[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_lb_target_group" "query" {
+      [31m-[0m[0m arn                                = "arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1" [90m-> null[0m[0m
+      [31m-[0m[0m arn_suffix                         = "targetgroup/cina-query-tg/bb82c0dc873183c1" [90m-> null[0m[0m
+      [31m-[0m[0m deregistration_delay               = "300" [90m-> null[0m[0m
+      [31m-[0m[0m id                                 = "arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1" [90m-> null[0m[0m
+      [31m-[0m[0m ip_address_type                    = "ipv4" [90m-> null[0m[0m
+      [31m-[0m[0m lambda_multi_value_headers_enabled = false [90m-> null[0m[0m
+      [31m-[0m[0m load_balancer_arns                 = [
+          [31m-[0m[0m "arn:aws:elasticloadbalancing:us-east-1:241459378888:loadbalancer/app/cina-alb/3d7987c1f645863e",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m load_balancing_algorithm_type      = "round_robin" [90m-> null[0m[0m
+      [31m-[0m[0m load_balancing_anomaly_mitigation  = "off" [90m-> null[0m[0m
+      [31m-[0m[0m load_balancing_cross_zone_enabled  = "use_load_balancer_configuration" [90m-> null[0m[0m
+      [31m-[0m[0m name                               = "cina-query-tg" [90m-> null[0m[0m
+      [31m-[0m[0m port                               = 8000 [90m-> null[0m[0m
+      [31m-[0m[0m protocol                           = "HTTP" [90m-> null[0m[0m
+      [31m-[0m[0m protocol_version                   = "HTTP1" [90m-> null[0m[0m
+      [31m-[0m[0m proxy_protocol_v2                  = false [90m-> null[0m[0m
+      [31m-[0m[0m slow_start                         = 0 [90m-> null[0m[0m
+      [31m-[0m[0m tags                               = {} [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                           = {} [90m-> null[0m[0m
+      [31m-[0m[0m target_type                        = "ip" [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                             = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+        [90m# (1 unchanged attribute hidden)[0m[0m
+
+      [31m-[0m[0m health_check {
+          [31m-[0m[0m enabled             = true [90m-> null[0m[0m
+          [31m-[0m[0m healthy_threshold   = 2 [90m-> null[0m[0m
+          [31m-[0m[0m interval            = 30 [90m-> null[0m[0m
+          [31m-[0m[0m matcher             = "200-399" [90m-> null[0m[0m
+          [31m-[0m[0m path                = "/health" [90m-> null[0m[0m
+          [31m-[0m[0m port                = "traffic-port" [90m-> null[0m[0m
+          [31m-[0m[0m protocol            = "HTTP" [90m-> null[0m[0m
+          [31m-[0m[0m timeout             = 5 [90m-> null[0m[0m
+          [31m-[0m[0m unhealthy_threshold = 2 [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m stickiness {
+          [31m-[0m[0m cookie_duration = 86400 [90m-> null[0m[0m
+          [31m-[0m[0m enabled         = false [90m-> null[0m[0m
+          [31m-[0m[0m type            = "lb_cookie" [90m-> null[0m[0m
+            [90m# (1 unchanged attribute hidden)[0m[0m
+        }
+
+      [31m-[0m[0m target_failover {}
+
+      [31m-[0m[0m target_group_health {
+          [31m-[0m[0m dns_failover {
+              [31m-[0m[0m minimum_healthy_targets_count      = "1" [90m-> null[0m[0m
+              [31m-[0m[0m minimum_healthy_targets_percentage = "off" [90m-> null[0m[0m
+            }
+          [31m-[0m[0m unhealthy_state_routing {
+              [31m-[0m[0m minimum_healthy_targets_count      = 1 [90m-> null[0m[0m
+              [31m-[0m[0m minimum_healthy_targets_percentage = "off" [90m-> null[0m[0m
+            }
+        }
+
+      [31m-[0m[0m target_health_state {}
+    }
+
+[1m  # module.elasticache.aws_elasticache_cluster.this[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_elasticache_cluster" "this" {
+      [31m-[0m[0m arn                        = "arn:aws:elasticache:us-east-1:241459378888:cluster:cina-redis" [90m-> null[0m[0m
+      [31m-[0m[0m auto_minor_version_upgrade = "true" [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone          = "us-east-1b" [90m-> null[0m[0m
+      [31m-[0m[0m az_mode                    = "single-az" [90m-> null[0m[0m
+      [31m-[0m[0m cache_nodes                = [
+          [31m-[0m[0m {
+              [31m-[0m[0m address           = "cina-redis.oscuox.0001.use1.cache.amazonaws.com"
+              [31m-[0m[0m availability_zone = "us-east-1b"
+              [31m-[0m[0m id                = "0001"
+              [31m-[0m[0m port              = 6379
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m cluster_id                 = "cina-redis" [90m-> null[0m[0m
+      [31m-[0m[0m engine                     = "redis" [90m-> null[0m[0m
+      [31m-[0m[0m engine_version             = "7.1" [90m-> null[0m[0m
+      [31m-[0m[0m engine_version_actual      = "7.1.0" [90m-> null[0m[0m
+      [31m-[0m[0m id                         = "cina-redis" [90m-> null[0m[0m
+      [31m-[0m[0m ip_discovery               = "ipv4" [90m-> null[0m[0m
+      [31m-[0m[0m maintenance_window         = "tue:08:30-tue:09:30" [90m-> null[0m[0m
+      [31m-[0m[0m network_type               = "ipv4" [90m-> null[0m[0m
+      [31m-[0m[0m node_type                  = "cache.t3.micro" [90m-> null[0m[0m
+      [31m-[0m[0m num_cache_nodes            = 1 [90m-> null[0m[0m
+      [31m-[0m[0m parameter_group_name       = "default.redis7" [90m-> null[0m[0m
+      [31m-[0m[0m port                       = 6379 [90m-> null[0m[0m
+      [31m-[0m[0m security_group_ids         = [
+          [31m-[0m[0m "sg-08477ba772995f75b",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m snapshot_retention_limit   = 0 [90m-> null[0m[0m
+      [31m-[0m[0m snapshot_window            = "07:00-08:00" [90m-> null[0m[0m
+      [31m-[0m[0m subnet_group_name          = "cina-redis-subnet-group" [90m-> null[0m[0m
+      [31m-[0m[0m tags                       = {
+          [31m-[0m[0m "Name"        = "cina-redis"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                   = {
+          [31m-[0m[0m "Name"        = "cina-redis"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m transit_encryption_enabled = false [90m-> null[0m[0m
+        [90m# (2 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.elasticache.aws_elasticache_subnet_group.this[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_elasticache_subnet_group" "this" {
+      [31m-[0m[0m arn         = "arn:aws:elasticache:us-east-1:241459378888:subnetgroup:cina-redis-subnet-group" [90m-> null[0m[0m
+      [31m-[0m[0m description = "Managed by Terraform" [90m-> null[0m[0m
+      [31m-[0m[0m id          = "cina-redis-subnet-group" [90m-> null[0m[0m
+      [31m-[0m[0m name        = "cina-redis-subnet-group" [90m-> null[0m[0m
+      [31m-[0m[0m subnet_ids  = [
+          [31m-[0m[0m "subnet-0df3bdf49000f74e7",
+          [31m-[0m[0m "subnet-0f3a35e7ec77b6e84",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m tags        = {} [90m-> null[0m[0m
+      [31m-[0m[0m tags_all    = {} [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id      = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+    }
+
+[1m  # module.iam.aws_iam_policy.task[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_iam_policy" "task" {
+      [31m-[0m[0m arn              = "arn:aws:iam::241459378888:policy/cina-ecs-task-policy" [90m-> null[0m[0m
+      [31m-[0m[0m attachment_count = 1 [90m-> null[0m[0m
+      [31m-[0m[0m id               = "arn:aws:iam::241459378888:policy/cina-ecs-task-policy" [90m-> null[0m[0m
+      [31m-[0m[0m name             = "cina-ecs-task-policy" [90m-> null[0m[0m
+      [31m-[0m[0m path             = "/" [90m-> null[0m[0m
+      [31m-[0m[0m policy           = jsonencode(
+            {
+              [31m-[0m[0m Statement = [
+                  [31m-[0m[0m {
+                      [31m-[0m[0m Action   = [
+                          [31m-[0m[0m "sqs:SendMessage",
+                          [31m-[0m[0m "sqs:ReceiveMessage",
+                          [31m-[0m[0m "sqs:GetQueueUrl",
+                          [31m-[0m[0m "sqs:GetQueueAttributes",
+                          [31m-[0m[0m "sqs:DeleteMessage",
+                        ]
+                      [31m-[0m[0m Effect   = "Allow"
+                      [31m-[0m[0m Resource = [
+                          [31m-[0m[0m "arn:aws:sqs:us-east-1:241459378888:cina-ingestion-dlq",
+                          [31m-[0m[0m "arn:aws:sqs:us-east-1:241459378888:cina-ingestion",
+                        ]
+                      [31m-[0m[0m Sid      = "SQSAccess"
+                    },
+                  [31m-[0m[0m {
+                      [31m-[0m[0m Action   = [
+                          [31m-[0m[0m "s3:PutObject",
+                          [31m-[0m[0m "s3:ListBucket",
+                          [31m-[0m[0m "s3:GetObject",
+                        ]
+                      [31m-[0m[0m Effect   = "Allow"
+                      [31m-[0m[0m Resource = [
+                          [31m-[0m[0m "arn:aws:s3:::cina-documents-241459378888-us-east-1/*",
+                          [31m-[0m[0m "arn:aws:s3:::cina-documents-241459378888-us-east-1",
+                        ]
+                      [31m-[0m[0m Sid      = "S3Access"
+                    },
+                ]
+              [31m-[0m[0m Version   = "2012-10-17"
+            }
+        ) [90m-> null[0m[0m
+      [31m-[0m[0m policy_id        = "ANPATQOAZXLENVXJFOTPE" [90m-> null[0m[0m
+      [31m-[0m[0m tags             = {} [90m-> null[0m[0m
+      [31m-[0m[0m tags_all         = {} [90m-> null[0m[0m
+        [90m# (2 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.iam.aws_iam_role.execution[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_iam_role" "execution" {
+      [31m-[0m[0m arn                   = "arn:aws:iam::241459378888:role/cina-ecs-execution-role" [90m-> null[0m[0m
+      [31m-[0m[0m assume_role_policy    = jsonencode(
+            {
+              [31m-[0m[0m Statement = [
+                  [31m-[0m[0m {
+                      [31m-[0m[0m Action    = "sts:AssumeRole"
+                      [31m-[0m[0m Effect    = "Allow"
+                      [31m-[0m[0m Principal = {
+                          [31m-[0m[0m Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              [31m-[0m[0m Version   = "2012-10-17"
+            }
+        ) [90m-> null[0m[0m
+      [31m-[0m[0m create_date           = "2026-03-21T20:23:40Z" [90m-> null[0m[0m
+      [31m-[0m[0m force_detach_policies = false [90m-> null[0m[0m
+      [31m-[0m[0m id                    = "cina-ecs-execution-role" [90m-> null[0m[0m
+      [31m-[0m[0m managed_policy_arns   = [
+          [31m-[0m[0m "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m max_session_duration  = 3600 [90m-> null[0m[0m
+      [31m-[0m[0m name                  = "cina-ecs-execution-role" [90m-> null[0m[0m
+      [31m-[0m[0m path                  = "/" [90m-> null[0m[0m
+      [31m-[0m[0m tags                  = {
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all              = {
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m unique_id             = "AROATQOAZXLEOH55SEROY" [90m-> null[0m[0m
+        [90m# (3 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.iam.aws_iam_role.task[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_iam_role" "task" {
+      [31m-[0m[0m arn                   = "arn:aws:iam::241459378888:role/cina-ecs-task-role" [90m-> null[0m[0m
+      [31m-[0m[0m assume_role_policy    = jsonencode(
+            {
+              [31m-[0m[0m Statement = [
+                  [31m-[0m[0m {
+                      [31m-[0m[0m Action    = "sts:AssumeRole"
+                      [31m-[0m[0m Effect    = "Allow"
+                      [31m-[0m[0m Principal = {
+                          [31m-[0m[0m Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              [31m-[0m[0m Version   = "2012-10-17"
+            }
+        ) [90m-> null[0m[0m
+      [31m-[0m[0m create_date           = "2026-03-21T20:23:40Z" [90m-> null[0m[0m
+      [31m-[0m[0m force_detach_policies = false [90m-> null[0m[0m
+      [31m-[0m[0m id                    = "cina-ecs-task-role" [90m-> null[0m[0m
+      [31m-[0m[0m managed_policy_arns   = [
+          [31m-[0m[0m "arn:aws:iam::241459378888:policy/cina-ecs-task-policy",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m max_session_duration  = 3600 [90m-> null[0m[0m
+      [31m-[0m[0m name                  = "cina-ecs-task-role" [90m-> null[0m[0m
+      [31m-[0m[0m path                  = "/" [90m-> null[0m[0m
+      [31m-[0m[0m tags                  = {
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all              = {
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m unique_id             = "AROATQOAZXLEDSDWY5V4P" [90m-> null[0m[0m
+        [90m# (3 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.iam.aws_iam_role_policy_attachment.execution_managed[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_iam_role_policy_attachment" "execution_managed" {
+      [31m-[0m[0m id         = "cina-ecs-execution-role-20260321202341291200000001" [90m-> null[0m[0m
+      [31m-[0m[0m policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy" [90m-> null[0m[0m
+      [31m-[0m[0m role       = "cina-ecs-execution-role" [90m-> null[0m[0m
+    }
+
+[1m  # module.iam.aws_iam_role_policy_attachment.task_custom[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_iam_role_policy_attachment" "task_custom" {
+      [31m-[0m[0m id         = "cina-ecs-task-role-20260321203109689800000002" [90m-> null[0m[0m
+      [31m-[0m[0m policy_arn = "arn:aws:iam::241459378888:policy/cina-ecs-task-policy" [90m-> null[0m[0m
+      [31m-[0m[0m role       = "cina-ecs-task-role" [90m-> null[0m[0m
+    }
+
+[1m  # module.rds.aws_db_instance.this[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_db_instance" "this" {
+      [31m-[0m[0m address                               = "cina-postgres.c6lm42kcsos3.us-east-1.rds.amazonaws.com" [90m-> null[0m[0m
+      [31m-[0m[0m allocated_storage                     = 20 [90m-> null[0m[0m
+      [31m-[0m[0m apply_immediately                     = false [90m-> null[0m[0m
+      [31m-[0m[0m arn                                   = "arn:aws:rds:us-east-1:241459378888:db:cina-postgres" [90m-> null[0m[0m
+      [31m-[0m[0m auto_minor_version_upgrade            = true [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone                     = "us-east-1b" [90m-> null[0m[0m
+      [31m-[0m[0m backup_retention_period               = 0 [90m-> null[0m[0m
+      [31m-[0m[0m backup_target                         = "region" [90m-> null[0m[0m
+      [31m-[0m[0m backup_window                         = "03:30-04:00" [90m-> null[0m[0m
+      [31m-[0m[0m ca_cert_identifier                    = "rds-ca-rsa2048-g1" [90m-> null[0m[0m
+      [31m-[0m[0m copy_tags_to_snapshot                 = false [90m-> null[0m[0m
+      [31m-[0m[0m customer_owned_ip_enabled             = false [90m-> null[0m[0m
+      [31m-[0m[0m database_insights_mode                = "standard" [90m-> null[0m[0m
+      [31m-[0m[0m db_name                               = "cina" [90m-> null[0m[0m
+      [31m-[0m[0m db_subnet_group_name                  = "cina-db-subnet-group" [90m-> null[0m[0m
+      [31m-[0m[0m dedicated_log_volume                  = false [90m-> null[0m[0m
+      [31m-[0m[0m delete_automated_backups              = true [90m-> null[0m[0m
+      [31m-[0m[0m deletion_protection                   = false [90m-> null[0m[0m
+      [31m-[0m[0m domain_dns_ips                        = [] [90m-> null[0m[0m
+      [31m-[0m[0m enabled_cloudwatch_logs_exports       = [] [90m-> null[0m[0m
+      [31m-[0m[0m endpoint                              = "cina-postgres.c6lm42kcsos3.us-east-1.rds.amazonaws.com:5432" [90m-> null[0m[0m
+      [31m-[0m[0m engine                                = "postgres" [90m-> null[0m[0m
+      [31m-[0m[0m engine_lifecycle_support              = "open-source-rds-extended-support" [90m-> null[0m[0m
+      [31m-[0m[0m engine_version                        = "16" [90m-> null[0m[0m
+      [31m-[0m[0m engine_version_actual                 = "16.10" [90m-> null[0m[0m
+      [31m-[0m[0m hosted_zone_id                        = "Z2R2ITUGPM61AM" [90m-> null[0m[0m
+      [31m-[0m[0m iam_database_authentication_enabled   = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                    = "db-BIFYIXNODMXAG6RD3X7HZDDXVY" [90m-> null[0m[0m
+      [31m-[0m[0m identifier                            = "cina-postgres" [90m-> null[0m[0m
+      [31m-[0m[0m instance_class                        = "db.t3.micro" [90m-> null[0m[0m
+      [31m-[0m[0m iops                                  = 3000 [90m-> null[0m[0m
+      [31m-[0m[0m license_model                         = "postgresql-license" [90m-> null[0m[0m
+      [31m-[0m[0m listener_endpoint                     = [] [90m-> null[0m[0m
+      [31m-[0m[0m maintenance_window                    = "wed:04:31-wed:05:01" [90m-> null[0m[0m
+      [31m-[0m[0m master_user_secret                    = [] [90m-> null[0m[0m
+      [31m-[0m[0m max_allocated_storage                 = 0 [90m-> null[0m[0m
+      [31m-[0m[0m monitoring_interval                   = 0 [90m-> null[0m[0m
+      [31m-[0m[0m multi_az                              = false [90m-> null[0m[0m
+      [31m-[0m[0m network_type                          = "IPV4" [90m-> null[0m[0m
+      [31m-[0m[0m option_group_name                     = "default:postgres-16" [90m-> null[0m[0m
+      [31m-[0m[0m parameter_group_name                  = "default.postgres16" [90m-> null[0m[0m
+      [31m-[0m[0m password                              = (sensitive value) [90m-> null[0m[0m
+      [31m-[0m[0m performance_insights_enabled          = false [90m-> null[0m[0m
+      [31m-[0m[0m performance_insights_retention_period = 0 [90m-> null[0m[0m
+      [31m-[0m[0m port                                  = 5432 [90m-> null[0m[0m
+      [31m-[0m[0m publicly_accessible                   = false [90m-> null[0m[0m
+      [31m-[0m[0m replicas                              = [] [90m-> null[0m[0m
+      [31m-[0m[0m resource_id                           = "db-BIFYIXNODMXAG6RD3X7HZDDXVY" [90m-> null[0m[0m
+      [31m-[0m[0m skip_final_snapshot                   = true [90m-> null[0m[0m
+      [31m-[0m[0m status                                = "available" [90m-> null[0m[0m
+      [31m-[0m[0m storage_encrypted                     = false [90m-> null[0m[0m
+      [31m-[0m[0m storage_throughput                    = 125 [90m-> null[0m[0m
+      [31m-[0m[0m storage_type                          = "gp3" [90m-> null[0m[0m
+      [31m-[0m[0m tags                                  = {
+          [31m-[0m[0m "Name"        = "cina-postgres"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                              = {
+          [31m-[0m[0m "Name"        = "cina-postgres"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m username                              = "cina" [90m-> null[0m[0m
+      [31m-[0m[0m vpc_security_group_ids                = [
+          [31m-[0m[0m "sg-08b8eb109f115c303",
+        ] [90m-> null[0m[0m
+        [90m# (16 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.rds.aws_db_subnet_group.this[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_db_subnet_group" "this" {
+      [31m-[0m[0m arn                     = "arn:aws:rds:us-east-1:241459378888:subgrp:cina-db-subnet-group" [90m-> null[0m[0m
+      [31m-[0m[0m description             = "Managed by Terraform" [90m-> null[0m[0m
+      [31m-[0m[0m id                      = "cina-db-subnet-group" [90m-> null[0m[0m
+      [31m-[0m[0m name                    = "cina-db-subnet-group" [90m-> null[0m[0m
+      [31m-[0m[0m subnet_ids              = [
+          [31m-[0m[0m "subnet-0df3bdf49000f74e7",
+          [31m-[0m[0m "subnet-0f3a35e7ec77b6e84",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m supported_network_types = [
+          [31m-[0m[0m "IPV4",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m tags                    = {
+          [31m-[0m[0m "Name"        = "cina-db-subnet-group"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                = {
+          [31m-[0m[0m "Name"        = "cina-db-subnet-group"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                  = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.sqs.aws_sqs_queue.dlq[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_sqs_queue" "dlq" {
+      [31m-[0m[0m arn                               = "arn:aws:sqs:us-east-1:241459378888:cina-ingestion-dlq" [90m-> null[0m[0m
+      [31m-[0m[0m content_based_deduplication       = false [90m-> null[0m[0m
+      [31m-[0m[0m delay_seconds                     = 0 [90m-> null[0m[0m
+      [31m-[0m[0m fifo_queue                        = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                = "https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion-dlq" [90m-> null[0m[0m
+      [31m-[0m[0m kms_data_key_reuse_period_seconds = 300 [90m-> null[0m[0m
+      [31m-[0m[0m max_message_size                  = 262144 [90m-> null[0m[0m
+      [31m-[0m[0m message_retention_seconds         = 1209600 [90m-> null[0m[0m
+      [31m-[0m[0m name                              = "cina-ingestion-dlq" [90m-> null[0m[0m
+      [31m-[0m[0m receive_wait_time_seconds         = 0 [90m-> null[0m[0m
+      [31m-[0m[0m sqs_managed_sse_enabled           = true [90m-> null[0m[0m
+      [31m-[0m[0m tags                              = {
+          [31m-[0m[0m "Name"        = "cina-ingestion-dlq"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                          = {
+          [31m-[0m[0m "Name"        = "cina-ingestion-dlq"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m url                               = "https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion-dlq" [90m-> null[0m[0m
+      [31m-[0m[0m visibility_timeout_seconds        = 30 [90m-> null[0m[0m
+        [90m# (7 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.sqs.aws_sqs_queue.main[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_sqs_queue" "main" {
+      [31m-[0m[0m arn                               = "arn:aws:sqs:us-east-1:241459378888:cina-ingestion" [90m-> null[0m[0m
+      [31m-[0m[0m content_based_deduplication       = false [90m-> null[0m[0m
+      [31m-[0m[0m delay_seconds                     = 0 [90m-> null[0m[0m
+      [31m-[0m[0m fifo_queue                        = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                = "https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion" [90m-> null[0m[0m
+      [31m-[0m[0m kms_data_key_reuse_period_seconds = 300 [90m-> null[0m[0m
+      [31m-[0m[0m max_message_size                  = 262144 [90m-> null[0m[0m
+      [31m-[0m[0m message_retention_seconds         = 345600 [90m-> null[0m[0m
+      [31m-[0m[0m name                              = "cina-ingestion" [90m-> null[0m[0m
+      [31m-[0m[0m receive_wait_time_seconds         = 20 [90m-> null[0m[0m
+      [31m-[0m[0m redrive_policy                    = jsonencode(
+            {
+              [31m-[0m[0m deadLetterTargetArn = "arn:aws:sqs:us-east-1:241459378888:cina-ingestion-dlq"
+              [31m-[0m[0m maxReceiveCount     = 3
+            }
+        ) [90m-> null[0m[0m
+      [31m-[0m[0m sqs_managed_sse_enabled           = true [90m-> null[0m[0m
+      [31m-[0m[0m tags                              = {
+          [31m-[0m[0m "Name"        = "cina-ingestion"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                          = {
+          [31m-[0m[0m "Name"        = "cina-ingestion"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m url                               = "https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion" [90m-> null[0m[0m
+      [31m-[0m[0m visibility_timeout_seconds        = 300 [90m-> null[0m[0m
+        [90m# (6 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_eip.nat[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_eip" "nat" {
+      [31m-[0m[0m allocation_id            = "eipalloc-0cbf0b021f8f7e6d9" [90m-> null[0m[0m
+      [31m-[0m[0m arn                      = "arn:aws:ec2:us-east-1:241459378888:elastic-ip/eipalloc-0cbf0b021f8f7e6d9" [90m-> null[0m[0m
+      [31m-[0m[0m association_id           = "eipassoc-015bcd730933bf5a6" [90m-> null[0m[0m
+      [31m-[0m[0m domain                   = "vpc" [90m-> null[0m[0m
+      [31m-[0m[0m id                       = "eipalloc-0cbf0b021f8f7e6d9" [90m-> null[0m[0m
+      [31m-[0m[0m network_border_group     = "us-east-1" [90m-> null[0m[0m
+      [31m-[0m[0m network_interface        = "eni-0228f68315ef5e609" [90m-> null[0m[0m
+      [31m-[0m[0m private_dns              = "ip-10-0-0-155.ec2.internal" [90m-> null[0m[0m
+      [31m-[0m[0m private_ip               = "10.0.0.155" [90m-> null[0m[0m
+      [31m-[0m[0m public_dns               = "ec2-32-192-110-140.compute-1.amazonaws.com" [90m-> null[0m[0m
+      [31m-[0m[0m public_ip                = "32.192.110.140" [90m-> null[0m[0m
+      [31m-[0m[0m public_ipv4_pool         = "amazon" [90m-> null[0m[0m
+      [31m-[0m[0m tags                     = {
+          [31m-[0m[0m "Name"        = "cina-nat-eip"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                 = {
+          [31m-[0m[0m "Name"        = "cina-nat-eip"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc                      = true [90m-> null[0m[0m
+        [90m# (5 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_internet_gateway.this[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_internet_gateway" "this" {
+      [31m-[0m[0m arn      = "arn:aws:ec2:us-east-1:241459378888:internet-gateway/igw-0e69883b3726d954c" [90m-> null[0m[0m
+      [31m-[0m[0m id       = "igw-0e69883b3726d954c" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m tags     = {
+          [31m-[0m[0m "Name"        = "cina-igw"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all = {
+          [31m-[0m[0m "Name"        = "cina-igw"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id   = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+    }
+
+[1m  # module.vpc.aws_nat_gateway.this[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_nat_gateway" "this" {
+      [31m-[0m[0m allocation_id                      = "eipalloc-0cbf0b021f8f7e6d9" [90m-> null[0m[0m
+      [31m-[0m[0m association_id                     = "eipassoc-015bcd730933bf5a6" [90m-> null[0m[0m
+      [31m-[0m[0m connectivity_type                  = "public" [90m-> null[0m[0m
+      [31m-[0m[0m id                                 = "nat-0d0f695556f1c0c81" [90m-> null[0m[0m
+      [31m-[0m[0m network_interface_id               = "eni-0228f68315ef5e609" [90m-> null[0m[0m
+      [31m-[0m[0m private_ip                         = "10.0.0.155" [90m-> null[0m[0m
+      [31m-[0m[0m public_ip                          = "32.192.110.140" [90m-> null[0m[0m
+      [31m-[0m[0m secondary_allocation_ids           = [] [90m-> null[0m[0m
+      [31m-[0m[0m secondary_private_ip_address_count = 0 [90m-> null[0m[0m
+      [31m-[0m[0m secondary_private_ip_addresses     = [] [90m-> null[0m[0m
+      [31m-[0m[0m subnet_id                          = "subnet-05a2428b33741d72c" [90m-> null[0m[0m
+      [31m-[0m[0m tags                               = {
+          [31m-[0m[0m "Name"        = "cina-nat"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                           = {
+          [31m-[0m[0m "Name"        = "cina-nat"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+    }
+
+[1m  # module.vpc.aws_route_table.private[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_route_table" "private" {
+      [31m-[0m[0m arn              = "arn:aws:ec2:us-east-1:241459378888:route-table/rtb-0db1b6787de5144f1" [90m-> null[0m[0m
+      [31m-[0m[0m id               = "rtb-0db1b6787de5144f1" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id         = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m propagating_vgws = [] [90m-> null[0m[0m
+      [31m-[0m[0m route            = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_block                 = "0.0.0.0/0"
+              [31m-[0m[0m nat_gateway_id             = "nat-0d0f695556f1c0c81"
+                [90m# (11 unchanged attributes hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m tags             = {
+          [31m-[0m[0m "Name"        = "cina-private-rt"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all         = {
+          [31m-[0m[0m "Name"        = "cina-private-rt"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id           = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+    }
+
+[1m  # module.vpc.aws_route_table.public[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_route_table" "public" {
+      [31m-[0m[0m arn              = "arn:aws:ec2:us-east-1:241459378888:route-table/rtb-0101aa3d60a014863" [90m-> null[0m[0m
+      [31m-[0m[0m id               = "rtb-0101aa3d60a014863" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id         = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m propagating_vgws = [] [90m-> null[0m[0m
+      [31m-[0m[0m route            = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_block                 = "0.0.0.0/0"
+              [31m-[0m[0m gateway_id                 = "igw-0e69883b3726d954c"
+                [90m# (11 unchanged attributes hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m tags             = {
+          [31m-[0m[0m "Name"        = "cina-public-rt"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all         = {
+          [31m-[0m[0m "Name"        = "cina-public-rt"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id           = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+    }
+
+[1m  # module.vpc.aws_route_table_association.private[0][0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_route_table_association" "private" {
+      [31m-[0m[0m id             = "rtbassoc-03ed7ef4b5ab096cd" [90m-> null[0m[0m
+      [31m-[0m[0m route_table_id = "rtb-0db1b6787de5144f1" [90m-> null[0m[0m
+      [31m-[0m[0m subnet_id      = "subnet-0f3a35e7ec77b6e84" [90m-> null[0m[0m
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_route_table_association.private[1][0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_route_table_association" "private" {
+      [31m-[0m[0m id             = "rtbassoc-001785ac39ec63dfb" [90m-> null[0m[0m
+      [31m-[0m[0m route_table_id = "rtb-0db1b6787de5144f1" [90m-> null[0m[0m
+      [31m-[0m[0m subnet_id      = "subnet-0df3bdf49000f74e7" [90m-> null[0m[0m
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_route_table_association.public[0][0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_route_table_association" "public" {
+      [31m-[0m[0m id             = "rtbassoc-0fb73de6b242f44f5" [90m-> null[0m[0m
+      [31m-[0m[0m route_table_id = "rtb-0101aa3d60a014863" [90m-> null[0m[0m
+      [31m-[0m[0m subnet_id      = "subnet-05a2428b33741d72c" [90m-> null[0m[0m
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_route_table_association.public[1][0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_route_table_association" "public" {
+      [31m-[0m[0m id             = "rtbassoc-0c05ba6c9cf10f3f6" [90m-> null[0m[0m
+      [31m-[0m[0m route_table_id = "rtb-0101aa3d60a014863" [90m-> null[0m[0m
+      [31m-[0m[0m subnet_id      = "subnet-00bee9a544b5e926f" [90m-> null[0m[0m
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_security_group.alb[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_security_group" "alb" {
+      [31m-[0m[0m arn                    = "arn:aws:ec2:us-east-1:241459378888:security-group/sg-0278680ddcf2a6f70" [90m-> null[0m[0m
+      [31m-[0m[0m description            = "Allow HTTP ingress" [90m-> null[0m[0m
+      [31m-[0m[0m egress                 = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m from_port        = 0
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "-1"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 0
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m id                     = "sg-0278680ddcf2a6f70" [90m-> null[0m[0m
+      [31m-[0m[0m ingress                = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m from_port        = 80
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 80
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m name                   = "cina-alb-sg" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id               = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m revoke_rules_on_delete = false [90m-> null[0m[0m
+      [31m-[0m[0m tags                   = {
+          [31m-[0m[0m "Name"        = "cina-alb-sg"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all               = {
+          [31m-[0m[0m "Name"        = "cina-alb-sg"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                 = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_security_group.ecs[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_security_group" "ecs" {
+      [31m-[0m[0m arn                    = "arn:aws:ec2:us-east-1:241459378888:security-group/sg-03d224a105a6c8110" [90m-> null[0m[0m
+      [31m-[0m[0m description            = "Allow app traffic from ALB" [90m-> null[0m[0m
+      [31m-[0m[0m egress                 = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m from_port        = 0
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "-1"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 0
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m id                     = "sg-03d224a105a6c8110" [90m-> null[0m[0m
+      [31m-[0m[0m ingress                = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = []
+              [31m-[0m[0m from_port        = 8000
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = [
+                  [31m-[0m[0m "sg-0278680ddcf2a6f70",
+                ]
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 8000
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m name                   = "cina-ecs-sg" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id               = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m revoke_rules_on_delete = false [90m-> null[0m[0m
+      [31m-[0m[0m tags                   = {
+          [31m-[0m[0m "Name"        = "cina-ecs-sg"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all               = {
+          [31m-[0m[0m "Name"        = "cina-ecs-sg"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                 = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_security_group.rds[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_security_group" "rds" {
+      [31m-[0m[0m arn                    = "arn:aws:ec2:us-east-1:241459378888:security-group/sg-08b8eb109f115c303" [90m-> null[0m[0m
+      [31m-[0m[0m description            = "Allow PostgreSQL from ECS" [90m-> null[0m[0m
+      [31m-[0m[0m egress                 = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m from_port        = 0
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "-1"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 0
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m id                     = "sg-08b8eb109f115c303" [90m-> null[0m[0m
+      [31m-[0m[0m ingress                = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = []
+              [31m-[0m[0m from_port        = 5432
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = [
+                  [31m-[0m[0m "sg-03d224a105a6c8110",
+                ]
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 5432
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m name                   = "cina-rds-sg" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id               = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m revoke_rules_on_delete = false [90m-> null[0m[0m
+      [31m-[0m[0m tags                   = {
+          [31m-[0m[0m "Name"        = "cina-rds-sg"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all               = {
+          [31m-[0m[0m "Name"        = "cina-rds-sg"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                 = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_security_group.redis[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_security_group" "redis" {
+      [31m-[0m[0m arn                    = "arn:aws:ec2:us-east-1:241459378888:security-group/sg-08477ba772995f75b" [90m-> null[0m[0m
+      [31m-[0m[0m description            = "Allow Redis from ECS" [90m-> null[0m[0m
+      [31m-[0m[0m egress                 = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m from_port        = 0
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "-1"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 0
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m id                     = "sg-08477ba772995f75b" [90m-> null[0m[0m
+      [31m-[0m[0m ingress                = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = []
+              [31m-[0m[0m from_port        = 6379
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = [
+                  [31m-[0m[0m "sg-03d224a105a6c8110",
+                ]
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 6379
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m name                   = "cina-redis-sg" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id               = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m revoke_rules_on_delete = false [90m-> null[0m[0m
+      [31m-[0m[0m tags                   = {
+          [31m-[0m[0m "Name"        = "cina-redis-sg"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all               = {
+          [31m-[0m[0m "Name"        = "cina-redis-sg"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                 = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_subnet.private[0][0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_subnet" "private" {
+      [31m-[0m[0m arn                                            = "arn:aws:ec2:us-east-1:241459378888:subnet/subnet-0f3a35e7ec77b6e84" [90m-> null[0m[0m
+      [31m-[0m[0m assign_ipv6_address_on_creation                = false [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone                              = "us-east-1a" [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone_id                           = "use1-az1" [90m-> null[0m[0m
+      [31m-[0m[0m cidr_block                                     = "10.0.10.0/24" [90m-> null[0m[0m
+      [31m-[0m[0m enable_dns64                                   = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_lni_at_device_index                     = 0 [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_a_record_on_launch    = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                             = "subnet-0f3a35e7ec77b6e84" [90m-> null[0m[0m
+      [31m-[0m[0m ipv6_native                                    = false [90m-> null[0m[0m
+      [31m-[0m[0m map_customer_owned_ip_on_launch                = false [90m-> null[0m[0m
+      [31m-[0m[0m map_public_ip_on_launch                        = false [90m-> null[0m[0m
+      [31m-[0m[0m owner_id                                       = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m private_dns_hostname_type_on_launch            = "ip-name" [90m-> null[0m[0m
+      [31m-[0m[0m tags                                           = {
+          [31m-[0m[0m "Name"        = "cina-private-1"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                                       = {
+          [31m-[0m[0m "Name"        = "cina-private-1"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                                         = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+        [90m# (4 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_subnet.private[1][0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_subnet" "private" {
+      [31m-[0m[0m arn                                            = "arn:aws:ec2:us-east-1:241459378888:subnet/subnet-0df3bdf49000f74e7" [90m-> null[0m[0m
+      [31m-[0m[0m assign_ipv6_address_on_creation                = false [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone                              = "us-east-1b" [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone_id                           = "use1-az2" [90m-> null[0m[0m
+      [31m-[0m[0m cidr_block                                     = "10.0.11.0/24" [90m-> null[0m[0m
+      [31m-[0m[0m enable_dns64                                   = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_lni_at_device_index                     = 0 [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_a_record_on_launch    = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                             = "subnet-0df3bdf49000f74e7" [90m-> null[0m[0m
+      [31m-[0m[0m ipv6_native                                    = false [90m-> null[0m[0m
+      [31m-[0m[0m map_customer_owned_ip_on_launch                = false [90m-> null[0m[0m
+      [31m-[0m[0m map_public_ip_on_launch                        = false [90m-> null[0m[0m
+      [31m-[0m[0m owner_id                                       = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m private_dns_hostname_type_on_launch            = "ip-name" [90m-> null[0m[0m
+      [31m-[0m[0m tags                                           = {
+          [31m-[0m[0m "Name"        = "cina-private-2"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                                       = {
+          [31m-[0m[0m "Name"        = "cina-private-2"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                                         = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+        [90m# (4 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_subnet.public[0][0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_subnet" "public" {
+      [31m-[0m[0m arn                                            = "arn:aws:ec2:us-east-1:241459378888:subnet/subnet-05a2428b33741d72c" [90m-> null[0m[0m
+      [31m-[0m[0m assign_ipv6_address_on_creation                = false [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone                              = "us-east-1a" [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone_id                           = "use1-az1" [90m-> null[0m[0m
+      [31m-[0m[0m cidr_block                                     = "10.0.0.0/24" [90m-> null[0m[0m
+      [31m-[0m[0m enable_dns64                                   = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_lni_at_device_index                     = 0 [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_a_record_on_launch    = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                             = "subnet-05a2428b33741d72c" [90m-> null[0m[0m
+      [31m-[0m[0m ipv6_native                                    = false [90m-> null[0m[0m
+      [31m-[0m[0m map_customer_owned_ip_on_launch                = false [90m-> null[0m[0m
+      [31m-[0m[0m map_public_ip_on_launch                        = false [90m-> null[0m[0m
+      [31m-[0m[0m owner_id                                       = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m private_dns_hostname_type_on_launch            = "ip-name" [90m-> null[0m[0m
+      [31m-[0m[0m tags                                           = {
+          [31m-[0m[0m "Name"        = "cina-public-1"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                                       = {
+          [31m-[0m[0m "Name"        = "cina-public-1"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                                         = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+        [90m# (4 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_subnet.public[1][0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_subnet" "public" {
+      [31m-[0m[0m arn                                            = "arn:aws:ec2:us-east-1:241459378888:subnet/subnet-00bee9a544b5e926f" [90m-> null[0m[0m
+      [31m-[0m[0m assign_ipv6_address_on_creation                = false [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone                              = "us-east-1b" [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone_id                           = "use1-az2" [90m-> null[0m[0m
+      [31m-[0m[0m cidr_block                                     = "10.0.1.0/24" [90m-> null[0m[0m
+      [31m-[0m[0m enable_dns64                                   = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_lni_at_device_index                     = 0 [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_a_record_on_launch    = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                             = "subnet-00bee9a544b5e926f" [90m-> null[0m[0m
+      [31m-[0m[0m ipv6_native                                    = false [90m-> null[0m[0m
+      [31m-[0m[0m map_customer_owned_ip_on_launch                = false [90m-> null[0m[0m
+      [31m-[0m[0m map_public_ip_on_launch                        = false [90m-> null[0m[0m
+      [31m-[0m[0m owner_id                                       = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m private_dns_hostname_type_on_launch            = "ip-name" [90m-> null[0m[0m
+      [31m-[0m[0m tags                                           = {
+          [31m-[0m[0m "Name"        = "cina-public-2"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                                       = {
+          [31m-[0m[0m "Name"        = "cina-public-2"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                                         = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+        [90m# (4 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_vpc.this[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_vpc" "this" {
+      [31m-[0m[0m arn                                  = "arn:aws:ec2:us-east-1:241459378888:vpc/vpc-081eaeab19994752a" [90m-> null[0m[0m
+      [31m-[0m[0m assign_generated_ipv6_cidr_block     = false [90m-> null[0m[0m
+      [31m-[0m[0m cidr_block                           = "10.0.0.0/16" [90m-> null[0m[0m
+      [31m-[0m[0m default_network_acl_id               = "acl-0f67b51681ffb724b" [90m-> null[0m[0m
+      [31m-[0m[0m default_route_table_id               = "rtb-009b5f19c8be1a166" [90m-> null[0m[0m
+      [31m-[0m[0m default_security_group_id            = "sg-013ec6ce5216c6bbb" [90m-> null[0m[0m
+      [31m-[0m[0m dhcp_options_id                      = "dopt-0ddbf8fd653afadfd" [90m-> null[0m[0m
+      [31m-[0m[0m enable_dns_hostnames                 = true [90m-> null[0m[0m
+      [31m-[0m[0m enable_dns_support                   = true [90m-> null[0m[0m
+      [31m-[0m[0m enable_network_address_usage_metrics = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                   = "vpc-081eaeab19994752a" [90m-> null[0m[0m
+      [31m-[0m[0m instance_tenancy                     = "default" [90m-> null[0m[0m
+      [31m-[0m[0m ipv6_netmask_length                  = 0 [90m-> null[0m[0m
+      [31m-[0m[0m main_route_table_id                  = "rtb-009b5f19c8be1a166" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id                             = "241459378888" [90m-> null[0m[0m
+      [31m-[0m[0m tags                                 = {
+          [31m-[0m[0m "Name"        = "cina-vpc"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                             = {
+          [31m-[0m[0m "Name"        = "cina-vpc"
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+        [90m# (4 unchanged attributes hidden)[0m[0m
+    }
+
+[1mPlan:[0m 0 to add, 0 to change, 37 to destroy.
+[0m
+Changes to Outputs:
+  [31m-[0m[0m alb_dns_name                 = "cina-alb-1509715791.us-east-1.elb.amazonaws.com" [90m-> null[0m[0m
+  [31m-[0m[0m ingestion_ecr_repository_url = "241459378888.dkr.ecr.us-east-1.amazonaws.com/cina-ingestion" [90m-> null[0m[0m
+  [31m-[0m[0m query_ecr_repository_url     = "241459378888.dkr.ecr.us-east-1.amazonaws.com/cina-query" [90m-> null[0m[0m
+  [31m-[0m[0m rds_endpoint                 = "cina-postgres.c6lm42kcsos3.us-east-1.rds.amazonaws.com" [90m-> null[0m[0m
+  [31m-[0m[0m redis_endpoint               = "cina-redis.oscuox.0001.use1.cache.amazonaws.com" [90m-> null[0m[0m
+  [31m-[0m[0m sqs_dlq_url                  = "https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion-dlq" [90m-> null[0m[0m
+  [31m-[0m[0m sqs_queue_url                = "https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion" [90m-> null[0m[0m
+[0m[1mmodule.vpc.aws_route_table_association.private[0]: Destroying... [id=rtbassoc-03ed7ef4b5ab096cd][0m[0m
+[0m[1mmodule.iam.aws_iam_role_policy_attachment.task_custom: Destroying... [id=cina-ecs-task-role-20260321203109689800000002][0m[0m
+[0m[1mmodule.vpc.aws_route_table_association.public[1]: Destroying... [id=rtbassoc-0c05ba6c9cf10f3f6][0m[0m
+[0m[1mmodule.iam.aws_iam_role_policy_attachment.execution_managed: Destroying... [id=cina-ecs-execution-role-20260321202341291200000001][0m[0m
+[0m[1mmodule.vpc.aws_route_table_association.public[0]: Destroying... [id=rtbassoc-0fb73de6b242f44f5][0m[0m
+[0m[1mmodule.vpc.aws_route_table_association.private[1]: Destroying... [id=rtbassoc-001785ac39ec63dfb][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query][0m[0m
+[0m[1mmodule.iam.aws_iam_role_policy_attachment.task_custom: Destruction complete after 1s[0m
+[0m[1mmodule.iam.aws_iam_policy.task: Destroying... [id=arn:aws:iam::241459378888:policy/cina-ecs-task-policy][0m[0m
+[0m[1mmodule.iam.aws_iam_role_policy_attachment.execution_managed: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_route_table_association.private[0]: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_route_table_association.public[1]: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_route_table_association.private[1]: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_route_table_association.public[0]: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_route_table.private: Destroying... [id=rtb-0db1b6787de5144f1][0m[0m
+[0m[1mmodule.vpc.aws_route_table.public: Destroying... [id=rtb-0101aa3d60a014863][0m[0m
+[0m[1mmodule.iam.aws_iam_policy.task: Destruction complete after 0s[0m
+[0m[1mmodule.vpc.aws_route_table.private: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_route_table.public: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_nat_gateway.this: Destroying... [id=nat-0d0f695556f1c0c81][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion, 10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_nat_gateway.this: Still destroying... [id=nat-0d0f695556f1c0c81, 10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion, 20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 20s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_nat_gateway.this: Still destroying... [id=nat-0d0f695556f1c0c81, 20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion, 30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_nat_gateway.this: Still destroying... [id=nat-0d0f695556f1c0c81, 30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion, 40s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 40s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_nat_gateway.this: Still destroying... [id=nat-0d0f695556f1c0c81, 40s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_nat_gateway.this: Destruction complete after 41s[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Destroying... [id=igw-0e69883b3726d954c][0m[0m
+[0m[1mmodule.vpc.aws_eip.nat: Destroying... [id=eipalloc-0cbf0b021f8f7e6d9][0m[0m
+[0m[1mmodule.vpc.aws_eip.nat: Destruction complete after 2s[0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion, 50s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 50s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion, 1m0s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 1m0s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion, 1m10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 1m10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-ingestion, 1m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 1m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.ingestion: Destruction complete after 1m21s[0m
+[0m[1mmodule.ecs.aws_ecs_task_definition.ingestion: Destroying... [id=cina-ingestion][0m[0m
+[0m[1mmodule.ecs.aws_ecs_task_definition.ingestion: Destruction complete after 0s[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 40s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 1m30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 50s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 1m40s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 1m0s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 1m50s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 1m10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 2m0s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 1m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 2m10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 1m30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 2m20s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 1m40s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 2m30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 1m50s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 2m40s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 2m0s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 2m50s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 2m10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 3m0s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 2m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 3m10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 2m30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 3m20s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 2m40s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 3m30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 2m50s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 3m40s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 3m0s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 3m50s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 3m10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 4m0s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 3m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 4m10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 3m30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 4m20s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 3m40s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 4m30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 3m50s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 4m40s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 4m0s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 4m50s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 4m10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 5m0s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 4m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 5m10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 4m30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 5m20s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 4m40s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 5m30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 4m50s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 5m40s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 5m0s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 5m50s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 5m10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 6m0s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 5m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 6m10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 5m30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 6m20s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 5m40s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 6m30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 5m50s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 6m40s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 6m0s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 6m50s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 6m10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 7m0s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 6m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 7m10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 6m30s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 7m20s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 6m40s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Still destroying... [id=arn:aws:ecs:us-east-1:241459378888:service/cina-cluster/cina-query, 7m30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 6m50s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_ecs_service.query: Destruction complete after 7m40s[0m
+[0m[1mmodule.ecs.aws_ecs_cluster.this: Destroying... [id=arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster][0m[0m
+[0m[1mmodule.ecs.aws_ecs_task_definition.query: Destroying... [id=cina-query][0m[0m
+[0m[1mmodule.ecs.aws_lb_listener.http: Destroying... [id=arn:aws:elasticloadbalancing:us-east-1:241459378888:listener/app/cina-alb/3d7987c1f645863e/cbb8f4b9a5201ecb][0m[0m
+[0m[1mmodule.ecs.aws_ecs_task_definition.query: Destruction complete after 1s[0m
+[0m[1mmodule.sqs.aws_sqs_queue.main: Destroying... [id=https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion][0m[0m
+[0m[1mmodule.iam.aws_iam_role.task: Destroying... [id=cina-ecs-task-role][0m[0m
+[0m[1mmodule.iam.aws_iam_role.execution: Destroying... [id=cina-ecs-execution-role][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Destroying... [id=cina-redis][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY][0m[0m
+[0m[1mmodule.ecs.aws_ecs_cluster.this: Destruction complete after 1s[0m
+[0m[1mmodule.ecs.aws_lb_listener.http: Destruction complete after 1s[0m
+[0m[1mmodule.ecs.aws_lb_target_group.query: Destroying... [id=arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Destroying... [id=arn:aws:elasticloadbalancing:us-east-1:241459378888:loadbalancer/app/cina-alb/3d7987c1f645863e][0m[0m
+[0m[1mmodule.ecs.aws_lb_target_group.query: Destruction complete after 0s[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 7m0s elapsed][0m[0m
+[0m[1mmodule.sqs.aws_sqs_queue.main: Destruction complete after 3s[0m
+[0m[1mmodule.sqs.aws_sqs_queue.dlq: Destroying... [id=https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion-dlq][0m[0m
+[0m[1mmodule.sqs.aws_sqs_queue.dlq: Destruction complete after 3s[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 10s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 10s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still destroying... [id=arn:aws:elasticloadbalancing:us-east-1:...balancer/app/cina-alb/3d7987c1f645863e, 10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 7m10s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 20s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Still destroying... [id=arn:aws:elasticloadbalancing:us-east-1:...balancer/app/cina-alb/3d7987c1f645863e, 20s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 7m20s elapsed][0m[0m
+[0m[1mmodule.ecs.aws_lb.this: Destruction complete after 29s[0m
+[0m[1mmodule.vpc.aws_subnet.public[1]: Destroying... [id=subnet-00bee9a544b5e926f][0m[0m
+[0m[1mmodule.vpc.aws_subnet.public[0]: Destroying... [id=subnet-05a2428b33741d72c][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 30s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_subnet.public[0]: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_subnet.public[1]: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Still destroying... [id=igw-0e69883b3726d954c, 7m30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Destruction complete after 7m34s[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 40s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 40s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 50s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 50s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 1m0s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 1m0s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 1m10s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 1m10s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 1m20s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 1m20s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 1m30s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 1m30s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 1m40s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 1m40s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 1m50s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 1m50s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 2m0s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 2m0s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 2m10s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 2m10s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 2m20s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 2m20s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 2m30s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 2m30s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 2m40s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 2m40s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Still destroying... [id=cina-redis, 2m50s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 2m50s elapsed][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Destruction complete after 2m53s[0m
+[0m[1mmodule.elasticache.aws_elasticache_subnet_group.this: Destroying... [id=cina-redis-subnet-group][0m[0m
+[0m[1mmodule.vpc.aws_security_group.redis: Destroying... [id=sg-08477ba772995f75b][0m[0m
+[0m[1mmodule.elasticache.aws_elasticache_subnet_group.this: Destruction complete after 0s[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 3m0s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_security_group.redis: Still destroying... [id=sg-08477ba772995f75b, 10s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 3m10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_security_group.redis: Still destroying... [id=sg-08477ba772995f75b, 20s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 3m20s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_security_group.redis: Still destroying... [id=sg-08477ba772995f75b, 30s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 3m30s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_security_group.redis: Still destroying... [id=sg-08477ba772995f75b, 40s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 3m40s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_security_group.redis: Still destroying... [id=sg-08477ba772995f75b, 50s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Still destroying... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY, 3m50s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_security_group.redis: Still destroying... [id=sg-08477ba772995f75b, 1m0s elapsed][0m[0m
+[0m[1mmodule.rds.aws_db_instance.this: Destruction complete after 3m55s[0m
+[0m[1mmodule.rds.aws_db_subnet_group.this: Destroying... [id=cina-db-subnet-group][0m[0m
+[0m[1mmodule.vpc.aws_security_group.rds: Destroying... [id=sg-08b8eb109f115c303][0m[0m
+[0m[1mmodule.rds.aws_db_subnet_group.this: Destruction complete after 0s[0m
+[0m[1mmodule.vpc.aws_subnet.private[0]: Destroying... [id=subnet-0f3a35e7ec77b6e84][0m[0m
+[0m[1mmodule.vpc.aws_subnet.private[1]: Destroying... [id=subnet-0df3bdf49000f74e7][0m[0m
+[0m[1mmodule.vpc.aws_subnet.private[0]: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_security_group.rds: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_security_group.redis: Still destroying... [id=sg-08477ba772995f75b, 1m10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_subnet.private[1]: Still destroying... [id=subnet-0df3bdf49000f74e7, 10s elapsed][0m[0m
+[0m[1mmodule.vpc.aws_subnet.private[1]: Destruction complete after 11s[0m
+[0m[1mmodule.vpc.aws_security_group.redis: Destruction complete after 1m19s[0m
+[0m[1mmodule.vpc.aws_security_group.ecs: Destroying... [id=sg-03d224a105a6c8110][0m[0m
+[0m[1mmodule.vpc.aws_security_group.ecs: Destruction complete after 2s[0m
+[0m[1mmodule.vpc.aws_security_group.alb: Destroying... [id=sg-0278680ddcf2a6f70][0m[0m
+[0m[1mmodule.vpc.aws_security_group.alb: Destruction complete after 1s[0m
+[0m[1mmodule.vpc.aws_vpc.this: Destroying... [id=vpc-081eaeab19994752a][0m[0m
+[0m[1mmodule.vpc.aws_vpc.this: Destruction complete after 1s[0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.ecs_tasks_assume_role: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.query: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.ingestion: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_region.current: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_region.current: Read complete after 0s [id=us-east-1][0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.ecs_tasks_assume_role: Read complete after 0s [id=1077804475][0m
+[0m[1mmodule.iam.aws_iam_role.execution: Refreshing state... [id=cina-ecs-execution-role][0m
+[0m[1mmodule.iam.aws_iam_role.task: Refreshing state... [id=cina-ecs-task-role][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.ingestion: Read complete after 1s [id=cina-ingestion][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.query: Read complete after 1s [id=cina-query][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [31m-[0m destroy[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.iam.aws_iam_role.execution[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_iam_role" "execution" {
+      [31m-[0m[0m arn                   = "arn:aws:iam::241459378888:role/cina-ecs-execution-role" [90m-> null[0m[0m
+      [31m-[0m[0m assume_role_policy    = jsonencode(
+            {
+              [31m-[0m[0m Statement = [
+                  [31m-[0m[0m {
+                      [31m-[0m[0m Action    = "sts:AssumeRole"
+                      [31m-[0m[0m Effect    = "Allow"
+                      [31m-[0m[0m Principal = {
+                          [31m-[0m[0m Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              [31m-[0m[0m Version   = "2012-10-17"
+            }
+        ) [90m-> null[0m[0m
+      [31m-[0m[0m create_date           = "2026-03-21T20:23:40Z" [90m-> null[0m[0m
+      [31m-[0m[0m force_detach_policies = false [90m-> null[0m[0m
+      [31m-[0m[0m id                    = "cina-ecs-execution-role" [90m-> null[0m[0m
+      [31m-[0m[0m managed_policy_arns   = [] [90m-> null[0m[0m
+      [31m-[0m[0m max_session_duration  = 3600 [90m-> null[0m[0m
+      [31m-[0m[0m name                  = "cina-ecs-execution-role" [90m-> null[0m[0m
+      [31m-[0m[0m path                  = "/" [90m-> null[0m[0m
+      [31m-[0m[0m tags                  = {
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all              = {
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m unique_id             = "AROATQOAZXLEOH55SEROY" [90m-> null[0m[0m
+        [90m# (3 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.iam.aws_iam_role.task[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_iam_role" "task" {
+      [31m-[0m[0m arn                   = "arn:aws:iam::241459378888:role/cina-ecs-task-role" [90m-> null[0m[0m
+      [31m-[0m[0m assume_role_policy    = jsonencode(
+            {
+              [31m-[0m[0m Statement = [
+                  [31m-[0m[0m {
+                      [31m-[0m[0m Action    = "sts:AssumeRole"
+                      [31m-[0m[0m Effect    = "Allow"
+                      [31m-[0m[0m Principal = {
+                          [31m-[0m[0m Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              [31m-[0m[0m Version   = "2012-10-17"
+            }
+        ) [90m-> null[0m[0m
+      [31m-[0m[0m create_date           = "2026-03-21T20:23:40Z" [90m-> null[0m[0m
+      [31m-[0m[0m force_detach_policies = false [90m-> null[0m[0m
+      [31m-[0m[0m id                    = "cina-ecs-task-role" [90m-> null[0m[0m
+      [31m-[0m[0m managed_policy_arns   = [] [90m-> null[0m[0m
+      [31m-[0m[0m max_session_duration  = 3600 [90m-> null[0m[0m
+      [31m-[0m[0m name                  = "cina-ecs-task-role" [90m-> null[0m[0m
+      [31m-[0m[0m path                  = "/" [90m-> null[0m[0m
+      [31m-[0m[0m tags                  = {
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all              = {
+          [31m-[0m[0m "environment" = "phase4"
+          [31m-[0m[0m "project"     = "cina"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m unique_id             = "AROATQOAZXLEDSDWY5V4P" [90m-> null[0m[0m
+        [90m# (3 unchanged attributes hidden)[0m[0m
+    }
+
+[1mPlan:[0m 0 to add, 0 to change, 2 to destroy.
+[0m
+Changes to Outputs:
+  [31m-[0m[0m ingestion_ecr_repository_url = "241459378888.dkr.ecr.us-east-1.amazonaws.com/cina-ingestion" [90m-> null[0m[0m
+  [31m-[0m[0m query_ecr_repository_url     = "241459378888.dkr.ecr.us-east-1.amazonaws.com/cina-query" [90m-> null[0m[0m
+[0m[1mmodule.iam.aws_iam_role.execution: Destroying... [id=cina-ecs-execution-role][0m[0m
+[0m[1mmodule.iam.aws_iam_role.task: Destroying... [id=cina-ecs-task-role][0m[0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.ecs_tasks_assume_role: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.ingestion: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.query: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_region.current: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_region.current: Read complete after 0s [id=us-east-1][0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.ecs_tasks_assume_role: Read complete after 0s [id=1077804475][0m
+[0m[1mmodule.iam.aws_iam_role.task: Refreshing state... [id=cina-ecs-task-role][0m
+[0m[1mmodule.iam.aws_iam_role.execution: Refreshing state... [id=cina-ecs-execution-role][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.ingestion: Read complete after 1s [id=cina-ingestion][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.query: Read complete after 1s [id=cina-query][0m
+
+Changes to Outputs:
+  [31m-[0m[0m ingestion_ecr_repository_url = "241459378888.dkr.ecr.us-east-1.amazonaws.com/cina-ingestion" [90m-> null[0m[0m
+  [31m-[0m[0m query_ecr_repository_url     = "241459378888.dkr.ecr.us-east-1.amazonaws.com/cina-query" [90m-> null[0m[0m
+
+You can apply this plan to save these new output values to the Terraform
+state, without changing any real infrastructure.
+[0m[1m[32m
+Destroy complete! Resources: 0 destroyed.
+[0m

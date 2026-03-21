@@ -76,3 +76,24 @@ python -m ruff format cina/ tests/ scripts/    # format
 python -m mypy cina/ --ignore-missing-imports  # type check
 python -m pytest tests/unit/ -v                # unit tests
 ```
+
+## Phase 4 — AWS Deployment Proof
+
+Build and push container images:
+
+```bash
+./scripts/ecr_push.sh
+```
+
+Provision AWS infrastructure:
+
+```bash
+cd infra/terraform
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan -out=tfplan
+terraform apply tfplan
+```
+
+Full operational runbook: `docs/terraform/DEPLOYMENT_RUNBOOK.md`.

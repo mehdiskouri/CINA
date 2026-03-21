@@ -15,6 +15,11 @@ ingestion:
   queue:
     backend: redis
     concurrency: 8
+    name: cina:queue:ingestion
+    sqs_url_env: SQS_QUEUE_URL
+    sqs_dlq_url_env: SQS_DLQ_URL
+    sqs_region_env: AWS_REGION
+    sqs_endpoint_url_env: AWS_SQS_ENDPOINT_URL
   sources:
     pubmed:
       enabled: true

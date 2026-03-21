@@ -2,7 +2,7 @@ import typer
 from rich.console import Console
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 
-from cina.ingestion.pipeline import IngestionProgress, run_ingestion
+from cina.ingestion.pipeline import IngestionProgress, run_embedding_worker_service, run_ingestion
 
 app = typer.Typer(help="Ingestion commands")
 console = Console()
@@ -50,6 +50,24 @@ def ingest_run(
         limit=limit,
         batch_size=batch_size,
         concurrency=concurrency,
+    )
+
+
+@app.command("worker")
+def ingest_worker(
+    batch_size: int = typer.Option(64, help="Embedding batch size"),
+    poll_interval_seconds: float = typer.Option(1.0, help="Sleep between queue polls"),
+) -> None:
+    """Run embedding worker as a long-lived service."""
+
+    import asyncio
+
+    console.print("[cyan]Starting ingestion worker service...[/cyan]")
+    asyncio.run(
+        run_embedding_worker_service(
+            batch_size=batch_size,
+            poll_interval_seconds=poll_interval_seconds,
+        )
     )
 
 

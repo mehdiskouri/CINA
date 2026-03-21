@@ -1,0 +1,19 @@
+POST http://cina-alb-1509715791.us-east-1.elb.amazonaws.com/v1/query
+Authorization: Bearer cina_sk_***REDACTED***
+
+Sample stream excerpt:
+
+event: metadata
+data: {"query_id": "9a9d3a89-c23d-4142-9e75-dd44222c4518", "model": "claude-sonnet-4-20250514", "provider": "anthropic", "sources_used": 0, "cache_hit": false, "prompt_version": "v1.0"}
+
+event: token
+data: {"text": "I cannot"}
+
+event: token
+data: {"text": " answer"}
+
+event: token
+data: {"text": " this question about"}
+
+event: token
+data: {"text": " common treatments for metastatic breast cancer"}

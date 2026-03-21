@@ -1,0 +1,416 @@
+[0m[1mmodule.ecs.data.aws_ecr_repository.query: Reading...[0m[0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.ecs_tasks_assume_role: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.ingestion: Reading...[0m[0m
+[0m[1mmodule.ecs.data.aws_region.current: Reading...[0m[0m
+[0m[1mmodule.vpc.aws_vpc.this: Refreshing state... [id=vpc-081eaeab19994752a][0m
+[0m[1mmodule.vpc.aws_eip.nat: Refreshing state... [id=eipalloc-0cbf0b021f8f7e6d9][0m
+[0m[1mmodule.ecs.aws_ecs_cluster.this: Refreshing state... [id=arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster][0m
+[0m[1mmodule.sqs.aws_sqs_queue.dlq: Refreshing state... [id=https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion-dlq][0m
+[0m[1mmodule.ecs.data.aws_region.current: Read complete after 0s [id=us-east-1][0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.ecs_tasks_assume_role: Read complete after 0s [id=1077804475][0m
+[0m[1mmodule.iam.aws_iam_role.execution: Refreshing state... [id=cina-ecs-execution-role][0m
+[0m[1mmodule.iam.aws_iam_role.task: Refreshing state... [id=cina-ecs-task-role][0m
+[0m[1mmodule.sqs.aws_sqs_queue.main: Refreshing state... [id=https://sqs.us-east-1.amazonaws.com/241459378888/cina-ingestion][0m
+[0m[1mmodule.iam.aws_iam_role_policy_attachment.execution_managed: Refreshing state... [id=cina-ecs-execution-role-20260321202341291200000001][0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.task_policy: Reading...[0m[0m
+[0m[1mmodule.iam.data.aws_iam_policy_document.task_policy: Read complete after 0s [id=3355836156][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.query: Read complete after 0s [id=cina-query][0m
+[0m[1mmodule.ecs.data.aws_ecr_repository.ingestion: Read complete after 0s [id=cina-ingestion][0m
+[0m[1mmodule.vpc.aws_internet_gateway.this: Refreshing state... [id=igw-0e69883b3726d954c][0m
+[0m[1mmodule.vpc.aws_subnet.private[1]: Refreshing state... [id=subnet-0df3bdf49000f74e7][0m
+[0m[1mmodule.vpc.aws_security_group.alb: Refreshing state... [id=sg-0278680ddcf2a6f70][0m
+[0m[1mmodule.vpc.aws_subnet.private[0]: Refreshing state... [id=subnet-0f3a35e7ec77b6e84][0m
+[0m[1mmodule.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-077114b7ff7c4b19c][0m
+[0m[1mmodule.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-0a82108006b860bb4][0m
+[0m[1mmodule.ecs.aws_lb_target_group.query: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1][0m
+[0m[1mmodule.vpc.aws_route_table.public: Refreshing state... [id=rtb-0101aa3d60a014863][0m
+[0m[1mmodule.vpc.aws_security_group.ecs: Refreshing state... [id=sg-03d224a105a6c8110][0m
+[0m[1mmodule.elasticache.aws_elasticache_subnet_group.this: Refreshing state... [id=cina-redis-subnet-group][0m
+[0m[1mmodule.rds.aws_db_subnet_group.this: Refreshing state... [id=cina-db-subnet-group][0m
+[0m[1mmodule.vpc.aws_security_group.rds: Refreshing state... [id=sg-08b8eb109f115c303][0m
+[0m[1mmodule.vpc.aws_security_group.redis: Refreshing state... [id=sg-08477ba772995f75b][0m
+[0m[1mmodule.elasticache.aws_elasticache_cluster.this: Refreshing state... [id=cina-redis][0m
+[0m[1mmodule.rds.aws_db_instance.this: Refreshing state... [id=db-BIFYIXNODMXAG6RD3X7HZDDXVY][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+[31m-[0m/[32m+[0m destroy and then create replacement[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.ecs.aws_ecs_service.ingestion[0m will be created
+[0m  [32m+[0m[0m resource "aws_ecs_service" "ingestion" {
+      [32m+[0m[0m availability_zone_rebalancing      = "DISABLED"
+      [32m+[0m[0m cluster                            = "arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster"
+      [32m+[0m[0m deployment_maximum_percent         = 200
+      [32m+[0m[0m deployment_minimum_healthy_percent = 100
+      [32m+[0m[0m desired_count                      = 1
+      [32m+[0m[0m enable_ecs_managed_tags            = false
+      [32m+[0m[0m enable_execute_command             = false
+      [32m+[0m[0m iam_role                           = (known after apply)
+      [32m+[0m[0m id                                 = (known after apply)
+      [32m+[0m[0m launch_type                        = "FARGATE"
+      [32m+[0m[0m name                               = "cina-ingestion"
+      [32m+[0m[0m platform_version                   = (known after apply)
+      [32m+[0m[0m scheduling_strategy                = "REPLICA"
+      [32m+[0m[0m tags_all                           = (known after apply)
+      [32m+[0m[0m task_definition                    = (known after apply)
+      [32m+[0m[0m triggers                           = (known after apply)
+      [32m+[0m[0m wait_for_steady_state              = false
+
+      [32m+[0m[0m network_configuration {
+          [32m+[0m[0m assign_public_ip = false
+          [32m+[0m[0m security_groups  = [
+              [32m+[0m[0m "sg-03d224a105a6c8110",
+            ]
+          [32m+[0m[0m subnets          = [
+              [32m+[0m[0m "subnet-0df3bdf49000f74e7",
+              [32m+[0m[0m "subnet-0f3a35e7ec77b6e84",
+            ]
+        }
+    }
+
+[1m  # module.ecs.aws_ecs_service.query[0m will be created
+[0m  [32m+[0m[0m resource "aws_ecs_service" "query" {
+      [32m+[0m[0m availability_zone_rebalancing      = "DISABLED"
+      [32m+[0m[0m cluster                            = "arn:aws:ecs:us-east-1:241459378888:cluster/cina-cluster"
+      [32m+[0m[0m deployment_maximum_percent         = 200
+      [32m+[0m[0m deployment_minimum_healthy_percent = 100
+      [32m+[0m[0m desired_count                      = 2
+      [32m+[0m[0m enable_ecs_managed_tags            = false
+      [32m+[0m[0m enable_execute_command             = false
+      [32m+[0m[0m iam_role                           = (known after apply)
+      [32m+[0m[0m id                                 = (known after apply)
+      [32m+[0m[0m launch_type                        = "FARGATE"
+      [32m+[0m[0m name                               = "cina-query"
+      [32m+[0m[0m platform_version                   = (known after apply)
+      [32m+[0m[0m scheduling_strategy                = "REPLICA"
+      [32m+[0m[0m tags_all                           = (known after apply)
+      [32m+[0m[0m task_definition                    = (known after apply)
+      [32m+[0m[0m triggers                           = (known after apply)
+      [32m+[0m[0m wait_for_steady_state              = false
+
+      [32m+[0m[0m load_balancer {
+          [32m+[0m[0m container_name   = "query"
+          [32m+[0m[0m container_port   = 8000
+          [32m+[0m[0m target_group_arn = "arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1"
+            [90m# (1 unchanged attribute hidden)[0m[0m
+        }
+
+      [32m+[0m[0m network_configuration {
+          [32m+[0m[0m assign_public_ip = false
+          [32m+[0m[0m security_groups  = [
+              [32m+[0m[0m "sg-03d224a105a6c8110",
+            ]
+          [32m+[0m[0m subnets          = [
+              [32m+[0m[0m "subnet-0df3bdf49000f74e7",
+              [32m+[0m[0m "subnet-0f3a35e7ec77b6e84",
+            ]
+        }
+    }
+
+[1m  # module.ecs.aws_ecs_task_definition.ingestion[0m will be created
+[0m  [32m+[0m[0m resource "aws_ecs_task_definition" "ingestion" {
+      [32m+[0m[0m arn                      = (known after apply)
+      [32m+[0m[0m arn_without_revision     = (known after apply)
+      [32m+[0m[0m container_definitions    = (sensitive value)
+      [32m+[0m[0m cpu                      = "256"
+      [32m+[0m[0m enable_fault_injection   = (known after apply)
+      [32m+[0m[0m execution_role_arn       = "arn:aws:iam::241459378888:role/cina-ecs-execution-role"
+      [32m+[0m[0m family                   = "cina-ingestion"
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m memory                   = "512"
+      [32m+[0m[0m network_mode             = "awsvpc"
+      [32m+[0m[0m requires_compatibilities = [
+          [32m+[0m[0m "FARGATE",
+        ]
+      [32m+[0m[0m revision                 = (known after apply)
+      [32m+[0m[0m skip_destroy             = false
+      [32m+[0m[0m tags_all                 = (known after apply)
+      [32m+[0m[0m task_role_arn            = "arn:aws:iam::241459378888:role/cina-ecs-task-role"
+      [32m+[0m[0m track_latest             = false
+    }
+
+[1m  # module.ecs.aws_ecs_task_definition.query[0m will be created
+[0m  [32m+[0m[0m resource "aws_ecs_task_definition" "query" {
+      [32m+[0m[0m arn                      = (known after apply)
+      [32m+[0m[0m arn_without_revision     = (known after apply)
+      [32m+[0m[0m container_definitions    = (sensitive value)
+      [32m+[0m[0m cpu                      = "512"
+      [32m+[0m[0m enable_fault_injection   = (known after apply)
+      [32m+[0m[0m execution_role_arn       = "arn:aws:iam::241459378888:role/cina-ecs-execution-role"
+      [32m+[0m[0m family                   = "cina-query"
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m memory                   = "1024"
+      [32m+[0m[0m network_mode             = "awsvpc"
+      [32m+[0m[0m requires_compatibilities = [
+          [32m+[0m[0m "FARGATE",
+        ]
+      [32m+[0m[0m revision                 = (known after apply)
+      [32m+[0m[0m skip_destroy             = false
+      [32m+[0m[0m tags_all                 = (known after apply)
+      [32m+[0m[0m task_role_arn            = "arn:aws:iam::241459378888:role/cina-ecs-task-role"
+      [32m+[0m[0m track_latest             = false
+    }
+
+[1m  # module.ecs.aws_lb.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb" "this" {
+      [32m+[0m[0m arn                                                          = (known after apply)
+      [32m+[0m[0m arn_suffix                                                   = (known after apply)
+      [32m+[0m[0m client_keep_alive                                            = 3600
+      [32m+[0m[0m desync_mitigation_mode                                       = "defensive"
+      [32m+[0m[0m dns_name                                                     = (known after apply)
+      [32m+[0m[0m drop_invalid_header_fields                                   = false
+      [32m+[0m[0m enable_deletion_protection                                   = false
+      [32m+[0m[0m enable_http2                                                 = true
+      [32m+[0m[0m enable_tls_version_and_cipher_suite_headers                  = false
+      [32m+[0m[0m enable_waf_fail_open                                         = false
+      [32m+[0m[0m enable_xff_client_port                                       = false
+      [32m+[0m[0m enable_zonal_shift                                           = false
+      [32m+[0m[0m enforce_security_group_inbound_rules_on_private_link_traffic = (known after apply)
+      [32m+[0m[0m id                                                           = (known after apply)
+      [32m+[0m[0m idle_timeout                                                 = 60
+      [32m+[0m[0m internal                                                     = (known after apply)
+      [32m+[0m[0m ip_address_type                                              = (known after apply)
+      [32m+[0m[0m load_balancer_type                                           = "application"
+      [32m+[0m[0m name                                                         = "cina-alb"
+      [32m+[0m[0m name_prefix                                                  = (known after apply)
+      [32m+[0m[0m preserve_host_header                                         = false
+      [32m+[0m[0m security_groups                                              = [
+          [32m+[0m[0m "sg-0278680ddcf2a6f70",
+        ]
+      [32m+[0m[0m subnets                                                      = (known after apply)
+      [32m+[0m[0m tags                                                         = {
+          [32m+[0m[0m "Name"        = "cina-alb"
+          [32m+[0m[0m "environment" = "phase4"
+          [32m+[0m[0m "project"     = "cina"
+        }
+      [32m+[0m[0m tags_all                                                     = {
+          [32m+[0m[0m "Name"        = "cina-alb"
+          [32m+[0m[0m "environment" = "phase4"
+          [32m+[0m[0m "project"     = "cina"
+        }
+      [32m+[0m[0m vpc_id                                                       = (known after apply)
+      [32m+[0m[0m xff_header_processing_mode                                   = "append"
+      [32m+[0m[0m zone_id                                                      = (known after apply)
+    }
+
+[1m  # module.ecs.aws_lb_listener.http[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb_listener" "http" {
+      [32m+[0m[0m arn                                                                   = (known after apply)
+      [32m+[0m[0m id                                                                    = (known after apply)
+      [32m+[0m[0m load_balancer_arn                                                     = (known after apply)
+      [32m+[0m[0m port                                                                  = 80
+      [32m+[0m[0m protocol                                                              = "HTTP"
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_header_name               = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_issuer_header_name        = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_leaf_header_name          = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_subject_header_name       = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_validity_header_name      = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_tls_cipher_suite_header_name              = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_tls_version_header_name                   = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_credentials_header_value   = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_headers_header_value       = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_methods_header_value       = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_origin_header_value        = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_expose_headers_header_value      = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_max_age_header_value             = (known after apply)
+      [32m+[0m[0m routing_http_response_content_security_policy_header_value            = (known after apply)
+      [32m+[0m[0m routing_http_response_server_enabled                                  = (known after apply)
+      [32m+[0m[0m routing_http_response_strict_transport_security_header_value          = (known after apply)
+      [32m+[0m[0m routing_http_response_x_content_type_options_header_value             = (known after apply)
+      [32m+[0m[0m routing_http_response_x_frame_options_header_value                    = (known after apply)
+      [32m+[0m[0m ssl_policy                                                            = (known after apply)
+      [32m+[0m[0m tags_all                                                              = (known after apply)
+      [32m+[0m[0m tcp_idle_timeout_seconds                                              = (known after apply)
+
+      [32m+[0m[0m default_action {
+          [32m+[0m[0m order            = (known after apply)
+          [32m+[0m[0m target_group_arn = "arn:aws:elasticloadbalancing:us-east-1:241459378888:targetgroup/cina-query-tg/bb82c0dc873183c1"
+          [32m+[0m[0m type             = "forward"
+        }
+    }
+
+[1m  # module.iam.aws_iam_policy.task[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_policy" "task" {
+      [32m+[0m[0m arn              = (known after apply)
+      [32m+[0m[0m attachment_count = (known after apply)
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m name             = "cina-ecs-task-policy"
+      [32m+[0m[0m name_prefix      = (known after apply)
+      [32m+[0m[0m path             = "/"
+      [32m+[0m[0m policy           = jsonencode(
+            {
+              [32m+[0m[0m Statement = [
+                  [32m+[0m[0m {
+                      [32m+[0m[0m Action   = [
+                          [32m+[0m[0m "sqs:SendMessage",
+                          [32m+[0m[0m "sqs:ReceiveMessage",
+                          [32m+[0m[0m "sqs:GetQueueUrl",
+                          [32m+[0m[0m "sqs:GetQueueAttributes",
+                          [32m+[0m[0m "sqs:DeleteMessage",
+                        ]
+                      [32m+[0m[0m Effect   = "Allow"
+                      [32m+[0m[0m Resource = [
+                          [32m+[0m[0m "arn:aws:sqs:us-east-1:241459378888:cina-ingestion-dlq",
+                          [32m+[0m[0m "arn:aws:sqs:us-east-1:241459378888:cina-ingestion",
+                        ]
+                      [32m+[0m[0m Sid      = "SQSAccess"
+                    },
+                  [32m+[0m[0m {
+                      [32m+[0m[0m Action   = [
+                          [32m+[0m[0m "s3:PutObject",
+                          [32m+[0m[0m "s3:ListBucket",
+                          [32m+[0m[0m "s3:GetObject",
+                        ]
+                      [32m+[0m[0m Effect   = "Allow"
+                      [32m+[0m[0m Resource = [
+                          [32m+[0m[0m "arn:aws:s3:::cina-documents-241459378888-us-east-1/*",
+                          [32m+[0m[0m "arn:aws:s3:::cina-documents-241459378888-us-east-1",
+                        ]
+                      [32m+[0m[0m Sid      = "S3Access"
+                    },
+                ]
+              [32m+[0m[0m Version   = "2012-10-17"
+            }
+        )
+      [32m+[0m[0m policy_id        = (known after apply)
+      [32m+[0m[0m tags_all         = (known after apply)
+    }
+
+[1m  # module.iam.aws_iam_role_policy_attachment.task_custom[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy_attachment" "task_custom" {
+      [32m+[0m[0m id         = (known after apply)
+      [32m+[0m[0m policy_arn = (known after apply)
+      [32m+[0m[0m role       = "cina-ecs-task-role"
+    }
+
+[1m  # module.vpc.aws_nat_gateway.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_nat_gateway" "this" {
+      [32m+[0m[0m allocation_id                      = "eipalloc-0cbf0b021f8f7e6d9"
+      [32m+[0m[0m association_id                     = (known after apply)
+      [32m+[0m[0m connectivity_type                  = "public"
+      [32m+[0m[0m id                                 = (known after apply)
+      [32m+[0m[0m network_interface_id               = (known after apply)
+      [32m+[0m[0m private_ip                         = (known after apply)
+      [32m+[0m[0m public_ip                          = (known after apply)
+      [32m+[0m[0m secondary_private_ip_address_count = (known after apply)
+      [32m+[0m[0m secondary_private_ip_addresses     = (known after apply)
+      [32m+[0m[0m subnet_id                          = (known after apply)
+      [32m+[0m[0m tags                               = {
+          [32m+[0m[0m "Name"        = "cina-nat"
+          [32m+[0m[0m "environment" = "phase4"
+          [32m+[0m[0m "project"     = "cina"
+        }
+      [32m+[0m[0m tags_all                           = {
+          [32m+[0m[0m "Name"        = "cina-nat"
+          [32m+[0m[0m "environment" = "phase4"
+          [32m+[0m[0m "project"     = "cina"
+        }
+    }
+
+[1m  # module.vpc.aws_route_table.private[0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table" "private" {
+      [32m+[0m[0m arn              = (known after apply)
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m owner_id         = (known after apply)
+      [32m+[0m[0m propagating_vgws = (known after apply)
+      [32m+[0m[0m route            = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                 = "0.0.0.0/0"
+              [32m+[0m[0m nat_gateway_id             = (known after apply)
+                [90m# (11 unchanged attributes hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m tags             = {
+          [32m+[0m[0m "Name"        = "cina-private-rt"
+          [32m+[0m[0m "environment" = "phase4"
+          [32m+[0m[0m "project"     = "cina"
+        }
+      [32m+[0m[0m tags_all         = {
+          [32m+[0m[0m "Name"        = "cina-private-rt"
+          [32m+[0m[0m "environment" = "phase4"
+          [32m+[0m[0m "project"     = "cina"
+        }
+      [32m+[0m[0m vpc_id           = "vpc-081eaeab19994752a"
+    }
+
+[1m  # module.vpc.aws_route_table_association.private[0][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table_association" "private" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m route_table_id = (known after apply)
+      [32m+[0m[0m subnet_id      = "subnet-0f3a35e7ec77b6e84"
+    }
+
+[1m  # module.vpc.aws_route_table_association.private[1][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table_association" "private" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m route_table_id = (known after apply)
+      [32m+[0m[0m subnet_id      = "subnet-0df3bdf49000f74e7"
+    }
+
+[1m  # module.vpc.aws_route_table_association.public[0][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table_association" "public" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m route_table_id = "rtb-0101aa3d60a014863"
+      [32m+[0m[0m subnet_id      = (known after apply)
+    }
+
+[1m  # module.vpc.aws_route_table_association.public[1][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table_association" "public" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m route_table_id = "rtb-0101aa3d60a014863"
+      [32m+[0m[0m subnet_id      = (known after apply)
+    }
+
+[1m  # module.vpc.aws_subnet.public[0][0m is tainted, so must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_subnet" "public" {
+      [33m~[0m[0m arn                                            = "arn:aws:ec2:us-east-1:241459378888:subnet/subnet-077114b7ff7c4b19c" -> (known after apply)
+      [33m~[0m[0m availability_zone_id                           = "use1-az1" -> (known after apply)
+      [31m-[0m[0m enable_lni_at_device_index                     = 0 [90m-> null[0m[0m
+      [33m~[0m[0m id                                             = "subnet-077114b7ff7c4b19c" -> (known after apply)
+      [32m+[0m[0m ipv6_cidr_block_association_id                 = (known after apply)
+      [31m-[0m[0m map_customer_owned_ip_on_launch                = false [90m-> null[0m[0m
+      [33m~[0m[0m owner_id                                       = "241459378888" -> (known after apply)
+      [33m~[0m[0m private_dns_hostname_type_on_launch            = "ip-name" -> (known after apply)
+        tags                                           = {
+            "Name"        = "cina-public-1"
+            "environment" = "phase4"
+            "project"     = "cina"
+        }
+        [90m# (13 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.vpc.aws_subnet.public[1][0m is tainted, so must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_subnet" "public" {
+      [33m~[0m[0m arn                                            = "arn:aws:ec2:us-east-1:241459378888:subnet/subnet-0a82108006b860bb4" -> (known after apply)
+      [33m~[0m[0m availability_zone_id                           = "use1-az2" -> (known after apply)
+      [31m-[0m[0m enable_lni_at_device_index                     = 0 [90m-> null[0m[0m
+      [33m~[0m[0m id                                             = "subnet-0a82108006b860bb4" -> (known after apply)
+      [32m+[0m[0m ipv6_cidr_block_association_id                 = (known after apply)
+      [31m-[0m[0m map_customer_owned_ip_on_launch                = false [90m-> null[0m[0m
+      [33m~[0m[0m owner_id                                       = "241459378888" -> (known after apply)
+      [33m~[0m[0m private_dns_hostname_type_on_launch            = "ip-name" -> (known after apply)
+        tags                                           = {
+            "Name"        = "cina-public-2"
+            "environment" = "phase4"
+            "project"     = "cina"
+        }
+        [90m# (13 unchanged attributes hidden)[0m[0m
+    }
+
+[1mPlan:[0m 16 to add, 0 to change, 2 to destroy.
+[0m
+Changes to Outputs:
+  [32m+[0m[0m alb_dns_name                 = (known after apply)
+  [32m+[0m[0m ingestion_ecr_repository_url = "241459378888.dkr.ecr.us-east-1.amazonaws.com/cina-ingestion"
+  [32m+[0m[0m query_ecr_repository_url     = "241459378888.dkr.ecr.us-east-1.amazonaws.com/cina-query"
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Saved the plan to: tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan"

@@ -1,0 +1,3 @@
+GET http://cina-alb-1509715791.us-east-1.elb.amazonaws.com/health
+
+{"status":"healthy","checks":{"postgres":{"status":"ok"}}}
