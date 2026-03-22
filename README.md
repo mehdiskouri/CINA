@@ -2,22 +2,19 @@
 
 **A production-grade RAG backend for clinical literature search and synthesis.**
 
-CINA ingests documents from PubMed, FDA DailyMed, and ClinicalTrials.gov; indexes them with hybrid vector + full-text search; and serves cited, LLM-generated answers over a streaming API. It demonstrates embedding pipelines, vector search, async streaming, LLM orchestration with circuit-breaker fallback, infrastructure-as-code deployment to AWS, and real-time serving under latency constraints.
+CINA ingests clinical documents from three authoritative sources — **PubMed Central**, **FDA DailyMed**, and **ClinicalTrials.gov** — and makes them searchable through a streaming API that returns cited, LLM-generated answers in real time.
 
-Built as the third project in a backend engineering portfolio alongside [FuelSense](https://github.com/yourorg/fuelsense) (batch ML / Django / Kubernetes) and [AgriSense](https://github.com/yourorg/agrisense) (scientific compute / FastAPI + Julia / Docker), CINA fills the remaining gap: **real-time RAG serving with streaming, observability, and cloud-native deployment**.
+The system combines **hybrid search** (dense vector retrieval + BM25 full-text search fused with Reciprocal Rank Fusion), **cross-encoder reranking**, **semantic caching**, and **multi-provider LLM orchestration** with circuit-breaker fallback to deliver accurate clinical answers under strict latency constraints. The full pipeline — from query embedding to context assembly — completes in under 90 ms before LLM generation begins.
 
----
+### Highlights
 
-## Portfolio Context
-
-| Dimension | FuelSense | AgriSense | **CINA** |
-|-----------|-----------|-----------|----------|
-| Framework | Django | FastAPI + Julia | **FastAPI async** |
-| Compute | PyTorch, OR-Tools | GPU Julia | **LLM APIs, cross-encoder inference** |
-| Queue | Celery / Redis | — | **Redis Streams (local) / SQS (prod)** |
-| Deploy | Kubernetes / Helm | Docker | **ECS Fargate / Terraform** |
-| Pattern | Batch ML pipeline | Scientific compute | **Real-time streaming RAG** |
-| Database | PostgreSQL | PostgreSQL | **PostgreSQL + pgvector** |
+- **98,602 chunks** from 3,500 clinical documents, embedded at 512 dimensions (OpenAI `text-embedding-3-large`)
+- **Hybrid search in 7.5 ms** — pgvector HNSW + PostgreSQL GIN/BM25, fused with RRF
+- **Cross-encoder reranking in 74.4 ms** — `ms-marco-MiniLM-L-6-v2` on CUDA
+- **Semantic cache** via Redis LSH — sub-millisecond cache hits, saving ~$0.056 per repeated query
+- **Circuit breaker + TTFT race** — automatic provider fallback (Anthropic → OpenAI) with shared state across replicas
+- **SSE streaming** — metadata, tokens, citations, and per-query cost metrics in a single event stream
+- **Infrastructure-as-code** — 7 Terraform modules for full AWS deployment (ECS Fargate, RDS, ElastiCache, SQS)
 
 ---
 
@@ -489,6 +486,10 @@ tests/
 
 ---
 
+## Author
+
+**Mehdi Skouri** — [GitHub](https://github.com/mehdiskouri)
+
 ## License
 
-This project is part of a backend engineering portfolio. All rights reserved.
+This project is licensed under the [MIT License](LICENSE).

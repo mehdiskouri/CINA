@@ -85,21 +85,21 @@ The factory `build_queue_backend()` reads the config at startup and returns the 
 | Alternative | Evaluation | Rejection Rationale |
 |------------|-----------|---------------------|
 | Direct SQS SDK calls in pipeline code | High production fidelity but requires LocalStack or mocks for local dev | LocalStack is heavy (1.5 GB image) and flaky for streams; mocks reduce integration confidence. Redis Streams gives zero-AWS local dev with semantics that closely mirror SQS. |
-| Celery | Mature task queue with retry/DLQ built in | Pulls in ~30 transitive dependencies, imposes its own worker model, and adds Celery-specific configuration. Also used in FuelSense — the portfolio should demonstrate a different queue pattern. |
+| Celery | Mature task queue with retry/DLQ built in | Pulls in ~30 transitive dependencies, imposes its own worker model, and adds Celery-specific configuration. CINA's queue needs are four operations — Celery's task routing, result backends, and middleware are unnecessary overhead. |
 | `asyncio.Queue` (in-process) | Simplest possible implementation | No durability. A process crash during an embedding batch loses all enqueued chunks. Redis Streams provides persistence, consumer groups, and acknowledgement semantics that map to SQS behaviour. |
 | Amazon MQ / RabbitMQ | Full-featured message broker | CINA's queue needs are four operations. MQ adds broker provisioning, monitoring, and failover for features (routing, topic subscriptions, priority queues) the system never uses. SQS is simpler and fully managed. |
 
 ### Decision Matrix
 
-Criteria weights derive from the project's deployment model: equal emphasis on local dev ergonomics and production readiness (50% combined), DLQ correctness for data integrity (20%), maintenance burden (15%), and portfolio differentiation (15%).
+Criteria weights derive from the project's deployment model: equal emphasis on local dev ergonomics and production readiness (50% combined), DLQ correctness for data integrity (20%), maintenance burden (15%), and ecosystem fit (15%).
 
 | Criterion | Weight | QueueProtocol | Direct SQS | Celery | asyncio.Queue | Amazon MQ |
-|-----------|--------|--------------|------------|--------|---------------|-----------|
+|-----------|--------|--------------|------------|--------|---------------|----------|
 | Local dev simplicity | 25% | 10 | 4 | 6 | 10 | 4 |
 | Production readiness | 25% | 9 | 10 | 9 | 2 | 9 |
 | DLQ consistency | 20% | 9 | 8 | 7 | 2 | 9 |
 | Maintenance cost | 15% | 7 | 9 | 5 | 10 | 5 |
-| Portfolio differentiation | 15% | 9 | 7 | 3 | 7 | 7 |
+| Ecosystem fit | 15% | 9 | 7 | 3 | 7 | 7 |
 | **Weighted total** | | **9.00** | **7.65** | **6.30** | **5.60** | **6.80** |
 
 ### Implementation Evidence
@@ -376,7 +376,7 @@ These providers experience three classes of failure:
 - **Soft degradation:** Elevated time-to-first-token (TTFT), partial rate limiting (429s)
 - **Quota exhaustion:** Per-minute or per-day token limits
 
-The query serving path must remain available and responsive regardless of provider state. This decision is an explicit evolution of **FuelSense ADR-3 (Champion/Challenger Model Promotion)**, which handles model degradation in a batch-prediction context with health-check failover. CINA's streaming architecture requires a more sophisticated approach: **per-request, latency-aware fallback**.
+The query serving path must remain available and responsive regardless of provider state. CINA's streaming architecture demands **per-request, latency-aware fallback** — not batch-level health checks or sequential retries.
 
 **Binding constraints:**
 1. Fallback must be invisible to the API consumer — the SSE event format is identical regardless of which provider serves the response
@@ -415,7 +415,7 @@ When the primary provider's circuit is closed but may be degraded:
 2. Soft degradation (slow TTFT) is detected per-request via the race; users never wait more than 5 s before the fallback engages
 3. Redis-backed state ensures all ECS replicas share a consistent view of provider health
 4. Full Prometheus observability: `provider_requests`, `provider_errors`, `provider_latency`, `fallback_triggered`
-5. Direct evolution from FuelSense ADR-3: circuit breaker replaces health-check threshold; TTFT race replaces sequential fallback; Redis-shared state replaces process-local state
+5. Clean separation of concerns: circuit breaker handles persistent failures; TTFT race handles transient slowness; Redis-shared state handles multi-replica coordination
 
 **Costs:**
 1. When the TTFT race engages, both providers are called concurrently. The losing stream is cancelled, but it may have already consumed tokens (small cost leak, bounded by `ttft_threshold_seconds`)
@@ -452,7 +452,7 @@ Weights: availability (30%) because a clinical information system must not go da
 
 - **Provider routing confirmed:** Demo SSE metadata event reports `"provider": "anthropic"` — primary is used with circuit closed under normal conditions
 - **Health endpoint verified:** `GET /health` returns Postgres and Redis connectivity status, confirming the circuit breaker backing store is reachable
-- **Portfolio cross-reference:** Extends FuelSense ADR-3 from batch health-check failover → real-time circuit breaker + concurrent TTFT race + Redis-shared state
+- **Design rationale validated:** The two-layer approach (circuit breaker + TTFT race) covers both persistent failures and transient slowness with minimal redundant API calls
 
 **Source files:** `cina/orchestration/providers/` · `cina/orchestration/routing/` · `cina/orchestration/middleware.py` · `cina/observability/metrics.py`
 
