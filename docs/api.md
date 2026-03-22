@@ -1,0 +1,256 @@
+# CINA API Reference
+
+Base URL: `http://localhost:8000` (local) or `http://<alb-dns>` (AWS)
+
+---
+
+## Authentication
+
+All endpoints except `/health`, `/ready`, and `/metrics` require a Bearer token.
+
+```
+Authorization: Bearer cina_sk_<token>
+```
+
+API keys are created via the CLI:
+
+```bash
+python -m cina apikey create --name my-key
+```
+
+Keys are stored as bcrypt hashes. The plaintext key is shown only once at creation time.
+
+**Bypass:** Set `CINA_AUTH_DISABLED=1` for local development without authentication.
+
+**Error responses:**
+
+| Status | Body | Cause |
+|--------|------|-------|
+| 401 | `{"detail": "Missing authorization header"}` | No `Authorization` header |
+| 401 | `{"detail": "Invalid authorization scheme"}` | Not a `Bearer` token |
+| 401 | `{"detail": "Invalid API key"}` | Token not found or revoked |
+
+---
+
+## Rate Limiting
+
+Requests are rate-limited per API key using a Redis sorted-set sliding window.
+
+**Default limits:**
+
+| Limit | Value |
+|-------|-------|
+| Requests per minute | 100 |
+| Tokens per hour | 100,000 |
+
+**Response headers** (included on every authenticated request):
+
+| Header | Description |
+|--------|-------------|
+| `X-RateLimit-Limit` | Maximum requests allowed in window |
+| `X-RateLimit-Remaining` | Requests remaining in current window |
+| `X-RateLimit-Reset` | Unix timestamp when window resets |
+
+**429 Too Many Requests:**
+
+```json
+{
+  "detail": "Rate limit exceeded",
+  "retry_after": 42
+}
+```
+
+The `Retry-After` header is also set (in seconds).
+
+---
+
+## Endpoints
+
+### `POST /v1/query`
+
+Submit a clinical question. Returns a Server-Sent Events (SSE) stream.
+
+**Request:**
+
+```json
+{
+  "query": "What are the latest treatments for metastatic breast cancer?",
+  "config": {
+    "provider": "anthropic",
+    "max_sources": 10,
+    "stream": true,
+    "temperature": 0.3
+  }
+}
+```
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `query` | string | Yes | — | Natural language clinical question |
+| `config.provider` | string | No | `"anthropic"` | LLM provider (`"anthropic"` or `"openai"`) |
+| `config.max_sources` | integer | No | `10` | Max sources to cite (1–20) |
+| `config.stream` | boolean | No | `true` | Enable SSE streaming |
+| `config.temperature` | float | No | `0.3` | LLM sampling temperature (0.0–1.0) |
+
+**Response:** `Content-Type: text/event-stream`
+
+The stream emits five event types in order:
+
+#### 1. `metadata` (once)
+
+Emitted immediately after pipeline setup completes.
+
+```
+event: metadata
+data: {"query_id": "9a9d3a89-c23d-4142-9e75-dd44222c4518", "model": "claude-sonnet-4-20250514", "provider": "anthropic", "sources_used": 10, "cache_hit": false, "prompt_version": "v1.0"}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `query_id` | string (UUID) | Unique identifier for this query |
+| `model` | string | LLM model used |
+| `provider` | string | Provider that served the response |
+| `sources_used` | integer | Number of context chunks assembled |
+| `cache_hit` | boolean | Whether semantic cache was used |
+| `prompt_version` | string | System prompt version |
+
+#### 2. `token` (repeated)
+
+Emitted for each generated text fragment.
+
+```
+event: token
+data: {"text": "Based on the clinical literature"}
+```
+
+#### 3. `citations` (once)
+
+Emitted after generation completes. Contains all source documents cited.
+
+```
+event: citations
+data: {"citations": [{"index": 1, "document_title": "Trastuzumab in HER2+ Breast Cancer", "source": "pubmed", "source_id": "PMC12345", "section_type": "results", "chunk_index": 3, "relevance_score": 0.94}]}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `index` | integer | Citation number (matches `[1]`, `[2]` in text) |
+| `document_title` | string | Title of the source document |
+| `source` | string | Data source (`pubmed`, `fda`, `clinicaltrials`) |
+| `source_id` | string | Source-specific identifier |
+| `section_type` | string | Section the chunk came from |
+| `chunk_index` | integer | Position within the section |
+| `relevance_score` | float | Reranker score |
+
+#### 4. `metrics` (once)
+
+Pipeline performance metrics for this query.
+
+```
+event: metrics
+data: {"search_latency_ms": 7.5, "rerank_latency_ms": 74.4, "assembly_latency_ms": 4.9, "llm_ttft_ms": 1299.1, "llm_total_ms": 15017.7, "input_tokens": 4742, "output_tokens": 2794, "estimated_cost_usd": 0.056136}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `search_latency_ms` | float | Hybrid search duration |
+| `rerank_latency_ms` | float | Cross-encoder reranking duration |
+| `assembly_latency_ms` | float | Context assembly duration |
+| `llm_ttft_ms` | float | Time to first token from LLM |
+| `llm_total_ms` | float | Total LLM generation time |
+| `input_tokens` | integer | Tokens sent to LLM |
+| `output_tokens` | integer | Tokens generated by LLM |
+| `estimated_cost_usd` | float | Estimated API cost |
+
+#### 5. `done` (once)
+
+Signals stream completion.
+
+```
+event: done
+data: {}
+```
+
+#### Error Events
+
+If a pipeline stage fails, an error event is emitted:
+
+```
+event: error
+data: {"error": "Provider timeout", "stage": "llm_generation"}
+```
+
+**Example curl:**
+
+```bash
+curl -N -X POST http://localhost:8000/v1/query \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer cina_sk_<key>" \
+  -d '{"query": "What are CDK4/6 inhibitors used for in breast cancer?"}'
+```
+
+---
+
+### `GET /health`
+
+Liveness probe. Checks PostgreSQL connectivity.
+
+**Response:** `200 OK`
+
+```json
+{
+  "status": "healthy",
+  "checks": {
+    "postgres": {"status": "ok"}
+  }
+}
+```
+
+**Failure:** `503 Service Unavailable`
+
+```json
+{
+  "status": "unhealthy",
+  "checks": {
+    "postgres": {"status": "error", "detail": "connection refused"}
+  }
+}
+```
+
+---
+
+### `GET /ready`
+
+Readiness probe. Verifies all dependencies are available.
+
+**Response:** `200 OK`
+
+```json
+{
+  "status": "ready",
+  "checks": {
+    "postgres": {"status": "ok"},
+    "redis": {"status": "ok"}
+  }
+}
+```
+
+---
+
+### `GET /metrics`
+
+Prometheus-format metrics endpoint. No authentication required.
+
+**Response:** `200 OK` with `Content-Type: text/plain`
+
+Returns 17 custom metrics plus standard Python process metrics. See the [Observability section in README](../README.md#observability) for the full metrics list.
+
+---
+
+## SSE Protocol Notes
+
+- **Content-Type:** `text/event-stream`
+- **Keepalive:** A comment line (`: keepalive`) is sent every 15 seconds to prevent proxy timeouts
+- **Connection:** Clients should use streaming HTTP clients (`curl -N`, `EventSource`, `httpx` stream)
+- **Retry:** The `retry` field is not set; clients should implement exponential backoff on connection failure
+- **Event ordering:** Events are always emitted in order: `metadata` → `token`(s) → `citations` → `metrics` → `done`
