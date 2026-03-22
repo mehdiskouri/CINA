@@ -18,7 +18,7 @@ CINA depends on external LLM APIs (Anthropic and OpenAI) for response generation
 
 The query serving path must remain available during provider issues. Users should not experience errors when one provider is down, and they should not experience excessive latency when one provider is slow.
 
-This decision extends the fallback pattern established in FuelSense (see **FuelSense ADR-3: Champion/Challenger Model Promotion**). Where FuelSense handles model degradation at the batch-prediction layer with a simple health-check failover, CINA requires **real-time, per-request fallback with latency awareness** due to its streaming architecture.
+CINA's streaming architecture demands **real-time, per-request fallback with latency awareness** — not batch-level health checks or sequential retries.
 
 ### Constraints
 
@@ -84,7 +84,7 @@ orchestration:
 - **Lower tail latency:** TTFT race eliminates the scenario where users wait for a slow primary before fallback kicks in
 - **Shared state:** Redis-backed state means all ECS replicas share the same circuit breaker view
 - **Observable:** `provider_requests`, `provider_errors`, `provider_latency`, and `fallback_triggered` Prometheus metrics provide full visibility
-- **Portfolio evolution:** Demonstrates progression from FuelSense's simple health-check failover (ADR-3) to real-time circuit breaker + latency-aware racing
+- **Clean separation of concerns:** Circuit breaker handles persistent failures; TTFT race handles transient slowness; Redis-shared state handles multi-replica coordination
 
 ### Costs
 
@@ -151,12 +151,12 @@ data: {"query_id":"9a9d3a89-...","model":"claude-sonnet-4-20250514","provider":"
 
 The `provider` field in the metadata event transparently reports which provider served the response, enabling clients and operators to track fallback frequency.
 
-### Portfolio Cross-Reference
+### Design Rationale
 
-This decision is an explicit evolution of **FuelSense ADR-3 (Champion/Challenger Model Promotion)** which handles model failover in a batch context. CINA's contribution is adapting the pattern to real-time streaming with:
-- **Circuit breaker** (vs. FuelSense's health-check threshold)
-- **TTFT race** (vs. FuelSense's sequential fallback)
-- **Redis-shared state** (vs. FuelSense's process-local state)
+The two-layer approach (circuit breaker + TTFT race) covers both persistent failures and transient slowness with minimal redundant API calls:
+- **Circuit breaker** handles persistent outages with immediate rerouting
+- **TTFT race** handles transient slowness with concurrent fallback
+- **Redis-shared state** ensures multi-replica consistency
 
 ### File References
 

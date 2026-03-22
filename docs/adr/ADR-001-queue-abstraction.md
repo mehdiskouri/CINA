@@ -74,7 +74,7 @@ Embed SQS SDK calls directly in the ingestion pipeline.
 
 Use Celery as the queue abstraction layer.
 
-**Rejected because:** Celery brings a large dependency tree, its own worker process model, and significant configuration complexity. CINA's queue needs are simple (enqueue/dequeue/ack/dlq) — Celery's task routing, result backends, and middleware are unnecessary overhead. Also, Celery is used in FuelSense, and the portfolio should demonstrate different approaches.
+**Rejected because:** Celery brings a large dependency tree, its own worker process model, and significant configuration complexity. CINA's queue needs are simple (enqueue/dequeue/ack/dlq) — Celery's task routing, result backends, and middleware are unnecessary overhead.
 
 ### 3. In-Process Queue (asyncio.Queue)
 
@@ -96,7 +96,7 @@ Use a traditional message broker.
 | Production readiness (25%) | 9 | 10 | 9 | 2 | 9 |
 | DLQ consistency (20%) | 9 | 8 | 7 | 2 | 9 |
 | Maintenance cost (15%) | 7 | 9 | 5 | 10 | 5 |
-| Portfolio differentiation (15%) | 9 | 7 | 3 | 7 | 7 |
+| Ecosystem fit (15%) | 9 | 7 | 3 | 7 | 7 |
 | **Weighted score** | **9.00** | **7.65** | **6.30** | **5.60** | **6.80** |
 
 ## Implementation Evidence
