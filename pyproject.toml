@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Clinical Index and Narrative Assembly infrastructure scaffold"
 readme = "README.md"
 requires-python = ">=3.13"
-authors = [{ name = "CINA" }]
+authors = [{ name = "Mehdi Skouri" }]
 dependencies = [
   "fastapi>=0.115.0",
   "uvicorn[standard]>=0.30.0",
@@ -58,8 +58,7 @@ line-length = 100
 target-version = "py313"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "B", "UP", "ASYNC", "C4", "SIM", "RUF"]
-ignore = ["E501"]
+select = ["ALL"]
 
 [tool.ruff.format]
 quote-style = "double"

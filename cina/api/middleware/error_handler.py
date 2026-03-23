@@ -1,1 +1,1 @@
-"""Global error handler placeholder for Phase 0."""
+"""Global API error-handler middleware module placeholder."""

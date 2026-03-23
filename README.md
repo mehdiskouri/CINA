@@ -1,5 +1,7 @@
 # CINA — Clinical Index & Narrative Assembly
 
+![Coverage](https://img.shields.io/badge/coverage-91.47%25-brightgreen)
+
 **A production-grade RAG backend for clinical literature search and synthesis.**
 
 CINA ingests clinical documents from three authoritative sources — **PubMed Central**, **FDA DailyMed**, and **ClinicalTrials.gov** — and makes them searchable through a streaming API that returns cited, LLM-generated answers in real time.

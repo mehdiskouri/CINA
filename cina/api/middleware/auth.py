@@ -3,17 +3,27 @@
 from __future__ import annotations
 
 import os
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.requests import Request
+from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.responses import JSONResponse
+
+if TYPE_CHECKING:
+    from starlette.requests import Request
+    from starlette.responses import Response
 
 
 class APIKeyAuthMiddleware(BaseHTTPMiddleware):
+    """Validate bearer API keys and attach tenant metadata to request state."""
+
     EXEMPT_PATHS: ClassVar[set[str]] = {"/health", "/ready", "/metrics"}
 
-    async def dispatch(self, request: Request, call_next):  # type: ignore[no-untyped-def]
+    async def dispatch(
+        self,
+        request: Request,
+        call_next: RequestResponseEndpoint,
+    ) -> Response:
+        """Authenticate incoming requests unless endpoint is explicitly exempt."""
         if request.url.path in self.EXEMPT_PATHS:
             return await call_next(request)
 

@@ -1,3 +1,5 @@
+"""FastAPI application factory and middleware/router wiring."""
+
 from fastapi import FastAPI
 
 from cina.api.middleware.auth import APIKeyAuthMiddleware
@@ -12,6 +14,7 @@ from cina.observability.logging import configure_logging
 
 
 def create_app() -> FastAPI:
+    """Create and configure the FastAPI application instance."""
     cfg = load_config()
     configure_logging(cfg.observability.log_level)
 
