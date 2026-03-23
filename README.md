@@ -1,6 +1,12 @@
 # CINA — Clinical Index & Narrative Assembly
 
-![Coverage](https://img.shields.io/badge/coverage-91.47%25-brightgreen)
+[![CI](https://github.com/mehdiskouri/CINA/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mehdiskouri/CINA/actions/workflows/ci.yml)
+[![Coverage Gate](https://img.shields.io/badge/coverage-%E2%89%A590%25-brightgreen)](https://github.com/mehdiskouri/CINA/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.13-blue)](https://www.python.org/downloads/release/python-3130/)
+[![Ruff](https://img.shields.io/badge/lint-ruff-46a8ff)](https://docs.astral.sh/ruff/)
+[![mypy](https://img.shields.io/badge/type%20check-mypy-2a6db2)](http://mypy-lang.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+[![Docker](https://img.shields.io/badge/docker-enabled-2496ED)](docker-compose.yml)
 
 **A production-grade RAG backend for clinical literature search and synthesis.**
 
