@@ -1,8 +1,10 @@
+"""PubMed XML connector for document discovery and parsing."""
+
 from __future__ import annotations
 
-from collections.abc import AsyncIterator
 from datetime import date
 from pathlib import Path
+from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from lxml import etree  # type: ignore[import-untyped]
@@ -10,11 +12,17 @@ from lxml import etree  # type: ignore[import-untyped]
 from cina.ingestion.connectors.protocol import FetchConfig, RawDocument
 from cina.models.document import Document, Section
 
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
 
 class PubMedConnector:
+    """Connector for PubMed Open Access XML exports."""
+
     source_type = "pubmed"
 
     async def fetch_document_list(self, config: FetchConfig) -> AsyncIterator[RawDocument]:
+        """Yield raw XML documents from source path."""
         source_path = config.source_path or Path("data/pubmed")
         count = 0
         for file_path in sorted(source_path.glob(config.glob_pattern or "*.xml")):
@@ -30,6 +38,7 @@ class PubMedConnector:
                 break
 
     def parse(self, raw: RawDocument) -> Document:
+        """Parse one PubMed XML payload into a normalized document."""
         parser = etree.XMLParser(recover=True, remove_comments=True)
         root = etree.fromstring(raw.payload.encode("utf-8"), parser=parser)
 
@@ -55,6 +64,7 @@ class PubMedConnector:
 
 
 def _first_text(root: etree._Element, xpath: str) -> str | None:
+    """Extract and normalize text for the first node matching XPath."""
     node = root.find(xpath)
     if node is None:
         return None
@@ -63,6 +73,7 @@ def _first_text(root: etree._Element, xpath: str) -> str | None:
 
 
 def _extract_authors(root: etree._Element) -> list[str]:
+    """Extract author display names from an article payload."""
     authors: list[str] = []
     for contrib in root.findall(".//contrib[@contrib-type='author']"):
         given = _first_text(contrib, ".//given-names") or ""
@@ -74,6 +85,7 @@ def _extract_authors(root: etree._Element) -> list[str]:
 
 
 def _extract_pub_date(root: etree._Element) -> date | None:
+    """Extract publication date if present and valid."""
     year_text = _first_text(root, ".//pub-date/year")
     month_text = _first_text(root, ".//pub-date/month") or "1"
     day_text = _first_text(root, ".//pub-date/day") or "1"
@@ -86,6 +98,7 @@ def _extract_pub_date(root: etree._Element) -> date | None:
 
 
 def _extract_sections(root: etree._Element, document_id: UUID) -> list[Section]:
+    """Extract body sections as normalized section records."""
     sections: list[Section] = []
     order = 0
     for sec in root.findall(".//body//sec"):
@@ -103,13 +116,14 @@ def _extract_sections(root: etree._Element, document_id: UUID) -> list[Section]:
                 heading=heading,
                 content=content,
                 order=order,
-            )
+            ),
         )
         order += 1
     return sections
 
 
 def _extract_caption_sections(root: etree._Element, document_id: UUID) -> list[Section]:
+    """Extract figure/table captions as synthetic sections."""
     sections: list[Section] = []
     order = 10_000
     for caption in root.findall(".//fig/caption"):
@@ -123,7 +137,7 @@ def _extract_caption_sections(root: etree._Element, document_id: UUID) -> list[S
                     heading="Figure Caption",
                     content=text,
                     order=order,
-                )
+                ),
             )
             order += 1
     for caption in root.findall(".//table-wrap/caption"):
@@ -137,7 +151,7 @@ def _extract_caption_sections(root: etree._Element, document_id: UUID) -> list[S
                     heading="Table Caption",
                     content=text,
                     order=order,
-                )
+                ),
             )
             order += 1
     return sections

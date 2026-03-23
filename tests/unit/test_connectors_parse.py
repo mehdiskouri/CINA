@@ -19,7 +19,10 @@ from cina.ingestion.connectors.pubmed import PubMedConnector
     ],
 )
 def test_pubmed_connector_parse_cases(
-    source_id: str, pmcid: str, title: str, section_type: str
+    source_id: str,
+    pmcid: str,
+    title: str,
+    section_type: str,
 ) -> None:
     xml = f"""
     <article>
@@ -117,7 +120,7 @@ def test_clinicaltrials_connector_parse_cases(
             "resultsSection": {
                 "participantFlowModule": "Flow",
             },
-        }
+        },
     )
     connector = ClinicalTrialsConnector()
 

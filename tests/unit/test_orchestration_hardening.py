@@ -208,7 +208,7 @@ async def test_prompt_router_respects_weights() -> None:
         [
             PromptVersion("v1", "prompt-a", None, 0.0, True),
             PromptVersion("v2", "prompt-b", None, 1.0, True),
-        ]
+        ],
     )
     router = PromptRouter(repo, default_version="v1")
 

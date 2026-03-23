@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from cina.models.provider import Message
-from cina.serving.context.assembler import NumberedSource
+
+if TYPE_CHECKING:
+    from cina.serving.context.assembler import NumberedSource
 
 CLINICAL_SYSTEM_PROMPT = (
     "You are a clinical evidence assistant. You synthesize information from "

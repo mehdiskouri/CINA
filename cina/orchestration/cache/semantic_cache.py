@@ -3,26 +3,35 @@
 from __future__ import annotations
 
 import json
-from collections.abc import AsyncIterator
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import numpy as np
-from redis.asyncio import Redis
 
 from cina.models.cache import CachedResponse
 from cina.models.provider import CompletionConfig, Message, StreamChunk
 from cina.observability.metrics import cina_cache_requests_total
-from cina.orchestration.cache.lsh import LSHHasher
-from cina.orchestration.middleware import Handler, Middleware
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
+    from redis.asyncio import Redis
+
+    from cina.orchestration.cache.lsh import LSHHasher
+    from cina.orchestration.middleware import Handler, Middleware
 
 
 @dataclass(slots=True)
 class CacheEntry:
+    """Single cached candidate tied to an embedding vector."""
+
     embedding: list[float]
     response: CachedResponse
 
 
 class SemanticCache:
+    """Semantic response cache with LSH prefilter and cosine verification."""
+
     def __init__(
         self,
         redis: Redis,
@@ -31,6 +40,7 @@ class SemanticCache:
         similarity_threshold: float,
         ttl_seconds: int,
     ) -> None:
+        """Initialize cache backend and lookup/store thresholds."""
         self.redis = redis
         self.hasher = hasher
         self.similarity_threshold = similarity_threshold
@@ -46,6 +56,7 @@ class SemanticCache:
         embedding: list[float],
         prompt_version: str,
     ) -> CachedResponse | None:
+        """Return best cached response if cosine threshold is met."""
         lsh_hash = await self.hasher.hash_embedding(embedding)
         payload = await self.redis.get(self._key(prompt_version, lsh_hash))
         if payload is None:
@@ -89,6 +100,7 @@ class SemanticCache:
         prompt_version: str,
         response: CachedResponse,
     ) -> None:
+        """Store a response candidate under prompt version and LSH bucket."""
         lsh_hash = await self.hasher.hash_embedding(embedding)
         key = self._key(prompt_version, lsh_hash)
         existing = await self.redis.get(key)
@@ -109,12 +121,13 @@ class SemanticCache:
                     "metrics": response.metrics,
                     "prompt_version": response.prompt_version,
                 },
-            }
+            },
         )
         entries = entries[-5:]
         await self.redis.setex(key, self.ttl_seconds, json.dumps(entries, ensure_ascii=True))
 
     async def invalidate_version(self, prompt_version: str) -> int:
+        """Delete all cache keys associated with a prompt version."""
         pattern = f"cina:cache:{prompt_version}:*"
         cursor = 0
         deleted = 0
@@ -128,6 +141,8 @@ class SemanticCache:
 
 
 def build_semantic_cache_middleware(cache: SemanticCache) -> Middleware:
+    """Build middleware that serves/stores responses through semantic cache."""
+
     async def middleware(
         messages: list[Message],
         config: CompletionConfig,
@@ -179,7 +194,7 @@ def build_semantic_cache_middleware(cache: SemanticCache) -> Middleware:
                     metadata={
                         "provider": config.metadata.get("provider_used", "unknown"),
                         "fallback_triggered": bool(
-                            config.metadata.get("fallback_triggered", False)
+                            config.metadata.get("fallback_triggered", False),
                         ),
                     },
                     metrics=metrics,

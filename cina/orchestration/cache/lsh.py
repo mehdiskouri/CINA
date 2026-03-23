@@ -3,12 +3,17 @@
 from __future__ import annotations
 
 import json
+from typing import TYPE_CHECKING
 
 import numpy as np
-from redis.asyncio import Redis
+
+if TYPE_CHECKING:
+    from redis.asyncio import Redis
 
 
 class LSHHasher:
+    """Generates and persists random hyperplanes for embedding LSH."""
+
     def __init__(
         self,
         redis: Redis,
@@ -18,6 +23,7 @@ class LSHHasher:
         seed: int = 42,
         redis_key: str = "cina:cache:lsh:hyperplanes",
     ) -> None:
+        """Create an LSH hasher backed by Redis-stored hyperplanes."""
         self.redis = redis
         self.num_hyperplanes = num_hyperplanes
         self.dimensions = dimensions
@@ -26,6 +32,7 @@ class LSHHasher:
         self._hyperplanes: np.ndarray | None = None
 
     async def ensure_hyperplanes(self) -> np.ndarray:
+        """Load existing hyperplanes from Redis or create and store them."""
         if self._hyperplanes is not None:
             return self._hyperplanes
 
@@ -43,6 +50,7 @@ class LSHHasher:
         return planes
 
     async def hash_embedding(self, embedding: list[float]) -> str:
+        """Project an embedding and return its binary signature as hex."""
         planes = await self.ensure_hyperplanes()
         vector = np.array(embedding, dtype=np.float32)
         projections = np.dot(planes, vector)

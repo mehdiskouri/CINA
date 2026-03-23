@@ -1,3 +1,5 @@
+"""CLI commands for API key lifecycle operations."""
+
 from __future__ import annotations
 
 import asyncio
@@ -13,6 +15,7 @@ app = typer.Typer(help="API key commands")
 
 
 def _new_key() -> str:
+    """Generate a new opaque API key token."""
     return "cina_sk_" + secrets.token_urlsafe(32)
 
 
@@ -21,6 +24,8 @@ def create(
     tenant: str = typer.Option(..., "--tenant", help="Tenant identifier"),
     name: str = typer.Option("default", "--name", help="Human-friendly key name"),
 ) -> None:
+    """Create and print a new API key for a tenant."""
+
     async def _run() -> None:
         pool = await create_pool()
         try:
@@ -37,12 +42,14 @@ def create(
 
 
 @app.command("revoke")
-def revoke(id: str = typer.Option(..., "--id", help="API key UUID")) -> None:
+def revoke(key_id: str = typer.Option(..., "--id", help="API key UUID")) -> None:
+    """Revoke an API key by id."""
+
     async def _run() -> None:
         pool = await create_pool()
         try:
             repo = APIKeyRepository(pool)
-            ok = await repo.revoke_key(id)
+            ok = await repo.revoke_key(key_id)
             if ok:
                 typer.echo("revoked")
             else:
@@ -55,14 +62,20 @@ def revoke(id: str = typer.Option(..., "--id", help="API key UUID")) -> None:
 
 @app.command("list")
 def list_keys(tenant: str | None = typer.Option(None, "--tenant", help="Filter by tenant")) -> None:
+    """List API keys, optionally filtered by tenant."""
+
     async def _run() -> None:
         pool = await create_pool()
         try:
             repo = APIKeyRepository(pool)
             rows = await repo.list_keys(tenant)
             for row in rows:
+                line = (
+                    f"id={row['id']} tenant={row['tenant_id']} "
+                    f"name={row['name']} active={row['active']}"
+                )
                 typer.echo(
-                    f"id={row['id']} tenant={row['tenant_id']} name={row['name']} active={row['active']}"
+                    line,
                 )
         finally:
             await pool.close()

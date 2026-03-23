@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
+import json
 import time
-
-import asyncpg
+from collections.abc import Mapping
+from typing import TYPE_CHECKING
 
 from cina.models.search import SearchResult
 from cina.observability.logging import get_logger
 from cina.observability.metrics import cina_query_latency_seconds
+
+if TYPE_CHECKING:
+    import asyncpg
 
 log = get_logger("cina.serving.search.vector")
 
@@ -17,10 +21,12 @@ class VectorSearcher:
     """Async pgvector cosine-similarity search with HNSW ef_search tuning."""
 
     def __init__(self, pool: asyncpg.Pool, *, ef_search: int = 100) -> None:
+        """Initialize vector searcher with pool and HNSW ef_search parameter."""
         self.pool = pool
         self.ef_search = ef_search
 
     async def search(self, embedding: list[float], top_k: int) -> list[SearchResult]:
+        """Run vector similarity search and return top results."""
         start = time.perf_counter()
         vector_str = "[" + ",".join(f"{x:.8f}" for x in embedding) + "]"
         try:
@@ -53,15 +59,15 @@ class VectorSearcher:
             cina_query_latency_seconds.labels(stage="vector_search").observe(elapsed)
 
         log.debug(
-            "vector_search", top_k=top_k, returned=len(results), elapsed_ms=round(elapsed * 1000, 1)
+            "vector_search",
+            top_k=top_k,
+            returned=len(results),
+            elapsed_ms=round(elapsed * 1000, 1),
         )
         return results
 
 
 def _metadata_to_dict(value: object) -> dict[str, object]:
-    import json
-    from collections.abc import Mapping
-
     if isinstance(value, dict):
         return {str(k): v for k, v in value.items()}
     if isinstance(value, Mapping):

@@ -87,7 +87,7 @@ class FakeChunker:
                 embedding_model=embedding_model,
                 embedding_dim=512,
                 metadata={"source": document.source},
-            )
+            ),
         ]
 
 

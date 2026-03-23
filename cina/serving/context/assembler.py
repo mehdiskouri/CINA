@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
+from typing import TYPE_CHECKING
 
 import tiktoken
 
-from cina.models.search import SearchResult
 from cina.observability.logging import get_logger
 from cina.observability.metrics import cina_context_chunks_included, cina_context_tokens_used
+
+if TYPE_CHECKING:
+    from cina.models.search import SearchResult
 
 log = get_logger("cina.serving.context.assembler")
 
@@ -33,6 +37,7 @@ class ContextBudget:
 
     @property
     def available(self) -> int:
+        """Return remaining token budget available for retrieved chunks."""
         remaining = (
             self.model_context_limit
             - self.system_prompt_tokens
@@ -42,17 +47,13 @@ class ContextBudget:
         return max(0, remaining)
 
 
-_encoder: tiktoken.Encoding | None = None
-
-
+@lru_cache(maxsize=1)
 def _get_encoder() -> tiktoken.Encoding:
-    global _encoder
-    if _encoder is None:
-        _encoder = tiktoken.get_encoding("cl100k_base")
-    return _encoder
+    return tiktoken.get_encoding("cl100k_base")
 
 
 def count_tokens(text: str) -> int:
+    """Count tokens for a text value using the serving tokenizer."""
     return len(_get_encoder().encode(text))
 
 
@@ -101,6 +102,6 @@ def build_citations(sources: list[NumberedSource]) -> list[dict[str, object]]:
                 "section_type": m.get("section_type", ""),
                 "authors": m.get("authors", []),
                 "publication_date": m.get("publication_date", ""),
-            }
+            },
         )
     return citations

@@ -1,10 +1,18 @@
-from collections import defaultdict
-from uuid import UUID
+"""Fusion helpers for combining ranking outputs from multiple retrievers."""
 
-from cina.models.search import SearchResult
+from __future__ import annotations
+
+from collections import defaultdict
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from uuid import UUID
+
+    from cina.models.search import SearchResult
 
 
 def reciprocal_rank_fusion(*result_lists: list[SearchResult], k: int = 60) -> list[SearchResult]:
+    """Merge ranked lists using reciprocal-rank fusion (RRF)."""
     scores: dict[UUID, float] = defaultdict(float)
     result_map: dict[UUID, SearchResult] = {}
 

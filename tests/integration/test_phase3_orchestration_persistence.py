@@ -117,10 +117,12 @@ async def test_phase3_query_and_cost_event_fk_chain() -> None:
 
     async with pool.acquire() as conn:
         q_count = await conn.fetchval(
-            "SELECT count(*) FROM query_logs WHERE id = $1::uuid", query_id
+            "SELECT count(*) FROM query_logs WHERE id = $1::uuid",
+            query_id,
         )
         c_count = await conn.fetchval(
-            "SELECT count(*) FROM cost_events WHERE query_id = $1::uuid", query_id
+            "SELECT count(*) FROM cost_events WHERE query_id = $1::uuid",
+            query_id,
         )
 
     assert int(q_count) == 1

@@ -1,15 +1,21 @@
+"""SQS implementation of the ingestion queue protocol."""
+
 from __future__ import annotations
 
 import json
 import os
-from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import aioboto3
 
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
 
 class SQSQueue:
+    """Queue backend that reads/writes messages through AWS SQS."""
+
     def __init__(
         self,
         *,
@@ -18,6 +24,7 @@ class SQSQueue:
         region_env: str = "AWS_REGION",
         endpoint_url_env: str = "AWS_SQS_ENDPOINT_URL",
     ) -> None:
+        """Initialize SQS queue backend with environment variable keys."""
         self.queue_url_env = queue_url_env
         self.dlq_url_env = dlq_url_env
         self.region_env = region_env
@@ -25,16 +32,20 @@ class SQSQueue:
         self._session = aioboto3.Session()
 
     def _queue_url(self) -> str:
+        """Resolve primary queue URL from environment."""
         queue_url = os.getenv(self.queue_url_env)
         if not queue_url:
-            raise RuntimeError(f"Missing SQS queue URL env var: {self.queue_url_env}")
+            message = f"Missing SQS queue URL env var: {self.queue_url_env}"
+            raise RuntimeError(message)
         return queue_url
 
     def _dlq_url(self) -> str:
+        """Resolve dead-letter queue URL or fallback to primary queue."""
         return os.getenv(self.dlq_url_env) or self._queue_url()
 
     @asynccontextmanager
     async def _client(self) -> AsyncIterator[Any]:
+        """Yield an SQS client with optional endpoint/region overrides."""
         kwargs: dict[str, str] = {}
         region = os.getenv(self.region_env)
         endpoint_url = os.getenv(self.endpoint_url_env)
@@ -47,6 +58,7 @@ class SQSQueue:
             yield client
 
     async def enqueue(self, message: dict[str, object], queue_name: str) -> str:
+        """Enqueue one message in SQS and return message id."""
         del queue_name
         async with self._client() as client:
             response = await client.send_message(
@@ -61,6 +73,7 @@ class SQSQueue:
         queue_name: str,
         wait_timeout_seconds: int,
     ) -> dict[str, object] | None:
+        """Dequeue at most one message from SQS."""
         del queue_name
         async with self._client() as client:
             response = await client.receive_message(
@@ -92,6 +105,7 @@ class SQSQueue:
         return payload
 
     async def acknowledge(self, receipt: str) -> None:
+        """Acknowledge a dequeued SQS message."""
         async with self._client() as client:
             await client.delete_message(
                 QueueUrl=self._queue_url(),
@@ -99,6 +113,7 @@ class SQSQueue:
             )
 
     async def dead_letter(self, message: dict[str, object], queue_name: str, reason: str) -> None:
+        """Send a failed message to DLQ with a reason."""
         del queue_name
         payload = dict(message)
         payload["dead_letter_reason"] = reason

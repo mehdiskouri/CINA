@@ -9,7 +9,7 @@ import pytest
 from cina.cli.db import run_migrations
 from cina.config import clear_config_cache
 from cina.db.connection import close_pool
-from cina.ingestion.pipeline import run_ingestion
+from cina.ingestion.pipeline import IngestionRunConfig, run_ingestion
 
 DEFAULT_DSN = "postgresql://cina:cina_dev@localhost:5432/cina"
 
@@ -85,7 +85,8 @@ async def _db_available(dsn: str) -> bool:
 
 @pytest.mark.asyncio
 async def test_ingestion_e2e_pubmed_50_docs(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
 ) -> None:
     dsn = os.getenv("DATABASE_URL", DEFAULT_DSN)
     if not await _db_available(dsn):
@@ -111,16 +112,18 @@ async def test_ingestion_e2e_pubmed_50_docs(
 
     conn = await asyncpg.connect(dsn)
     await conn.execute(
-        "TRUNCATE chunks, sections, documents, ingestion_jobs RESTART IDENTITY CASCADE"
+        "TRUNCATE chunks, sections, documents, ingestion_jobs RESTART IDENTITY CASCADE",
     )
     await conn.close()
 
     result_1 = await run_ingestion(
-        source="pubmed",
-        path=data_dir,
-        limit=50,
-        concurrency=8,
-        batch_size=16,
+        config=IngestionRunConfig(
+            source="pubmed",
+            path=data_dir,
+            limit=50,
+            concurrency=8,
+            batch_size=16,
+        ),
     )
 
     conn = await asyncpg.connect(dsn)
@@ -137,7 +140,7 @@ async def test_ingestion_e2e_pubmed_50_docs(
         JOIN sections s ON s.id = c.section_id
         JOIN documents d ON d.id = c.document_id
         LIMIT 1
-        """
+        """,
     )
     await conn.close()
 
@@ -152,11 +155,13 @@ async def test_ingestion_e2e_pubmed_50_docs(
     assert lineage_row["chunk_id"] is not None
 
     result_2 = await run_ingestion(
-        source="pubmed",
-        path=data_dir,
-        limit=50,
-        concurrency=8,
-        batch_size=16,
+        config=IngestionRunConfig(
+            source="pubmed",
+            path=data_dir,
+            limit=50,
+            concurrency=8,
+            batch_size=16,
+        ),
     )
 
     conn = await asyncpg.connect(dsn)

@@ -117,7 +117,7 @@ async def test_hybrid_search_returns_results_from_both_paths() -> None:
                     "title": "Metformin Contraindications Study",
                     "section_type": "results",
                 },
-            )
+            ),
         )
 
     await chunk_repo.bulk_upsert(chunks)

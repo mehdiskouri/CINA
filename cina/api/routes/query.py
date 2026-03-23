@@ -1,4 +1,4 @@
-from __future__ import annotations
+"""Query endpoint that streams serving pipeline SSE responses."""
 
 from fastapi import APIRouter, Request
 from fastapi.responses import StreamingResponse
@@ -11,6 +11,7 @@ router = APIRouter()
 
 @router.post("/v1/query")
 async def query_endpoint(request: QueryRequest, req: Request) -> StreamingResponse:
+    """Handle query requests and stream token/citation events via SSE."""
     cina_query_total.inc()
     pipeline = req.app.state.serving_pipeline
     tenant_id = getattr(req.state, "tenant_id", None)

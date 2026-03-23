@@ -50,7 +50,7 @@ async def test_auth_invalid_token_returns_401() -> None:
 async def test_auth_valid_token_sets_tenant() -> None:
     app = _build_app()
     app.state.apikey_repo = SimpleNamespace(
-        validate_token=AsyncMock(return_value=SimpleNamespace(tenant_id="demo", name="k1"))
+        validate_token=AsyncMock(return_value=SimpleNamespace(tenant_id="demo", name="k1")),
     )
 
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:

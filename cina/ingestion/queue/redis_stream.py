@@ -1,6 +1,9 @@
+"""Redis Streams implementation of the ingestion queue protocol."""
+
 from __future__ import annotations
 
 import json
+import os
 from uuid import uuid4
 
 from redis.asyncio import Redis
@@ -10,20 +13,24 @@ from cina.config import load_config
 
 
 class RedisStreamQueue:
+    """Queue backend backed by Redis streams and consumer groups."""
+
     def __init__(
         self,
         redis_url: str | None = None,
         group: str = "cina-workers",
         consumer: str | None = None,
     ) -> None:
+        """Initialize Redis stream queue backend."""
         cfg = load_config()
-        self.redis = Redis.from_url(
-            redis_url or __import__("os").getenv(cfg.database.redis.url_env, "")
-        )
+        configured_redis_url = os.getenv(cfg.database.redis.url_env)
+        effective_redis_url = redis_url or configured_redis_url or "redis://localhost:6379/0"
+        self.redis = Redis.from_url(effective_redis_url)
         self.group = group
         self.consumer = consumer or f"consumer-{uuid4()}"
 
     async def _ensure_group(self, stream_name: str) -> None:
+        """Create consumer group for stream if it does not already exist."""
         try:
             await self.redis.xgroup_create(stream_name, self.group, id="0", mkstream=True)
         except ResponseError as exc:
@@ -31,6 +38,7 @@ class RedisStreamQueue:
                 raise
 
     async def enqueue(self, message: dict[str, object], queue_name: str) -> str:
+        """Enqueue one message into the configured Redis stream."""
         payload = json.dumps(message, ensure_ascii=True)
         message_id = await self.redis.xadd(queue_name, {"payload": payload})
         return message_id.decode("utf-8") if isinstance(message_id, bytes) else str(message_id)
@@ -40,6 +48,7 @@ class RedisStreamQueue:
         queue_name: str,
         wait_timeout_seconds: int,
     ) -> dict[str, object] | None:
+        """Dequeue a message from the stream using consumer-group semantics."""
         await self._ensure_group(queue_name)
         block_ms = max(1, wait_timeout_seconds * 1000)
         rows = await self.redis.xreadgroup(
@@ -71,10 +80,12 @@ class RedisStreamQueue:
         return payload
 
     async def acknowledge(self, receipt: str) -> None:
+        """Acknowledge a previously consumed Redis stream message."""
         stream, message_id = receipt.split("|", maxsplit=1)
         await self.redis.xack(stream, self.group, message_id)
 
     async def dead_letter(self, message: dict[str, object], queue_name: str, reason: str) -> None:
+        """Write a failed message into the stream-specific dead-letter queue."""
         dlq_name = f"{queue_name}:dlq"
         payload = dict(message)
         payload["dead_letter_reason"] = reason

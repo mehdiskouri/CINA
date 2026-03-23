@@ -23,7 +23,7 @@ def _build_document(content: str) -> Document:
                 heading="Abstract",
                 content=content,
                 order=0,
-            )
+            ),
         ],
     )
 
@@ -36,7 +36,7 @@ def test_chunking_engine_splits_long_text() -> None:
             max_chunk_tokens=40,
             overlap_tokens=8,
             sentence_boundary_alignment=False,
-        )
+        ),
     )
 
     chunks = engine.chunk_document(document, embedding_model="text-embedding-3-small")
@@ -54,7 +54,7 @@ def test_chunking_engine_preserves_section_metadata() -> None:
             max_chunk_tokens=30,
             overlap_tokens=4,
             sentence_boundary_alignment=True,
-        )
+        ),
     )
 
     chunks = engine.chunk_document(document, embedding_model="text-embedding-3-small")

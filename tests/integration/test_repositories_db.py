@@ -43,10 +43,10 @@ async def test_document_and_chunk_repositories() -> None:
 
     async with pool.acquire() as conn:
         await conn.execute(
-            "TRUNCATE chunks, sections, documents, ingestion_jobs RESTART IDENTITY CASCADE"
+            "TRUNCATE chunks, sections, documents, ingestion_jobs RESTART IDENTITY CASCADE",
         )
         ingestion_id = await conn.fetchval(
-            "INSERT INTO ingestion_jobs(source, status, started_at) VALUES ('pubmed', 'running', now()) RETURNING id"
+            "INSERT INTO ingestion_jobs(source, status, started_at) VALUES ('pubmed', 'running', now()) RETURNING id",
         )
 
     doc = Document(

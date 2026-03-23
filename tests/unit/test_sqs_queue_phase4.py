@@ -16,8 +16,8 @@ class FakeSQSClient:
                 {
                     "Body": '{"chunk_id":"abc","content":"txt","content_hash":"h1","embedding_model":"m1","embedding_dim":512}',
                     "ReceiptHandle": "rh-1",
-                }
-            ]
+                },
+            ],
         }
 
     async def send_message(self, **kwargs: Any) -> dict[str, Any]:
