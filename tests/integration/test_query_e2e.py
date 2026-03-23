@@ -83,7 +83,7 @@ async def _seed_data(pool: asyncpg.Pool) -> None:
         [
             "Metformin reduces HbA1c levels by approximately 1.5% in type 2 diabetes.",
             "Gastrointestinal side effects are the most common adverse events with metformin.",
-        ]
+        ],
     ):
         cid = uuid4()
         chunk_ids.append(str(cid))
@@ -108,7 +108,7 @@ async def _seed_data(pool: asyncpg.Pool) -> None:
                     "authors": ["E2E Author"],
                     "publication_date": "2024-06-01",
                 },
-            )
+            ),
         )
     await chunk_repo.bulk_upsert(chunks)
     await chunk_repo.update_embeddings(
@@ -154,7 +154,7 @@ async def test_query_e2e_sse_event_sequence() -> None:
 
     # Build the app with a no-op lifespan and manually wire state
     from cina.api.app import create_app
-    from cina.serving.pipeline import ServingPipeline
+    from cina.serving.pipeline import ServingPipeline, ServingPipelineDependencies
 
     @asynccontextmanager
     async def _noop_lifespan(_app: object) -> AsyncIterator[None]:
@@ -165,16 +165,18 @@ async def test_query_e2e_sse_event_sequence() -> None:
 
     pipeline = ServingPipeline(
         pool,
-        reranker=mock_reranker,
-        embedder=mock_embedder,
-        provider=mock_provider,
+        dependencies=ServingPipelineDependencies(
+            reranker=mock_reranker,
+            embedder=mock_embedder,
+            provider=mock_provider,
+        ),
     )
     app.state.serving_pipeline = pipeline
     app.state.reranker = mock_reranker
     app.state.provider = mock_provider
     apikey_repo = MagicMock()
     apikey_repo.validate_token = AsyncMock(
-        return_value=SimpleNamespace(tenant_id="test-tenant", name="test-key")
+        return_value=SimpleNamespace(tenant_id="test-tenant", name="test-key"),
     )
     app.state.apikey_repo = apikey_repo
 

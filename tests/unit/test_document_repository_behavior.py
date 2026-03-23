@@ -74,7 +74,7 @@ def _document_with_sections() -> tuple[Document, list[Section]]:
             heading="Abstract",
             content="content",
             order=1,
-        )
+        ),
     ]
     document = Document(
         id=document_id,

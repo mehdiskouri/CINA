@@ -1,3 +1,5 @@
+"""Queue backend selection and exports for ingestion workers."""
+
 from __future__ import annotations
 
 import os
@@ -9,6 +11,7 @@ from cina.ingestion.queue.sqs import SQSQueue
 
 
 def build_queue_backend() -> QueueProtocol:
+    """Build the configured ingestion queue backend implementation."""
     cfg = load_config()
     backend = cfg.ingestion.queue.backend.strip().lower()
 
@@ -24,7 +27,8 @@ def build_queue_backend() -> QueueProtocol:
             endpoint_url_env=cfg.ingestion.queue.sqs_endpoint_url_env,
         )
 
-    raise ValueError(f"Unsupported ingestion queue backend: {cfg.ingestion.queue.backend}")
+    message = f"Unsupported ingestion queue backend: {cfg.ingestion.queue.backend}"
+    raise ValueError(message)
 
 
 __all__ = ["QueueProtocol", "RedisStreamQueue", "SQSQueue", "build_queue_backend"]

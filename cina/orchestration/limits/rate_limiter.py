@@ -4,13 +4,17 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
-from redis.asyncio import Redis
+if TYPE_CHECKING:
+    from redis.asyncio import Redis
 
 
 @dataclass(slots=True)
 class RateLimitResult:
+    """Result payload returned from a tenant rate-limit check."""
+
     allowed: bool
     limit: int
     remaining: int
@@ -18,7 +22,10 @@ class RateLimitResult:
 
 
 class RateLimiter:
+    """Redis-backed sliding window limiter keyed by tenant."""
+
     def __init__(self, redis: Redis, *, requests_per_minute: int) -> None:
+        """Initialize limiter with Redis and per-minute request cap."""
         self.redis = redis
         self.requests_per_minute = requests_per_minute
 
@@ -27,6 +34,7 @@ class RateLimiter:
         return f"cina:ratelimit:{tenant_id}:rpm"
 
     async def check(self, tenant_id: str) -> RateLimitResult:
+        """Check and update tenant request allowance for the current window."""
         key = self._key(tenant_id)
         now = time.time()
         window_start = now - 60.0

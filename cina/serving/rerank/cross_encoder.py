@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import functools
+import importlib
 import time
 from typing import TYPE_CHECKING
 
@@ -21,6 +22,7 @@ class CrossEncoderReranker:
     """Loads a cross-encoder model once and re-ranks candidates for each query."""
 
     def __init__(self, model_name: str, *, device: str = "auto", top_n: int = 10) -> None:
+        """Initialize reranker model configuration and lazy-loading state."""
         self.model_name = model_name
         self.top_n = top_n
         self._device = self._resolve_device(device)
@@ -31,18 +33,22 @@ class CrossEncoderReranker:
         if device != "auto":
             return device
         try:
-            import torch
-
-            return "cuda" if torch.cuda.is_available() else "cpu"
-        except ImportError:
+            torch_module = importlib.import_module("torch")
+            cuda = getattr(torch_module, "cuda", None)
+            if cuda is not None and hasattr(cuda, "is_available") and cuda.is_available():
+                return "cuda"
+        except ModuleNotFoundError:
+            return "cpu"
+        else:
             return "cpu"
 
     def _get_model(self) -> CrossEncoder:
         if self._model is None:
-            from sentence_transformers import CrossEncoder as _CE
+            sentence_transformers = importlib.import_module("sentence_transformers")
+            cross_encoder_cls = sentence_transformers.CrossEncoder
 
             log.info("loading_cross_encoder", model=self.model_name, device=self._device)
-            self._model = _CE(self.model_name, device=self._device)
+            self._model = cross_encoder_cls(self.model_name, device=self._device)
         return self._model
 
     def _predict_sync(self, query: str, candidates: list[SearchResult]) -> list[SearchResult]:
@@ -63,6 +69,7 @@ class CrossEncoderReranker:
         ]
 
     async def rerank(self, query: str, candidates: list[SearchResult]) -> list[SearchResult]:
+        """Rerank candidates asynchronously using thread offload."""
         if not candidates:
             return []
 
@@ -70,7 +77,8 @@ class CrossEncoderReranker:
         try:
             loop = asyncio.get_running_loop()
             results = await loop.run_in_executor(
-                None, functools.partial(self._predict_sync, query, candidates)
+                None,
+                functools.partial(self._predict_sync, query, candidates),
             )
         finally:
             elapsed = time.perf_counter() - start

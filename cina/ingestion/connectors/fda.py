@@ -1,7 +1,9 @@
+"""FDA Structured Product Label XML connector."""
+
 from __future__ import annotations
 
-from collections.abc import AsyncIterator
 from pathlib import Path
+from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from lxml import etree  # type: ignore[import-untyped]
@@ -9,11 +11,17 @@ from lxml import etree  # type: ignore[import-untyped]
 from cina.ingestion.connectors.protocol import FetchConfig, RawDocument
 from cina.models.document import Document, Section
 
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
 
 class FDAConnector:
+    """Connector for FDA SPL XML documents."""
+
     source_type = "fda"
 
     async def fetch_document_list(self, config: FetchConfig) -> AsyncIterator[RawDocument]:
+        """Yield raw FDA XML documents from source path."""
         source_path = config.source_path or Path("data/fda")
         count = 0
         for file_path in sorted(source_path.glob(config.glob_pattern or "*.xml")):
@@ -29,6 +37,7 @@ class FDAConnector:
                 break
 
     def parse(self, raw: RawDocument) -> Document:
+        """Parse one FDA XML payload into a normalized document."""
         parser = etree.XMLParser(recover=True, remove_comments=True)
         root = etree.fromstring(raw.payload.encode("utf-8"), parser=parser)
 
@@ -54,24 +63,31 @@ class FDAConnector:
         )
 
 
-def _first_text(root: etree._Element, xpath: str) -> str | None:
+def _first_text(root: object, xpath: str) -> str | None:
+    """Extract first text-like value from XPath result."""
+    if not hasattr(root, "xpath"):
+        return None
     result = root.xpath(xpath)
     if not result:
         return None
     value = result[0]
-    if isinstance(value, etree._Element):
+    if hasattr(value, "itertext"):
         text = " ".join(value.itertext()).strip()
         return text or None
     text = str(value).strip()
     return text or None
 
 
-def _extract_structured_sections(root: etree._Element, document_id: UUID) -> list[Section]:
+def _extract_structured_sections(root: object, document_id: UUID) -> list[Section]:
+    """Extract structured text blocks into ordered sections."""
+    if not hasattr(root, "xpath"):
+        return []
     sections: list[Section] = []
     order = 0
     for component in root.xpath(".//*[local-name()='section']"):
         heading = _first_text(component, "./*[local-name()='code']/@displayName") or _first_text(
-            component, "./*[local-name()='title']"
+            component,
+            "./*[local-name()='title']",
         )
         text_blocks = [
             " ".join(t.itertext()).strip() for t in component.xpath(".//*[local-name()='text']")
@@ -88,7 +104,7 @@ def _extract_structured_sections(root: etree._Element, document_id: UUID) -> lis
                 heading=heading,
                 content=content,
                 order=order,
-            )
+            ),
         )
         order += 1
     return sections

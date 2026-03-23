@@ -1,3 +1,5 @@
+"""Models for persisted query and cost tracking records."""
+
 from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
@@ -5,6 +7,8 @@ from uuid import UUID
 
 @dataclass(slots=True)
 class QueryLog:
+    """Persisted query execution summary."""
+
     id: UUID
     query_text: str
     provider_used: str
@@ -13,6 +17,8 @@ class QueryLog:
 
 @dataclass(slots=True)
 class CostEvent:
+    """Per-query token and cost accounting event."""
+
     id: UUID
     query_id: UUID
     tenant_id: str | None

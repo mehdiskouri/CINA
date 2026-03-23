@@ -16,7 +16,7 @@ def _write_config(path: Path, backend: str) -> None:
                 "ingestion:",
                 "  queue:",
                 f"    backend: {backend}",
-            ]
+            ],
         )
         + "\n",
         encoding="utf-8",

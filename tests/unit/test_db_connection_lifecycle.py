@@ -58,7 +58,7 @@ async def test_create_pool_raises_without_dsn(monkeypatch: pytest.MonkeyPatch) -
             database=SimpleNamespace(
                 postgres=SimpleNamespace(dsn_env="DATABASE_URL", pool_min=1, pool_max=2),
                 redis=SimpleNamespace(url_env="REDIS_URL", pool_max=10),
-            )
+            ),
         ),
     )
     monkeypatch.delenv("DATABASE_URL", raising=False)
@@ -78,7 +78,7 @@ async def test_create_pool_and_get_pool_reuse_cached_pool(monkeypatch: pytest.Mo
             database=SimpleNamespace(
                 postgres=SimpleNamespace(dsn_env="DATABASE_URL", pool_min=1, pool_max=2),
                 redis=SimpleNamespace(url_env="REDIS_URL", pool_max=10),
-            )
+            ),
         ),
     )
     monkeypatch.setenv("DATABASE_URL", "postgres://x")
@@ -106,7 +106,7 @@ async def test_create_redis_requires_url_and_can_close(monkeypatch: pytest.Monke
             database=SimpleNamespace(
                 postgres=SimpleNamespace(dsn_env="DATABASE_URL", pool_min=1, pool_max=2),
                 redis=SimpleNamespace(url_env="REDIS_URL", pool_max=10),
-            )
+            ),
         ),
     )
     monkeypatch.delenv("REDIS_URL", raising=False)

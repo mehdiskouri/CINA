@@ -51,7 +51,7 @@ async def test_embedding_worker_processes_and_acknowledges_tasks() -> None:
                 "embedding_dim": 4,
                 "retries": 0,
                 "__receipt": "stream|1-0",
-            }
+            },
         ],
         acknowledged=[],
         dead_letters=[],

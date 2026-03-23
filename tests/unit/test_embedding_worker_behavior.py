@@ -77,7 +77,7 @@ async def test_worker_success_updates_embeddings_and_acks() -> None:
             },
             None,
             None,
-        ]
+        ],
     )
     provider = FakeProvider(vectors=[[0.3, 0.4]])
     updates: list[tuple[list[str], list[list[float]], str, int]] = []
@@ -119,8 +119,8 @@ async def test_worker_requeues_when_provider_fails_under_retry_limit() -> None:
                 "embedding_dim": 6,
                 "retries": 0,
                 "__receipt": "r2",
-            }
-        ]
+            },
+        ],
     )
     provider = FakeProvider(fail=True)
 
@@ -158,8 +158,8 @@ async def test_worker_dead_letters_when_retry_limit_exceeded() -> None:
                 "embedding_dim": 8,
                 "retries": 2,
                 "__receipt": "r3",
-            }
-        ]
+            },
+        ],
     )
     provider = FakeProvider(fail=True)
 

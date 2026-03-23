@@ -1,3 +1,5 @@
+"""Core ingestion and retrieval document domain models."""
+
 from dataclasses import dataclass, field
 from datetime import date, datetime
 from uuid import UUID
@@ -5,6 +7,8 @@ from uuid import UUID
 
 @dataclass(slots=True)
 class Section:
+    """Atomic section extracted from a source document."""
+
     id: UUID
     document_id: UUID
     section_type: str
@@ -14,11 +18,14 @@ class Section:
     created_at: datetime | None = None
 
     def __hash__(self) -> int:
+        """Provide stable identity for deduplication in sets/maps."""
         return hash((self.document_id, self.section_type, self.order, self.content))
 
 
 @dataclass(slots=True)
 class Document:
+    """Normalized source document with optional section list."""
+
     id: UUID
     source: str
     source_id: str
@@ -29,11 +36,14 @@ class Document:
     sections: list[Section] = field(default_factory=list)
 
     def __hash__(self) -> int:
+        """Hash by source identity to avoid duplicate logical documents."""
         return hash((self.source, self.source_id))
 
 
 @dataclass(slots=True)
 class Chunk:
+    """Retrieval chunk with embedding and metadata."""
+
     id: UUID
     section_id: UUID
     document_id: UUID
@@ -48,4 +58,5 @@ class Chunk:
     metadata: dict[str, object] = field(default_factory=dict)
 
     def __hash__(self) -> int:
+        """Hash by content fingerprint and embedding model variant."""
         return hash((self.content_hash, self.embedding_model))

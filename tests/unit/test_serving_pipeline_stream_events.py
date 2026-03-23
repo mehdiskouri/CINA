@@ -6,6 +6,7 @@ from uuid import uuid4
 
 import pytest
 
+from cina.db.repositories.query_log import QueryLogInsert
 from cina.models.provider import CompletionConfig, Message, StreamChunk
 from cina.models.search import SearchResult
 from cina.serving.pipeline import ServingPipeline
@@ -36,18 +37,18 @@ class StubProvider:
 
 class StubQueryLogRepo:
     def __init__(self) -> None:
-        self.calls: list[dict[str, object]] = []
+        self.calls: list[QueryLogInsert] = []
 
-    async def insert(self, **kwargs: object) -> None:
-        self.calls.append(kwargs)
+    async def insert(self, entry: QueryLogInsert) -> None:
+        self.calls.append(entry)
 
 
 class StubCostTracker:
     def __init__(self) -> None:
-        self.calls: list[dict[str, object]] = []
+        self.calls: list[object] = []
 
-    async def log_event(self, **kwargs: object) -> None:
-        self.calls.append(kwargs)
+    async def log_event(self, event: object) -> None:
+        self.calls.append(event)
 
 
 async def _passthrough_keepalive(stream, _interval: int):
@@ -106,7 +107,7 @@ async def test_stream_query_emits_metadata_tokens_citations_metrics_and_done(
     monkeypatch.setattr(
         "cina.serving.pipeline.assemble_context",
         lambda _results, _budget: [
-            SimpleNamespace(number=1, content="ctx", metadata={"source": "pubmed"})
+            SimpleNamespace(number=1, content="ctx", metadata={"source": "pubmed"}),
         ],
     )
     monkeypatch.setattr(

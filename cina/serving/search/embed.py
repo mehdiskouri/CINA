@@ -16,16 +16,20 @@ class QueryEmbedder:
     """Embeds query text using the same model/dimensions as the ingestion index."""
 
     def __init__(self, provider: OpenAIEmbeddingProvider | None = None) -> None:
+        """Initialize query embedder with configured model and provider."""
         cfg = load_config().ingestion.embedding
         self.model = cfg.model
         self.dimensions = cfg.dimensions
         self.provider = provider or OpenAIEmbeddingProvider()
 
     async def embed(self, text: str) -> list[float]:
+        """Embed a single query string into a vector."""
         start = time.perf_counter()
         try:
             embeddings = await self.provider.embed(
-                [text], model=self.model, dimensions=self.dimensions
+                [text],
+                model=self.model,
+                dimensions=self.dimensions,
             )
             return embeddings[0]
         finally:

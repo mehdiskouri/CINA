@@ -52,8 +52,8 @@ async def test_vector_search_sets_ef_search_and_maps_results() -> None:
                 "token_count": 3,
                 "metadata": '{"source":"fda"}',
                 "score": 0.88,
-            }
-        ]
+            },
+        ],
     )
     searcher = VectorSearcher(FakePool(conn), ef_search=77)
 

@@ -87,8 +87,8 @@ async def test_semantic_cache_similarity_gate() -> None:
                     "metrics": {},
                     "prompt_version": "v1.0",
                 },
-            }
-        ]
+            },
+        ],
     )
 
     # Similarity is low enough to fail 0.98 threshold.

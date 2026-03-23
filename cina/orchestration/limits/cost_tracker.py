@@ -2,50 +2,42 @@
 
 from __future__ import annotations
 
-from collections.abc import AsyncIterator
+from typing import TYPE_CHECKING
 
-from cina.db.repositories.cost_event import CostEventRepository
-from cina.models.provider import CompletionConfig, Message, StreamChunk
 from cina.observability.metrics import cina_cost_usd_total
-from cina.orchestration.middleware import Handler, Middleware
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
+    from cina.db.repositories.cost_event import CostEventInsert, CostEventRepository
+    from cina.models.provider import CompletionConfig, Message, StreamChunk
+    from cina.orchestration.middleware import Handler, Middleware
 
 
 class CostTracker:
+    """Tracks and persists per-query cost events."""
+
     def __init__(self, repository: CostEventRepository) -> None:
+        """Initialize tracker with the cost-event repository."""
         self.repository = repository
 
     def estimate_tokens(self, text: str) -> int:
+        """Estimate token count with a lightweight character heuristic."""
         # Lightweight approximation to avoid adding heavy tokenizer cost in hot path.
         return max(1, len(text) // 4)
 
-    async def log_event(
-        self,
-        *,
-        query_id: str,
-        tenant_id: str | None,
-        provider: str,
-        model: str,
-        input_tokens: int,
-        output_tokens: int,
-        estimated_cost_usd: float,
-        cache_hit: bool,
-    ) -> None:
-        cina_cost_usd_total.labels(provider=provider, tenant=tenant_id or "unknown").inc(
-            estimated_cost_usd
-        )
-        await self.repository.insert(
-            query_id=query_id,
-            tenant_id=tenant_id,
-            provider=provider,
-            model=model,
-            input_tokens=input_tokens,
-            output_tokens=output_tokens,
-            estimated_cost_usd=estimated_cost_usd,
-            cache_hit=cache_hit,
-        )
+    async def log_event(self, event: CostEventInsert) -> None:
+        """Record metrics and persist a cost event payload."""
+        cina_cost_usd_total.labels(
+            provider=event.provider,
+            tenant=event.tenant_id or "unknown",
+        ).inc(event.estimated_cost_usd)
+        await self.repository.insert(event)
 
 
 def build_cost_tracking_middleware(cost_tracker: CostTracker) -> Middleware:
+    """Build middleware that estimates and attaches request cost metadata."""
+
     async def middleware(
         messages: list[Message],
         config: CompletionConfig,

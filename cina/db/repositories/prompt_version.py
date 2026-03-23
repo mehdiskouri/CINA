@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-import asyncpg
+if TYPE_CHECKING:
+    import asyncpg
 
 
 @dataclass(slots=True)
 class PromptVersion:
+    """Prompt configuration used for request routing."""
+
     id: str
     system_prompt: str
     description: str | None
@@ -17,10 +21,14 @@ class PromptVersion:
 
 
 class PromptVersionRepository:
+    """Data access layer for prompt version records."""
+
     def __init__(self, pool: asyncpg.Pool) -> None:
+        """Initialize repository with a database pool."""
         self.pool = pool
 
     async def list_active(self) -> list[PromptVersion]:
+        """Return all active prompt versions ordered by id."""
         async with self.pool.acquire() as conn:
             rows = await conn.fetch(
                 """
@@ -28,7 +36,7 @@ class PromptVersionRepository:
                 FROM prompt_versions
                 WHERE active = true
                 ORDER BY id
-                """
+                """,
             )
         return [
             PromptVersion(
@@ -50,6 +58,7 @@ class PromptVersionRepository:
         traffic_weight: float,
         active: bool,
     ) -> None:
+        """Insert or update a prompt version row by id."""
         async with self.pool.acquire() as conn:
             await conn.execute(
                 """

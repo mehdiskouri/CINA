@@ -97,7 +97,7 @@ async def test_lookup_miss_for_absent_or_low_similarity_or_zero_norm() -> None:
                 "metrics": {},
                 "prompt_version": "v1",
             },
-        }
+        },
     ]
     redis.values["cina:cache:v1:h2"] = json.dumps(payload)
     miss_zero_norm = await cache.lookup(embedding=[1.0, 0.0], prompt_version="v1")
@@ -172,7 +172,7 @@ async def test_semantic_cache_middleware_hit_and_store_paths() -> None:
             "fallback_triggered": False,
             "citations": [{"id": 2}],
             "metrics_payload": {"llm_total_ms": 20.0, "ignored": "x"},
-        }
+        },
     )
 
     async def _next_live(_messages: list[Message], _config: CompletionConfig):

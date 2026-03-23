@@ -46,7 +46,7 @@ def test_chunk_document_sentence_boundary_path_creates_multiple_chunks() -> None
             max_chunk_tokens=25,
             overlap_tokens=8,
             sentence_boundary_alignment=True,
-        )
+        ),
     )
     text = " ".join([f"Sentence {idx}." for idx in range(1, 30)])
     doc = _build_document(text)
@@ -64,7 +64,7 @@ def test_chunk_document_token_window_path_when_sentence_alignment_disabled() -> 
             max_chunk_tokens=20,
             overlap_tokens=5,
             sentence_boundary_alignment=False,
-        )
+        ),
     )
     text = " ".join(["word"] * 160)
     doc = _build_document(text)

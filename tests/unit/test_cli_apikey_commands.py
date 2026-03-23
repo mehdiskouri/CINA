@@ -63,7 +63,7 @@ def test_apikey_revoke_and_list_commands(monkeypatch) -> None:
                     "tenant_id": "tenant-a",
                     "name": "main",
                     "active": True,
-                }
+                },
             ]
 
     monkeypatch.setattr(cli_apikey, "create_pool", _create_pool)

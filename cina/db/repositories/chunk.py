@@ -1,16 +1,22 @@
+"""Repository for chunk persistence and retrieval/search queries."""
+
 from __future__ import annotations
 
 import json
 from collections.abc import Mapping
-from uuid import UUID
+from typing import TYPE_CHECKING
 
-import asyncpg
+if TYPE_CHECKING:
+    from uuid import UUID
+
+    import asyncpg
 
 from cina.models.document import Chunk
 from cina.models.search import SearchResult
 
 
 def _metadata_to_dict(value: object) -> dict[str, object]:
+    """Normalize metadata field values from DB rows into dictionaries."""
     if isinstance(value, dict):
         return {str(key): item for key, item in value.items()}
     if isinstance(value, Mapping):
@@ -27,10 +33,14 @@ def _metadata_to_dict(value: object) -> dict[str, object]:
 
 
 class ChunkRepository:
+    """Data access layer for chunk rows and search operations."""
+
     def __init__(self, pool: asyncpg.Pool) -> None:
+        """Initialize repository with a database pool."""
         self.pool = pool
 
     async def bulk_upsert(self, chunks: list[Chunk]) -> int:
+        """Insert chunks while ignoring conflicts and return inserted count."""
         if not chunks:
             return 0
         async with self.pool.acquire() as conn, conn.transaction():
@@ -78,6 +88,7 @@ class ChunkRepository:
         embedding_model: str,
         embedding_dim: int,
     ) -> None:
+        """Update vector embeddings for existing chunk ids."""
         async with self.pool.acquire() as conn, conn.transaction():
             for chunk_id, embedding in zip(chunk_ids, embeddings, strict=True):
                 vector_str = "[" + ",".join(f"{x:.8f}" for x in embedding) + "]"
@@ -96,6 +107,7 @@ class ChunkRepository:
                 )
 
     async def vector_search(self, embedding: list[float], top_k: int) -> list[SearchResult]:
+        """Search chunks by vector similarity using pgvector."""
         vector_str = "[" + ",".join(f"{x:.8f}" for x in embedding) + "]"
         async with self.pool.acquire() as conn:
             rows = await conn.fetch(
@@ -121,6 +133,7 @@ class ChunkRepository:
         ]
 
     async def bm25_search(self, query: str, top_k: int) -> list[SearchResult]:
+        """Search chunks with PostgreSQL full-text BM25-style ranking."""
         async with self.pool.acquire() as conn:
             rows = await conn.fetch(
                 """
@@ -146,6 +159,7 @@ class ChunkRepository:
         ]
 
     async def get_by_ids(self, chunk_ids: list[UUID]) -> list[Chunk]:
+        """Fetch chunks by id list preserving database row ordering."""
         if not chunk_ids:
             return []
         async with self.pool.acquire() as conn:
@@ -181,6 +195,7 @@ class ChunkRepository:
         embedding_model: str,
         content_hashes: list[str],
     ) -> list[dict[str, object]]:
+        """Return unembedded chunks for the given hashes and model."""
         if not content_hashes:
             return []
         async with self.pool.acquire() as conn:

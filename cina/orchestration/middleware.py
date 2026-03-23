@@ -1,3 +1,5 @@
+"""Composable middleware types and composition helper for provider handlers."""
+
 from __future__ import annotations
 
 from collections.abc import AsyncIterator, Callable
@@ -9,6 +11,8 @@ Middleware = Callable[[list[Message], CompletionConfig, Handler], AsyncIterator[
 
 
 def compose(*middlewares: Middleware) -> Callable[[Handler], Handler]:
+    """Compose middlewares around a final handler in declaration order."""
+
     def _composer(final_handler: Handler) -> Handler:
         handler = final_handler
         for middleware in reversed(middlewares):

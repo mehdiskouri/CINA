@@ -9,7 +9,8 @@ from cina.orchestration.middleware import compose
 
 
 async def _final_handler(
-    messages: list[Message], config: CompletionConfig
+    messages: list[Message],
+    config: CompletionConfig,
 ) -> AsyncIterator[StreamChunk]:
     _ = (messages, config)
     yield StreamChunk(text="final")

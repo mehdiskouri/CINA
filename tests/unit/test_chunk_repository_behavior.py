@@ -106,7 +106,7 @@ async def test_update_embeddings_and_search_methods_map_results() -> None:
             "token_count": 7,
             "metadata": '{"source":"fda"}',
             "score": 0.77,
-        }
+        },
     ]
     vector = await repo.vector_search([0.1, 0.2], 3)
     bm25 = await repo.bm25_search("HER2", 4)
@@ -137,7 +137,7 @@ async def test_get_by_ids_and_unembedded_by_hashes() -> None:
             "embedding_model": "m",
             "embedding_dim": 4,
             "metadata": {"k": "v"},
-        }
+        },
     ]
     got = await repo.get_by_ids([chunk_id])
     assert len(got) == 1

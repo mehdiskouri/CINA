@@ -1,3 +1,5 @@
+"""Sentence segmentation utility tailored for biomedical text."""
+
 from __future__ import annotations
 
 import re
@@ -21,6 +23,7 @@ _SPLIT_PATTERN = re.compile(r"([.!?])\s+")
 
 
 def split_sentences(text: str) -> list[str]:
+    """Split free text into sentence-like segments with abbreviation guards."""
     normalized = re.sub(r"\s+", " ", text).strip()
     if not normalized:
         return []

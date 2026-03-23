@@ -1,24 +1,35 @@
+"""Repository for API key creation, revocation, and validation."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 from uuid import UUID
 
-import asyncpg
 import bcrypt
+
+if TYPE_CHECKING:
+    import asyncpg
 
 
 @dataclass(slots=True)
 class APIKeyRecord:
+    """Resolved API key identity returned after token validation."""
+
     id: UUID
     tenant_id: str
     name: str
 
 
 class APIKeyRepository:
+    """Data access layer for API key records."""
+
     def __init__(self, pool: asyncpg.Pool) -> None:
+        """Initialize repository with a database pool."""
         self.pool = pool
 
     async def create_key(self, *, key_hash: str, tenant_id: str, name: str) -> UUID:
+        """Create a new active API key row and return its id."""
         async with self.pool.acquire() as conn:
             row = await conn.fetchrow(
                 """
@@ -31,10 +42,12 @@ class APIKeyRepository:
                 name,
             )
         if row is None:
-            raise RuntimeError("Failed to create API key")
+            message = "Failed to create API key"
+            raise RuntimeError(message)
         return UUID(str(row["id"]))
 
     async def revoke_key(self, key_id: str) -> bool:
+        """Revoke an API key by id, returning whether a row changed."""
         async with self.pool.acquire() as conn:
             result = await conn.execute(
                 """
@@ -47,6 +60,7 @@ class APIKeyRepository:
         return str(result).endswith("1")
 
     async def list_keys(self, tenant_id: str | None = None) -> list[dict[str, object]]:
+        """List API keys, optionally filtered by tenant id."""
         query = """
             SELECT id, tenant_id, name, active, created_at, revoked_at
             FROM api_keys
@@ -62,13 +76,14 @@ class APIKeyRepository:
         return [dict(r) for r in rows]
 
     async def validate_token(self, token: str) -> APIKeyRecord | None:
+        """Validate a plaintext token and return matching key identity."""
         async with self.pool.acquire() as conn:
             rows = await conn.fetch(
                 """
                 SELECT id, key_hash, tenant_id, name
                 FROM api_keys
                 WHERE active = true
-                """
+                """,
             )
         token_bytes = token.encode("utf-8")
         for row in rows:

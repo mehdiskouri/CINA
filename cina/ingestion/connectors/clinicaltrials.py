@@ -1,18 +1,26 @@
+"""ClinicalTrials.gov JSON connector."""
+
 from __future__ import annotations
 
 import json
-from collections.abc import AsyncIterator
 from pathlib import Path
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
 from cina.ingestion.connectors.protocol import FetchConfig, RawDocument
 from cina.models.document import Document, Section
 
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
 
 class ClinicalTrialsConnector:
+    """Connector for ClinicalTrials.gov JSON records."""
+
     source_type = "clinicaltrials"
 
     async def fetch_document_list(self, config: FetchConfig) -> AsyncIterator[RawDocument]:
+        """Yield raw JSON documents from source path."""
         source_path = config.source_path or Path("data/clinicaltrials")
         count = 0
         for file_path in sorted(source_path.glob(config.glob_pattern or "*.json")):
@@ -28,6 +36,7 @@ class ClinicalTrialsConnector:
                 break
 
     def parse(self, raw: RawDocument) -> Document:
+        """Parse one clinical-trials record into normalized sections."""
         payload = json.loads(raw.payload)
         protocol = payload.get("protocolSection", {})
         identification = protocol.get("identificationModule", {})
@@ -80,7 +89,7 @@ class ClinicalTrialsConnector:
                     heading=heading,
                     content=normalized_content,
                     order=order,
-                )
+                ),
             )
             order += 1
 
@@ -97,6 +106,7 @@ class ClinicalTrialsConnector:
 
 
 def _text(value: object) -> str:
+    """Render nested JSON values as normalized text."""
     if value is None:
         return ""
     if isinstance(value, str):
@@ -109,6 +119,7 @@ def _text(value: object) -> str:
 
 
 def _interventions_text(interventions: list[dict[str, object]]) -> list[str]:
+    """Format intervention entries into display lines."""
     results: list[str] = []
     for intervention in interventions:
         iv_type = _text(intervention.get("type"))
@@ -121,11 +132,11 @@ def _interventions_text(interventions: list[dict[str, object]]) -> list[str]:
 
 
 def _outcomes_text(outcomes: dict[str, object]) -> list[str]:
+    """Flatten outcome arrays into text lines."""
     lines: list[str] = []
     for key in ["primaryOutcomes", "secondaryOutcomes", "otherOutcomes"]:
         value = outcomes.get(key)
         if not isinstance(value, list):
             continue
-        for item in value:
-            lines.append(_text(item))
+        lines.extend(_text(item) for item in value)
     return [line for line in lines if line.strip()]

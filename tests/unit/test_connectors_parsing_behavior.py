@@ -37,7 +37,7 @@ async def test_pubmed_fetch_and_parse(tmp_path: Path) -> None:
     rows = [
         item
         async for item in connector.fetch_document_list(
-            FetchConfig(limit=1, source_path=tmp_path, glob_pattern="*.xml")
+            FetchConfig(limit=1, source_path=tmp_path, glob_pattern="*.xml"),
         )
     ]
     doc = connector.parse(rows[0])
@@ -52,7 +52,9 @@ async def test_pubmed_fetch_and_parse(tmp_path: Path) -> None:
 def test_pubmed_parse_with_missing_date_and_invalid_date() -> None:
     connector = PubMedConnector()
     raw_missing = RawDocument(
-        source_id="x", payload="<article><body></body></article>", metadata={}
+        source_id="x",
+        payload="<article><body></body></article>",
+        metadata={},
     )
     raw_invalid = RawDocument(
         source_id="x",
@@ -85,7 +87,7 @@ async def test_fda_fetch_and_parse(tmp_path: Path) -> None:
     rows = [
         item
         async for item in connector.fetch_document_list(
-            FetchConfig(source_path=tmp_path, glob_pattern="*.xml")
+            FetchConfig(source_path=tmp_path, glob_pattern="*.xml"),
         )
     ]
     doc = connector.parse(rows[0])
@@ -108,7 +110,7 @@ async def test_clinicaltrials_fetch_and_parse(tmp_path: Path) -> None:
             },
             "eligibilityModule": {"eligibilityCriteria": "adult"},
             "armsInterventionsModule": {
-                "interventions": [{"type": "Drug", "name": "ABC", "description": "once daily"}]
+                "interventions": [{"type": "Drug", "name": "ABC", "description": "once daily"}],
             },
             "outcomesModule": {
                 "primaryOutcomes": [{"measure": "OS", "timeFrame": "1y"}],
@@ -123,7 +125,7 @@ async def test_clinicaltrials_fetch_and_parse(tmp_path: Path) -> None:
     rows = [
         item
         async for item in connector.fetch_document_list(
-            FetchConfig(source_path=tmp_path, glob_pattern="*.json")
+            FetchConfig(source_path=tmp_path, glob_pattern="*.json"),
         )
     ]
     doc = connector.parse(rows[0])

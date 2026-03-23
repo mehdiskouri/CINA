@@ -50,7 +50,7 @@ async def test_run_migrations_returns_zero_when_no_files(
         cli_db,
         "load_config",
         lambda: SimpleNamespace(
-            database=SimpleNamespace(postgres=SimpleNamespace(dsn_env="DATABASE_URL"))
+            database=SimpleNamespace(postgres=SimpleNamespace(dsn_env="DATABASE_URL")),
         ),
     )
     monkeypatch.setenv("DATABASE_URL", "postgres://example")
@@ -83,7 +83,7 @@ async def test_run_migrations_applies_only_pending_files(
         cli_db,
         "load_config",
         lambda: SimpleNamespace(
-            database=SimpleNamespace(postgres=SimpleNamespace(dsn_env="DATABASE_URL"))
+            database=SimpleNamespace(postgres=SimpleNamespace(dsn_env="DATABASE_URL")),
         ),
     )
     monkeypatch.setenv("DATABASE_URL", "postgres://example")

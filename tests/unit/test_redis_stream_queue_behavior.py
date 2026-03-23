@@ -23,7 +23,12 @@ class FakeRedis:
         return b"1-0"
 
     async def xreadgroup(
-        self, group: str, consumer: str, streams: dict[str, str], count: int, block: int
+        self,
+        group: str,
+        consumer: str,
+        streams: dict[str, str],
+        count: int,
+        block: int,
     ):
         _ = (group, consumer, streams, count, block)
         return self.xreadgroup_rows
@@ -61,11 +66,11 @@ async def test_enqueue_dequeue_ack_and_dead_letter() -> None:
                 (
                     b"9-1",
                     {
-                        b"payload": b'{"chunk_id":"c1","content":"x","content_hash":"h","embedding_model":"m","embedding_dim":5}'
+                        b"payload": b'{"chunk_id":"c1","content":"x","content_hash":"h","embedding_model":"m","embedding_dim":5}',
                     },
-                )
+                ),
             ],
-        )
+        ),
     ]
     queue.redis = redis
 

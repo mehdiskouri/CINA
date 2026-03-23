@@ -1,3 +1,5 @@
+"""Config loading utilities with YAML + environment override merging."""
+
 from __future__ import annotations
 
 import os
@@ -10,18 +12,25 @@ import yaml
 from cina.config.schema import AppConfig, FileConfig
 
 
+class InvalidYamlRootError(TypeError, ValueError):
+    """Raised when the root YAML node is not a mapping."""
+
+
 def _load_yaml(path: Path) -> dict[str, Any]:
+    """Load a YAML config file as a dictionary."""
     if not path.exists():
         return {}
     loaded = yaml.safe_load(path.read_text(encoding="utf-8"))
     if loaded is None:
         return {}
     if not isinstance(loaded, dict):
-        raise ValueError(f"Invalid YAML root for config: {path}")
+        message = f"Invalid YAML root for config: {path}"
+        raise InvalidYamlRootError(message)
     return loaded
 
 
 def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
+    """Recursively merge override values into base dictionary."""
     result = dict(base)
     for key, value in override.items():
         if isinstance(value, dict) and isinstance(result.get(key), dict):
@@ -32,6 +41,7 @@ def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any
 
 
 def _env_overrides() -> dict[str, Any]:
+    """Build nested override structure from `CINA__` environment variables."""
     prefix = "CINA__"
     out: dict[str, Any] = {}
     for env_key, raw in os.environ.items():
@@ -54,6 +64,7 @@ def _env_overrides() -> dict[str, Any]:
 
 @lru_cache(maxsize=1)
 def load_config(config_path: str | None = None) -> AppConfig:
+    """Load and cache application configuration."""
     path_str = config_path or os.getenv("CINA_CONFIG_PATH") or "cina.yaml"
     path = Path(path_str)
     file_values = FileConfig.model_validate(_load_yaml(path))
@@ -63,4 +74,5 @@ def load_config(config_path: str | None = None) -> AppConfig:
 
 
 def clear_config_cache() -> None:
+    """Clear cached configuration object."""
     load_config.cache_clear()

@@ -63,8 +63,8 @@ async def test_bm25_search_maps_rows_to_search_result() -> None:
                 "token_count": 5,
                 "metadata": {"source": "pubmed"},
                 "score": 0.91,
-            }
-        ]
+            },
+        ],
     )
     searcher = BM25Searcher(FakePool(conn))
 

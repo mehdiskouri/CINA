@@ -49,7 +49,7 @@ async def test_list_active_maps_prompt_versions() -> None:
             "description": "default",
             "traffic_weight": 1.0,
             "active": True,
-        }
+        },
     ]
     repo = PromptVersionRepository(FakePool(conn))
 

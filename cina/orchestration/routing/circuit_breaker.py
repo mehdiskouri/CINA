@@ -3,18 +3,25 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from redis.asyncio import Redis
+if TYPE_CHECKING:
+    from redis.asyncio import Redis
 
 
 @dataclass(slots=True)
 class CircuitBreakerConfig:
+    """Circuit breaker thresholds for provider failure handling."""
+
     max_failures: int
     cooldown_seconds: int
 
 
 class CircuitBreaker:
+    """Tracks provider health state in Redis and enforces cooldowns."""
+
     def __init__(self, redis: Redis, config: CircuitBreakerConfig) -> None:
+        """Initialize breaker with Redis backend and state thresholds."""
         self.redis = redis
         self.config = config
 
@@ -31,12 +38,14 @@ class CircuitBreaker:
         return f"cina:provider:{provider}:cooldown"
 
     async def state(self, provider: str) -> str:
+        """Return current provider circuit state."""
         circuit = await self.redis.get(self._circuit_key(provider))
         if circuit is None:
             return "closed"
         return circuit.decode("utf-8") if isinstance(circuit, bytes) else str(circuit)
 
     async def can_attempt(self, provider: str) -> bool:
+        """Return whether requests may be attempted for a provider."""
         state = await self.state(provider)
         if state == "closed":
             return True
@@ -49,6 +58,7 @@ class CircuitBreaker:
         return False
 
     async def record_success(self, provider: str) -> None:
+        """Mark provider call success and close/reset the circuit."""
         pipe = self.redis.pipeline()
         pipe.delete(self._failures_key(provider))
         pipe.delete(self._cooldown_key(provider))
@@ -56,6 +66,7 @@ class CircuitBreaker:
         await pipe.execute()
 
     async def record_failure(self, provider: str) -> None:
+        """Record provider failure and open circuit when threshold is exceeded."""
         key = self._failures_key(provider)
         failures = await self.redis.incr(key)
         await self.redis.expire(key, self.config.cooldown_seconds)

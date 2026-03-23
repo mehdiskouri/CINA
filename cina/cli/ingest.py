@@ -1,8 +1,18 @@
+"""CLI commands for ingestion pipeline and worker execution."""
+
+import asyncio
+from pathlib import Path
+
 import typer
 from rich.console import Console
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 
-from cina.ingestion.pipeline import IngestionProgress, run_embedding_worker_service, run_ingestion
+from cina.ingestion.pipeline import (
+    IngestionProgress,
+    IngestionRunConfig,
+    run_embedding_worker_service,
+    run_ingestion,
+)
 
 app = typer.Typer(help="Ingestion commands")
 console = Console()
@@ -14,23 +24,22 @@ def ingest_root(
     source: str | None = typer.Option(None, help="Source name: pubmed|fda|clinicaltrials"),
     path: str | None = typer.Option(None, help="Path to source files"),
     limit: int | None = typer.Option(None, help="Optional max number of documents"),
-    batch_size: int = typer.Option(64, help="Embedding batch size"),
-    concurrency: int = typer.Option(8, help="Document processing concurrency"),
 ) -> None:
+    """Run ingestion directly when called without a subcommand."""
     if ctx.invoked_subcommand is not None:
         return
     if source is None or path is None:
         typer.echo(
             "Provide both --source and --path, or use the subcommand: "
-            "cina ingest run --source <name> --path <dir>"
+            "cina ingest run --source <name> --path <dir>",
         )
         raise typer.Exit(code=2)
     _run_ingestion(
         source=source,
         path=path,
         limit=limit,
-        batch_size=batch_size,
-        concurrency=concurrency,
+        batch_size=64,
+        concurrency=8,
     )
 
 
@@ -43,7 +52,6 @@ def ingest_run(
     concurrency: int = typer.Option(8, help="Document processing concurrency"),
 ) -> None:
     """Run ingestion pipeline for a selected source."""
-
     _run_ingestion(
         source=source,
         path=path,
@@ -59,15 +67,12 @@ def ingest_worker(
     poll_interval_seconds: float = typer.Option(1.0, help="Sleep between queue polls"),
 ) -> None:
     """Run embedding worker as a long-lived service."""
-
-    import asyncio
-
     console.print("[cyan]Starting ingestion worker service...[/cyan]")
     asyncio.run(
         run_embedding_worker_service(
             batch_size=batch_size,
             poll_interval_seconds=poll_interval_seconds,
-        )
+        ),
     )
 
 
@@ -79,16 +84,14 @@ def _run_ingestion(
     batch_size: int,
     concurrency: int,
 ) -> None:
-
-    import asyncio
-    from pathlib import Path
-
+    """Execute ingestion with progress rendering in the terminal."""
     with Progress(
         SpinnerColumn(),
         TextColumn("{task.description}"),
         BarColumn(),
         TextColumn(
-            "docs={task.fields[docs]} chunks={task.fields[chunks]} embedded={task.fields[embedded]} errors={task.fields[errors]}"
+            "docs={task.fields[docs]} chunks={task.fields[chunks]} "
+            "embedded={task.fields[embedded]} errors={task.fields[errors]}",
         ),
         TimeElapsedColumn(),
         console=console,
@@ -122,13 +125,15 @@ def _run_ingestion(
 
         result = asyncio.run(
             run_ingestion(
-                source=source,
-                path=Path(path),
-                limit=limit,
-                concurrency=concurrency,
-                batch_size=batch_size,
+                config=IngestionRunConfig(
+                    source=source,
+                    path=Path(path),
+                    limit=limit,
+                    concurrency=concurrency,
+                    batch_size=batch_size,
+                ),
                 progress_callback=on_progress,
-            )
+            ),
         )
 
         progress.update(

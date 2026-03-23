@@ -25,7 +25,7 @@ async def test_query_embedder_uses_configured_model_and_dimensions(
         lambda: SimpleNamespace(
             ingestion=SimpleNamespace(
                 embedding=SimpleNamespace(model="embed-model", dimensions=384),
-            )
+            ),
         ),
     )
 
@@ -53,7 +53,7 @@ async def test_query_embedder_propagates_provider_failure(
         lambda: SimpleNamespace(
             ingestion=SimpleNamespace(
                 embedding=SimpleNamespace(model="embed-model", dimensions=512),
-            )
+            ),
         ),
     )
 

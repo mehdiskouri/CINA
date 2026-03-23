@@ -1,1 +1,1 @@
-"""Package."""
+"""Database repositories for domain persistence."""

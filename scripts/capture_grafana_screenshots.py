@@ -1,12 +1,14 @@
+"""Capture Grafana dashboard screenshots after warming metric activity."""
+
+from __future__ import annotations
+
 import asyncio
-import json
 import os
-import urllib.error
-import urllib.parse
-import urllib.request
+import sys
 from pathlib import Path
 
-from playwright.async_api import async_playwright
+import httpx
+from playwright.async_api import Page, async_playwright
 
 DASHBOARDS = [
     ("cina-ingestion-pipeline", "ingestion-pipeline.png"),
@@ -21,19 +23,31 @@ PROMETHEUS_BASE_URL = os.getenv("CINA_PROMETHEUS_BASE_URL", "http://localhost:90
 WAIT_TIMEOUT_SECONDS = 90
 WARMUP_REQUESTS = int(os.getenv("CINA_SCREENSHOT_WARMUP_REQUESTS", "8"))
 WARMUP_SPACING_SECONDS = float(os.getenv("CINA_SCREENSHOT_WARMUP_SPACING_SECONDS", "4"))
+_HTTP_BAD_REQUEST = 400
+_WARMUP_TIMEOUT_SECONDS = 120
+_PROM_QUERY_TIMEOUT_SECONDS = 15
+_PANEL_POLL_SECONDS = 2
+_PROM_VALUE_MIN_LEN = 2
+
+
+def _echo(message: str) -> None:
+    """Write progress output to stdout for script execution."""
+    sys.stdout.write(f"{message}\n")
 
 
 def _build_auth_header() -> dict[str, str]:
+    """Build Authorization header for warmup API calls."""
     token = os.getenv("CINA_SCREENSHOT_API_KEY") or os.getenv("CINA_LOAD_API_KEY")
     auth_disabled = os.getenv("CINA_AUTH_DISABLED", "0") == "1"
     if token:
         return {"Authorization": f"Bearer {token}"}
     if auth_disabled:
         return {}
-    raise RuntimeError(
+    msg = (
         "No API key found for screenshot warmup. Set CINA_SCREENSHOT_API_KEY "
         "(or CINA_LOAD_API_KEY), or set CINA_AUTH_DISABLED=1 for local dev."
     )
+    raise RuntimeError(msg)
 
 
 async def _warmup_metrics() -> None:
@@ -49,68 +63,70 @@ async def _warmup_metrics() -> None:
         "What evidence supports PD-1 inhibitors in melanoma?",
     ]
 
-    def _post_query_sync(query: str) -> None:
-        payload = json.dumps({"query": query}).encode("utf-8")
-        req = urllib.request.Request(
-            f"{API_BASE_URL}/v1/query",
-            data=payload,
-            headers=headers,
-            method="POST",
-        )
-        try:
-            with urllib.request.urlopen(req, timeout=120) as resp:
-                if resp.status >= 400:
-                    raise RuntimeError(f"Warmup query failed with status {resp.status}")
-                # Fully consume SSE stream so downstream provider/cost hooks execute.
-                _ = resp.read()
-        except urllib.error.HTTPError as exc:
-            raise RuntimeError(f"Warmup query failed with status {exc.code}") from exc
+    async with httpx.AsyncClient(timeout=httpx.Timeout(_WARMUP_TIMEOUT_SECONDS)) as client:
+        for i in range(WARMUP_REQUESTS):
+            query = prompts[i % len(prompts)]
+            response = await client.post(
+                f"{API_BASE_URL}/v1/query",
+                json={"query": query},
+                headers=headers,
+            )
+            if response.status_code >= _HTTP_BAD_REQUEST:
+                msg = f"Warmup query failed with status {response.status_code}"
+                raise RuntimeError(msg)
+            if i < WARMUP_REQUESTS - 1:
+                await asyncio.sleep(WARMUP_SPACING_SECONDS)
 
-    # Spread requests out so Prometheus rate()/increase() windows observe changes.
-    for i in range(WARMUP_REQUESTS):
-        await asyncio.to_thread(_post_query_sync, prompts[i % len(prompts)])
-        if i < WARMUP_REQUESTS - 1:
-            await asyncio.sleep(WARMUP_SPACING_SECONDS)
-
-    # Let at least one additional scrape happen after final warmup request.
     await asyncio.sleep(20)
 
 
-def _prom_scalar(query: str) -> float:
-    url = (
-        f"{PROMETHEUS_BASE_URL}/api/v1/query?"
-        f"{urllib.parse.quote('query')}={urllib.parse.quote(query)}"
-    )
-    with urllib.request.urlopen(url, timeout=15) as resp:
-        payload = json.loads(resp.read().decode("utf-8"))
-    result = payload.get("data", {}).get("result", [])
-    if not result:
+async def _prom_scalar(query: str) -> float:
+    """Evaluate a Prometheus scalar query result."""
+    params = {"query": query}
+    async with httpx.AsyncClient(timeout=httpx.Timeout(_PROM_QUERY_TIMEOUT_SECONDS)) as client:
+        response = await client.get(f"{PROMETHEUS_BASE_URL}/api/v1/query", params=params)
+        response.raise_for_status()
+        payload = response.json()
+
+    if not isinstance(payload, dict):
         return 0.0
-    return float(result[0]["value"][1])
+    data = payload.get("data", {})
+    if not isinstance(data, dict):
+        return 0.0
+    result = data.get("result", [])
+    if not isinstance(result, list) or not result:
+        return 0.0
+    first = result[0]
+    if not isinstance(first, dict):
+        return 0.0
+    value = first.get("value", [])
+    if not isinstance(value, list) or len(value) < _PROM_VALUE_MIN_LEN:
+        return 0.0
+    return float(value[1])
 
 
 async def _assert_metric_activity() -> None:
+    """Fail fast if warmup did not produce expected Prometheus activity."""
     checks = {
         "query": "sum(rate(cina_query_total[5m]))",
         "provider": "sum(rate(cina_provider_request_total[5m]))",
         "cost": "sum(rate(cina_cost_usd_total[5m]))",
     }
-    values = {
-        name: await asyncio.to_thread(_prom_scalar, promql) for name, promql in checks.items()
-    }
+    values = {name: await _prom_scalar(promql) for name, promql in checks.items()}
 
     if values["query"] <= 0:
-        raise RuntimeError(
-            "No query traffic observed in Prometheus. Warmup could not generate query activity."
-        )
+        msg = "No query traffic observed in Prometheus. Warmup could not generate query activity."
+        raise RuntimeError(msg)
     if values["provider"] <= 0:
-        raise RuntimeError(
+        msg = (
             "Query traffic exists but provider metrics are still zero. "
-            "Start the API with real provider keys loaded (e.g. env.keys.local) and rerun capture."
+            "Start the API with real provider keys loaded "
+            "(e.g. env.keys.local) and rerun capture."
         )
+        raise RuntimeError(msg)
 
 
-async def _wait_for_dashboard_data(page) -> None:
+async def _wait_for_dashboard_data(page: Page) -> None:
     """Wait until the Grafana panel content is rendered and not empty."""
 
     async def _panel_ready() -> bool:
@@ -122,9 +138,9 @@ async def _wait_for_dashboard_data(page) -> None:
         if await no_data.count() > 0:
             return False
 
-        # Grafana 12 renders timeseries panels with uPlot divs.
         rendered = page.locator(
-            '.uplot, .panel-content canvas, .panel-content svg, .panel-content [data-testid="stat-panel-value"]'
+            ".uplot, .panel-content canvas, .panel-content svg, "
+            '.panel-content [data-testid="stat-panel-value"]',
         )
         return await rendered.count() > 0
 
@@ -132,20 +148,23 @@ async def _wait_for_dashboard_data(page) -> None:
     while asyncio.get_running_loop().time() < deadline:
         if await _panel_ready():
             return
-        await asyncio.sleep(2)
+        await asyncio.sleep(_PANEL_POLL_SECONDS)
 
-    raise TimeoutError("Timed out waiting for Grafana panels to render data")
+    msg = "Timed out waiting for Grafana panels to render data"
+    raise TimeoutError(msg)
 
 
 async def main() -> None:
+    """Warm up traffic and capture screenshot artifacts from Grafana."""
     output_dir = Path("docs/screenshots")
     await asyncio.to_thread(output_dir.mkdir, parents=True, exist_ok=True)
 
+    _echo("Warming up API and metrics...")
     await _warmup_metrics()
     await _assert_metric_activity()
 
-    async with async_playwright() as p:
-        browser = await p.chromium.launch()
+    async with async_playwright() as playwright:
+        browser = await playwright.chromium.launch()
         page = await browser.new_page(viewport={"width": 1600, "height": 1000})
 
         await page.goto(f"{GRAFANA_BASE_URL}/login", wait_until="domcontentloaded")
@@ -161,9 +180,8 @@ async def main() -> None:
 
         if "/login" in page.url:
             await page.screenshot(path=str(output_dir / "_debug_login_failed.png"), full_page=True)
-            raise RuntimeError(
-                "Grafana login failed; verify admin credentials and login form state"
-            )
+            msg = "Grafana login failed; verify admin credentials and login form state"
+            raise RuntimeError(msg)
 
         for uid, filename in DASHBOARDS:
             dashboard_url = f"{GRAFANA_BASE_URL}/d/{uid}?orgId=1&from=now-15m&to=now&refresh=5s"

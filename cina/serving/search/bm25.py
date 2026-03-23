@@ -5,12 +5,14 @@ from __future__ import annotations
 import json
 import time
 from collections.abc import Mapping
-
-import asyncpg
+from typing import TYPE_CHECKING
 
 from cina.models.search import SearchResult
 from cina.observability.logging import get_logger
 from cina.observability.metrics import cina_query_latency_seconds
+
+if TYPE_CHECKING:
+    import asyncpg
 
 log = get_logger("cina.serving.search.bm25")
 
@@ -19,9 +21,11 @@ class BM25Searcher:
     """Async PostgreSQL full-text search using tsvector/tsquery."""
 
     def __init__(self, pool: asyncpg.Pool) -> None:
+        """Initialize BM25 searcher with database pool."""
         self.pool = pool
 
     async def search(self, query: str, top_k: int) -> list[SearchResult]:
+        """Run full-text search and return top-ranked chunk matches."""
         start = time.perf_counter()
         try:
             async with self.pool.acquire() as conn:

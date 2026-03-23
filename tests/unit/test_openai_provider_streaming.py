@@ -70,7 +70,8 @@ async def test_openai_complete_streams_text_tokens(monkeypatch: pytest.MonkeyPat
         ],
     )
     monkeypatch.setattr(
-        "cina.orchestration.providers.openai.httpx.AsyncClient", lambda **kwargs: client
+        "cina.orchestration.providers.openai.httpx.AsyncClient",
+        lambda **kwargs: client,
     )
 
     provider = OpenAIProvider(model="gpt-4o")
@@ -90,7 +91,8 @@ async def test_openai_complete_raises_rate_limit(monkeypatch: pytest.MonkeyPatch
     client = FakeAsyncClient(timeout=httpx.Timeout(5.0))
     client.response = FakeStreamResponse(status_code=429, lines=[])
     monkeypatch.setattr(
-        "cina.orchestration.providers.openai.httpx.AsyncClient", lambda **kwargs: client
+        "cina.orchestration.providers.openai.httpx.AsyncClient",
+        lambda **kwargs: client,
     )
 
     provider = OpenAIProvider(model="gpt-4o")
@@ -110,7 +112,8 @@ async def test_openai_complete_raises_server_error_for_4xx(monkeypatch: pytest.M
     client = FakeAsyncClient(timeout=httpx.Timeout(5.0))
     client.response = FakeStreamResponse(status_code=400, lines=[], body=b"bad request")
     monkeypatch.setattr(
-        "cina.orchestration.providers.openai.httpx.AsyncClient", lambda **kwargs: client
+        "cina.orchestration.providers.openai.httpx.AsyncClient",
+        lambda **kwargs: client,
     )
 
     provider = OpenAIProvider(model="gpt-4o")
@@ -130,7 +133,8 @@ async def test_openai_health_check_false_on_http_error(monkeypatch: pytest.Monke
     client = FakeAsyncClient(timeout=httpx.Timeout(5.0))
     client.raise_in_post = True
     monkeypatch.setattr(
-        "cina.orchestration.providers.openai.httpx.AsyncClient", lambda **kwargs: client
+        "cina.orchestration.providers.openai.httpx.AsyncClient",
+        lambda **kwargs: client,
     )
 
     provider = OpenAIProvider(model="gpt-4o")

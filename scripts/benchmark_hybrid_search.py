@@ -10,7 +10,15 @@ Usage:
 from __future__ import annotations
 
 import asyncio
-import os
+import sys
+from pathlib import Path
+
+from cina.config import clear_config_cache, load_config
+from cina.db.connection import close_pool, get_pool
+from cina.serving.search.bm25 import BM25Searcher
+from cina.serving.search.embed import QueryEmbedder
+from cina.serving.search.fusion import reciprocal_rank_fusion
+from cina.serving.search.vector import VectorSearcher
 
 # Clinical queries with exact medical terms that should favour BM25
 QUERIES = [
@@ -47,14 +55,13 @@ QUERIES = [
 ]
 
 
-async def run_benchmark() -> None:
-    from cina.config import clear_config_cache, load_config
-    from cina.db.connection import close_pool, get_pool
-    from cina.serving.search.bm25 import BM25Searcher
-    from cina.serving.search.embed import QueryEmbedder
-    from cina.serving.search.fusion import reciprocal_rank_fusion
-    from cina.serving.search.vector import VectorSearcher
+def _echo(message: str) -> None:
+    """Write progress output to stdout for interactive script runs."""
+    sys.stdout.write(f"{message}\n")
 
+
+async def run_benchmark() -> None:
+    """Run hybrid search benchmark and write ADR markdown report."""
     clear_config_cache()
     pool = await get_pool()
     cfg = load_config().serving
@@ -66,7 +73,7 @@ async def run_benchmark() -> None:
     results: list[dict[str, object]] = []
 
     for i, query in enumerate(QUERIES):
-        print(f"[{i + 1}/{len(QUERIES)}] {query[:60]}...")
+        _echo(f"[{i + 1}/{len(QUERIES)}] {query[:60]}...")
 
         embedding = await embedder.embed(query)
         vector_results = await vsearcher.search(embedding, top_k=cfg.search.vector_top_k)
@@ -87,22 +94,22 @@ async def run_benchmark() -> None:
                 "hybrid_count": len(hybrid),
                 "only_in_bm25_top10": only_in_bm25,
                 "only_in_vector_top10": only_in_vector,
-            }
+            },
         )
 
     await close_pool()
 
     # Write ADR
-    os.makedirs("docs/adr", exist_ok=True)
-    adr_path = "docs/adr/ADR-002-hybrid-search.md"
-    with open(adr_path, "w") as f:  # noqa: ASYNC230
+    adr_path = Path("docs/adr/ADR-002-hybrid-search.md")
+    adr_path.parent.mkdir(parents=True, exist_ok=True)
+    with adr_path.open("w", encoding="utf-8") as f:  # noqa: ASYNC230
         f.write("# ADR-002: Hybrid Search Strategy\n\n")
         f.write("## Status\n\nProposed\n\n")
         f.write("## Context\n\n")
         f.write(
             "Clinical queries mix natural language descriptions with exact medical terms "
             "(drug names, gene IDs, dosages). Vector search captures semantic similarity "
-            "while BM25 captures exact keyword matches.\n\n"
+            "while BM25 captures exact keyword matches.\n\n",
         )
         f.write("## Benchmark Setup\n\n")
         f.write(f"- {len(QUERIES)} clinical queries with exact medical terms\n")
@@ -111,22 +118,23 @@ async def run_benchmark() -> None:
         f.write("| Query | Vector | BM25 | Hybrid | BM25-only@10 | Vec-only@10 |\n")
         f.write("|-------|--------|------|--------|-------------|------------|\n")
         for r in results:
-            f.write(
+            row = (
                 f"| {str(r['query'])[:40]}... | {r['vector_count']} | {r['bm25_count']} | "
                 f"{r['hybrid_count']} | {r['only_in_bm25_top10']} | {r['only_in_vector_top10']} |\n"
             )
+            f.write(row)
         f.write("\n## Decision\n\n")
         f.write(
             "Use hybrid search (RRF fusion of vector + BM25) as the default retrieval "
             "strategy. Exact medical terms and identifiers that BM25 matches precisely "
-            "complement the semantic understanding of vector search.\n\n"
+            "complement the semantic understanding of vector search.\n\n",
         )
         f.write("## Consequences\n\n")
         f.write("- Marginal latency increase from parallel search execution\n")
         f.write("- Better coverage of exact-match clinical terms\n")
         f.write("- RRF k=60 provides balanced weighting between retrieval paths\n")
 
-    print("\nADR written to docs/adr/ADR-002-hybrid-search.md")
+    _echo("\nADR written to docs/adr/ADR-002-hybrid-search.md")
 
 
 if __name__ == "__main__":

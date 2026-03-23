@@ -11,7 +11,12 @@ from cina.orchestration.routing.fallback import ConcurrentFallbackExecutor
 
 class FakeProvider:
     def __init__(
-        self, name: str, chunks: list[str], *, delay: float = 0.0, exc: Exception | None = None
+        self,
+        name: str,
+        chunks: list[str],
+        *,
+        delay: float = 0.0,
+        exc: Exception | None = None,
     ) -> None:
         self.name = name
         self.chunks = chunks
@@ -29,7 +34,11 @@ class FakeProvider:
 
 class FakeRouter:
     def __init__(
-        self, primary_name: str, primary_provider, fallback_name: str, fallback_provider
+        self,
+        primary_name: str,
+        primary_provider,
+        fallback_name: str,
+        fallback_provider,
     ) -> None:
         self.primary_name = primary_name
         self.fallback_name = fallback_name
@@ -43,7 +52,9 @@ class FakeRouter:
 
     async def select_fallback(self):
         return type(
-            "Selection", (), {"name": self.fallback_name, "provider": self.fallback_provider}
+            "Selection",
+            (),
+            {"name": self.fallback_name, "provider": self.fallback_provider},
         )
 
     async def record_success(self, provider_name: str) -> None:

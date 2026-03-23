@@ -1,3 +1,5 @@
+"""Top-level Typer application composition for CINA CLI."""
+
 import typer
 
 from cina.cli.apikey import app as apikey_app

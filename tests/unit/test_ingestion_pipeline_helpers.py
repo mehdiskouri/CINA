@@ -178,7 +178,11 @@ async def test_ingestion_job_helpers_create_update_finalize() -> None:
     created = await _create_ingestion_job(pool, "pubmed")
     await _update_job_progress(pool, created, 3, 10)
     await _finalize_ingestion_job(
-        pool, created, documents_processed=3, chunks_created=10, errors=[]
+        pool,
+        created,
+        documents_processed=3,
+        chunks_created=10,
+        errors=[],
     )
 
     assert created == job_id

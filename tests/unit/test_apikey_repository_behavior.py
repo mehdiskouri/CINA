@@ -107,7 +107,7 @@ async def test_validate_token_returns_record_on_hash_match(monkeypatch: pytest.M
             "key_hash": "$2b$12$dummyhash",
             "tenant_id": "tenant-z",
             "name": "primary",
-        }
+        },
     ]
     repo = APIKeyRepository(FakePool(conn))
     monkeypatch.setattr("cina.db.repositories.apikey.bcrypt.checkpw", lambda _token, _hash: True)

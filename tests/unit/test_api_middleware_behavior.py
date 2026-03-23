@@ -59,7 +59,7 @@ def test_correlation_middleware_propagates_or_generates_id() -> None:
 def test_rate_limit_middleware_denies_and_sets_headers() -> None:
     app = _build_base_app()
     app.state.rate_limiter = FakeLimiter(
-        RateCheckResult(allowed=False, retry_after_seconds=7, limit=100, remaining=0)
+        RateCheckResult(allowed=False, retry_after_seconds=7, limit=100, remaining=0),
     )
 
     @app.middleware("http")
@@ -80,7 +80,7 @@ def test_rate_limit_middleware_denies_and_sets_headers() -> None:
 def test_rate_limit_middleware_allows_and_adds_budget_headers() -> None:
     app = _build_base_app()
     limiter = FakeLimiter(
-        RateCheckResult(allowed=True, retry_after_seconds=0, limit=100, remaining=55)
+        RateCheckResult(allowed=True, retry_after_seconds=0, limit=100, remaining=55),
     )
     app.state.rate_limiter = limiter
 
